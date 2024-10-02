@@ -64,7 +64,7 @@ export const CategoriesList = () => {
 
     return (
         <div className='container'>
-            <h1>Categories List</h1>
+            <h1 className='fs-4'>Categories List</h1>
             <div>
                 <div className='d-flex justify-content-between'>
                     <InputGroup className="mb-3 w-400px">
@@ -77,10 +77,10 @@ export const CategoriesList = () => {
                         aria-describedby="basic-addon1"
                         />
                     </InputGroup>
-                    <Button variant='primary' onClick={handleAdd}>New</Button>
+                    <Button variant='primary' className='h-75' onClick={handleAdd}>New</Button>
                 </div>
                 <div>
-                <Table responsive="sm" striped hover  className="table-center mt-10">
+                <Table responsive="sm" striped hover  className="table-center">
                     <thead>
                     <tr className='bg-dark text-muted'>
                         <th>#</th>

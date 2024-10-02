@@ -23,6 +23,8 @@ import DashboardPage from '../pages/dashboard/DashboardPage'
 import { ProtectedRoute } from './ProtectedRoute'
 import { CategoriesList } from '../pages/categories/CategoriesList'
 import { SubCategoriesList } from '../pages/subcategories/SubCategoriesList'
+import { TemplatesPage } from '../pages/templatesPage/TemplatesPage'
+import { Templates } from '../pages/home_templates/Templates'
 
 const PrivateRoutes = () => {
   const ProfilePage = lazy(() => import('../modules/profile/ProfilePage'))
@@ -77,7 +79,17 @@ const PrivateRoutes = () => {
           />
         }
       />
+      <Route
+        path='admin/templates'
+        element={
+          <ProtectedRoute
+            element={<TemplatesPage />}
+            allowedRoles={[1]} // Both roles can access
+          />
+        }
+      />
         {/* <Route path='dashboard' element={<DashboardPage />} /> */}
+        <Route path='templates/:id' element={<Templates />} />
         <Route path='sub_categories/:mainCategoryId' element={<SubCategoryPage />} />
         <Route path='products/:subCategoryId' element={<ProductsListPage />} />
         <Route path='product_details/:productId' element={<ProductDetailsPage />} />

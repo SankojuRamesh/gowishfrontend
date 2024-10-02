@@ -2,9 +2,11 @@ import { faCartShopping, faHeart, faPaperPlane, faPlay } from "@fortawesome/free
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Carousel from "react-multi-carousel";
 import { Responsive } from "../../../_metronic/sliders/responsive";
+import { useNavigate } from "react-router-dom";
 
 const SubCategories = ({subCategories}: any) => {
     console.log('subbb', subCategories)
+    const navigate = useNavigate()
     const responsive = Responsive
     return (
         <div className='row gx-5 gx-xl-8 mb-5 mb-xl-8'>
@@ -24,7 +26,7 @@ const SubCategories = ({subCategories}: any) => {
                   showDots={true}
                   autoPlay={true}
                   infinite={true}
-                  autoPlaySpeed={300465654646454545465640}
+                  autoPlaySpeed={3000}
                   removeArrowOnDeviceType={['tablet', 'mobile']}
                 >
                   {subCategories?.map((category: any, i:number) => {
@@ -33,7 +35,7 @@ const SubCategories = ({subCategories}: any) => {
                         <div className='col-sm-3 mb-3 mb-sm-0 pb-5 ps-2 pe-3 w-100' key={i}>
                         <div className="position-relative ">
                             <div>
-                                <img src={category?.template_thumb} alt="" className="bgi-position-center bgi-no-repeat bgi-size-cover h-200px card-rounded" width={'100%'} />
+                                <img src={category?.template_small_thumb} alt="" className="bgi-position-center bgi-no-repeat bgi-size-cover h-200px card-rounded" width={'100%'} />
                                 <button className="btn btn-icon position-absolute center-play-button" data-kt-element="list-play-button">
                                   <FontAwesomeIcon icon={faPlay} className="text-white" size="2x" />
                                 </button>
@@ -49,7 +51,7 @@ const SubCategories = ({subCategories}: any) => {
                               </div>
                           </div>
                             <div className="align-items-center btn-chips d-flex justify-content-between mt-1">
-                              <span className="badge border border-dashed fs-2 fw-bold text-dark p-2"> <span className="fs-6 fw-semibold text-gray-600  ">Rs.</span>450.00</span>
+                              <span className="badge border border-dashed fs-6 fw-bold text-dark p-2"> <span className="fs-6 fw-semibold text-gray-600  ">Rs.</span>450.00</span>
                               <div>
                               <span className="btn btn-icon btn-active-light-primary w-35px h-35px w-md-40px h-md-40px">
                                 <span className="svg-icon svg-icon-muted svg-icon-1hx">
@@ -61,7 +63,7 @@ const SubCategories = ({subCategories}: any) => {
                                   <FontAwesomeIcon icon={faCartShopping} size={'2x'} />
                                 </span>
                               </span>
-                              <span className="btn btn-icon btn-active-light-primary w-35px h-35px w-md-40px h-md-40px">
+                              <span className="btn btn-icon btn-active-light-primary w-35px h-35px w-md-40px h-md-40px" onClick={() => navigate(`/templates/${category.subcategory}`)}>
                                 <span className="svg-icon svg-icon-muted svg-icon-1hx">
                                   <FontAwesomeIcon icon={faPaperPlane} size={'2x'} />
                                 </span>

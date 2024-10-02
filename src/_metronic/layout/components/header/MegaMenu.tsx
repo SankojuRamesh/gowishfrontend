@@ -3,10 +3,13 @@ import React, {useState, useEffect} from 'react'
 import {Link} from 'react-router-dom'
 import {baseUrl2} from '../../../../app/modules/auth/core/ApiAxios'
 import {toAbsoluteUrl} from '../../../helpers'
+import { useAuth } from '../../../../app/modules/auth'
 
 const MegaMenu = (Categories: any) => {
   const [getSubCategories, setSubCategories] = useState([])
   const [getMainCategory, setMainCategory] = useState([] as any)
+  const {auth} = useAuth();
+
   useEffect(() => {
     if (Categories) {
       if (Categories.subCategories && Categories.subCategories !== undefined) {
@@ -28,15 +31,13 @@ const MegaMenu = (Categories: any) => {
                 return (
                   <div className='col-lg-6 mb-3' key={i}>
                     <div className='menu-item p-0 m-0'>
-                      <Link to={toAbsoluteUrl('/admin/' + subc?.route)} className='menu-link'>
-                      {/* <Link to={toAbsoluteUrl('/products/' + subc?.id)} className='menu-link'> */}
+                      <Link to={toAbsoluteUrl(auth?.roles === 4 ? '/products/' + subc?.id : '/admin/' + subc?.route )} className='menu-link'>
                         <div className='symbol symbol-50px me-3'>
-                          {/* <img src={subc?.small_thumbnail} className='' alt='' /> */}
-                          <img src={subc?.category_image} className='' alt='' />
+                        {auth?.roles === 1 ? <img src={subc?.category_image} className='' alt='' /> :
+                          <img src={subc?.small_thumbnail} className='' alt='' />}
                         </div>
                         <span className='d-flex flex-column'>
                           <span className='fs-6 fw-bold text-gray-800'>{subc?.subcategory_name}</span>
-                          {/* <span className='fs-7 fw-semibold text-gray-500'>{subc?.category_name}</span> */}
                           <span className='fs-7 fw-semibold text-muted'>
                             {subc?.category_name}
                           </span>

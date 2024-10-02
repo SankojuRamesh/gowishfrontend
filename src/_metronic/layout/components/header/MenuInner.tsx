@@ -284,6 +284,7 @@ export const MenuInner = () => {
       "is_addon": 0,
       "is_sub": 1,
       "category": 53,
+      "route": 'templates',
       "status": "Active",
       "created_on": "2022-04-30T05:41:03.000Z",
       "featured": "",
@@ -327,7 +328,7 @@ export const MenuInner = () => {
       setMainCategory(adminMain)
       setSubCategory(adminSubMain)
     } else {
-      getFunction()
+      getCategories()
     }
 
 
@@ -335,8 +336,7 @@ export const MenuInner = () => {
     // http://74.208.123.31:5001/categories/
   }, [])
 
-  const getFunction = () => {
-    async function GetCategories() {
+  const getCategories = async () => {
       try {
         const Categories = await ApiAxios.get('/categories')
         const subCategories = await ApiAxios.get('/subcategories')
@@ -346,8 +346,6 @@ export const MenuInner = () => {
       } catch (error) {
         console.log(error)
       }
-    }
-    GetCategories()
   }
   return (
     <>

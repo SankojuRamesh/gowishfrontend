@@ -109,61 +109,18 @@ const LoginModel = ({show, handleClose}: Props) => {
           id='kt_login_signin_form'
         >
           {/* begin::Heading */}
-          <div className='text-center mb-11'>
+          {/* <div className='text-center mb-11'>
             <h1 className='text-dark fw-bolder mb-3'>Sign In</h1>
             <div className='text-gray-500 fw-semibold fs-6'>Your Social Campaigns</div>
-          </div>
+          </div> */}
           {/* begin::Heading */}
 
-          {/* begin::Login options */}
-          <div className='row g-3 mb-9'>
-            {/* begin::Col */}
-            <div className='col-md-6'>
-              {/* begin::Google link */}
-              <a
-                href='#'
-                className='btn btn-flex btn-outline btn-text-gray-700 btn-active-color-primary bg-state-light flex-center text-nowrap w-100'
-              >
-                <img
-                  alt='Logo'
-                  src={toAbsoluteUrl('/media/svg/brand-logos/google-icon.svg')}
-                  className='h-15px me-3'
-                />
-                Sign in with Google
-              </a>
-              {/* end::Google link */}
-            </div>
-            {/* end::Col */}
-
-            {/* begin::Col */}
-            <div className='col-md-6'>
-              {/* begin::Google link */}
-              <a
-                href='#'
-                className='btn btn-flex btn-outline btn-text-gray-700 btn-active-color-primary bg-state-light flex-center text-nowrap w-100'
-              >
-                <img
-                  alt='Logo'
-                  src={toAbsoluteUrl('/media/svg/brand-logos/apple-black.svg')}
-                  className='theme-light-show h-15px me-3'
-                />
-                <img
-                  alt='Logo'
-                  src={toAbsoluteUrl('/media/svg/brand-logos/apple-black-dark.svg')}
-                  className='theme-dark-show h-15px me-3'
-                />
-                Sign in with Apple
-              </a>
-              {/* end::Google link */}
-            </div>
-            {/* end::Col */}
-          </div>
-          {/* end::Login options */}
+          
 
           {/* begin::Separator */}
-          <div className='separator separator-content my-14'>
+          {/* <div className='separator separator-content my-14'>
             <span className='w-125px text-gray-500 fw-semibold fs-7'>Or with email</span>
-          </div>
+          </div> */}
           {/* end::Separator */}
 
           {formik.status ? (
@@ -247,7 +204,7 @@ const LoginModel = ({show, handleClose}: Props) => {
               className='btn btn-primary'
               disabled={formik.isSubmitting || !formik.isValid}
             >
-              {!loading && <span className='indicator-label'>Continue</span>}
+              {!loading && <span className='indicator-label'>Sign In</span>}
               {loading && (
                 <span className='indicator-progress' style={{display: 'block'}}>
                   Please wait...
