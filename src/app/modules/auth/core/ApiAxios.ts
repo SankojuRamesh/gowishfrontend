@@ -19,7 +19,7 @@ export default axios.create({
 
 // User Server Api
 
-export const baseUrl = "https://api.gowish.app/";
+export const baseUrl = "http://74.208.123.31:5001/";
 // export const baseUrl = "http://localhost:3002/";
 
 // Admin Server Api

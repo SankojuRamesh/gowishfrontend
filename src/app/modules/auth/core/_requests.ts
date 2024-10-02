@@ -6,14 +6,14 @@ import { Console } from 'console'
 const API_URL = process.env.REACT_APP_API_URL
 
 export const GET_USER_BY_ACCESSTOKEN_URL = `${baseUrl}getuserbytoken`
-export const LOGIN_URL = `${baseUrl}user/login`
+export const LOGIN_URL = `${baseUrl}sign_in/`
 export const REGISTER_URL = `${baseUrl}user/register`
 export const REQUEST_PASSWORD_URL = `${API_URL}/forgot_password`
 export const ADD_USER_URL = `${baseUrl}users/user_mapping`
 // Server should return AuthModel
-export function login(user_email: string, password: string) {
+export function login(email: string, password: string) {
   return axios.post<AuthModel>(LOGIN_URL, {
-    user_email,
+    email,
     password,
   })
 }
@@ -34,7 +34,7 @@ export function register(
 ) {
   return axios.post(REGISTER_URL, {
     user_name: fullname,
-    user_email: email,
+    email: email,
     phone: phonenumber,
     user_pass: password,
     password_confirmation,
@@ -85,7 +85,7 @@ export function addUser(
 ) {
   return axios.post(ADD_USER_URL, {
     user_name: fullname,
-    user_email: email,
+    email: email,
     phone: phonenumber,
     user_pass: password,
     password_confirmation,

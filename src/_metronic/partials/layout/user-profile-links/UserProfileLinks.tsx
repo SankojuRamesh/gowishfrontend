@@ -1,12 +1,16 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, {FC} from 'react'
+import React, {FC, useEffect, useState} from 'react'
 import {Link} from 'react-router-dom'
 import {useAuth} from '../../../../app/modules/auth'
 import {KTIcon, toAbsoluteUrl, KTSVG} from '../../../helpers'
 
 const UserProfileLinks: FC = () => {
-  const {currentUser} = useAuth()
+  const {auth} = useAuth()
+  const [user, setUser] = useState<any>(auth);
 
+  useEffect(() => {
+    setUser(auth)
+  }, [auth])
   return (
     <div
       className='menu menu-sub menu-sub-dropdown menu-column w-250px w-lg-325px'
@@ -15,16 +19,16 @@ const UserProfileLinks: FC = () => {
       <div className='menu-item px-3'>
         <div className='menu-content d-flex align-items-center px-3'>
           <div className='symbol symbol-50px me-5'>
-            <img alt='Logo' src={toAbsoluteUrl('/media/avatars/300-2.jpg')} />
+            <img alt='Logo' src={user?.profile_pic} />
           </div>
 
           <div className='d-flex flex-column'>
             <div className='fw-bold d-flex align-items-center fs-5'>
-              {currentUser?.fullname}
+              {user?.name}
               <span className='badge badge-light-success fw-bold fs-8 px-2 py-1 ms-2'>Pro</span>
             </div>
             <a href='#' className='fw-semibold text-muted text-hover-primary fs-7'>
-              {currentUser?.email}
+              {user?.email}
             </a>
           </div>
         </div>
@@ -33,7 +37,7 @@ const UserProfileLinks: FC = () => {
       <div className='row g-0'>
         <div className='col-6 menu-item'>
           <Link
-            to={'/profile'}
+            to={'#'}
             className='d-flex flex-column flex-center h-100 p-6 bg-hover-light border-bottom menu-link'
           >
             <KTSVG
@@ -59,7 +63,8 @@ const UserProfileLinks: FC = () => {
 
         <div className='col-12 menu-item'>
           <Link
-            to={'/my_over_view'}
+            to={'/'}
+            // to={'/my_over_view'}
             className='d-flex flex-column flex-center h-100 p-6 bg-hover-light border-bottom menu-link'
           >
             <KTSVG
@@ -72,7 +77,8 @@ const UserProfileLinks: FC = () => {
 
         <div className='col-6 menu-item'>
           <Link
-            to={'/order_list'}
+            to={'/'}
+            // to={'/order_list'}
             className='d-flex flex-column flex-center h-100 p-6 bg-hover-light border-bottom menu-link'
           >
             <KTSVG
@@ -98,7 +104,8 @@ const UserProfileLinks: FC = () => {
 
         <div className='col-6 menu-item'>
           <Link
-            to={'/order_cancel_list'}
+            // to={'/order_cancel_list'}
+            to={'/'}
             className='d-flex flex-column flex-center h-100 p-6 bg-hover-light border-bottom menu-link'
           >
             <KTSVG
@@ -124,7 +131,8 @@ const UserProfileLinks: FC = () => {
 
         <div className='col-6 menu-item'>
           <Link
-            to={'/my_users'}
+            to={'/'}
+            // to={'/my_users'}
             className='d-flex flex-column flex-center h-100 p-6 bg-hover-light border-bottom menu-link'
           >
             <KTSVG
@@ -137,7 +145,8 @@ const UserProfileLinks: FC = () => {
 
         <div className='col-6 menu-item'>
           <Link
-            to={'/favorites'}
+            to={'/'}
+            // to={'/favorites'}
             className='d-flex flex-column flex-center h-100 p-6 bg-hover-light border-bottom menu-link'
           >
             <KTSVG
@@ -183,6 +192,7 @@ const UserProfileLinks: FC = () => {
           View All <KTIcon iconName='arrow-right' className='fs-5' />
         </Link>
       </div> */}
+      
     </div>
   )
 }

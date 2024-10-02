@@ -1,4 +1,4 @@
-import {lazy, FC, Suspense} from 'react'
+import {lazy, FC, Suspense, useEffect} from 'react'
 import {Route, Routes, Navigate} from 'react-router-dom'
 import {MasterLayout} from '../../_metronic/layout/MasterLayout'
 import TopBarProgress from 'react-topbar-progress-indicator'
@@ -19,6 +19,10 @@ import {OrderCancelListPage} from '../pages/orders/order_cancel_list/OrderCancel
 import {MyUsersPage} from '../pages/my_users/MyUsersPage'
 import {MyOverViewPage} from '../pages/my_over_view/MyOverViewPage'
 import {useAuth} from '../modules/auth'
+import DashboardPage from '../pages/dashboard/DashboardPage'
+import { ProtectedRoute } from './ProtectedRoute'
+import { CategoriesList } from '../pages/categories/CategoriesList'
+import { SubCategoriesList } from '../pages/subcategories/SubCategoriesList'
 
 const PrivateRoutes = () => {
   const ProfilePage = lazy(() => import('../modules/profile/ProfilePage'))
@@ -36,7 +40,44 @@ const PrivateRoutes = () => {
         {/* Redirect to Dashboard after success login/registartion */}
         <Route path='auth/*' element={<Navigate to='/home' />} />
         {/* Pages */}
-        <Route path='dashboard' element={<DashboardWrapper />} />
+        {/* <Route path='home' element={<DashboardWrapper />} /> */}
+        <Route
+        path='home'
+        element={
+          <ProtectedRoute
+            element={<DashboardWrapper />}
+            allowedRoles={[2, 3, 4]} // Both roles can access
+          />
+        }
+      />
+        <Route
+        path='dashboard'
+        element={
+          <ProtectedRoute
+            element={<DashboardPage />}
+            allowedRoles={[1]} // Both roles can access
+          />
+        }
+      />
+        <Route
+        path='admin/categories'
+        element={
+          <ProtectedRoute
+            element={<CategoriesList />}
+            allowedRoles={[1]} // Both roles can access
+          />
+        }
+      />
+        <Route
+        path='admin/subcategories'
+        element={
+          <ProtectedRoute
+            element={<SubCategoriesList />}
+            allowedRoles={[1]} // Both roles can access
+          />
+        }
+      />
+        {/* <Route path='dashboard' element={<DashboardPage />} /> */}
         <Route path='sub_categories/:mainCategoryId' element={<SubCategoryPage />} />
         <Route path='products/:subCategoryId' element={<ProductsListPage />} />
         <Route path='product_details/:productId' element={<ProductDetailsPage />} />

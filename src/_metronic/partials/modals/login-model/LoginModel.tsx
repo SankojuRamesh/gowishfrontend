@@ -9,9 +9,9 @@ import {KTIcon, toAbsoluteUrl} from '../../../helpers'
 import * as Yup from 'yup'
 import {useFormik} from 'formik'
 import {useAuth} from '../../../../app/modules/auth'
-import {getUserByToken, login} from '../../../../app/modules/auth/core/_requests'
+import {login} from '../../../../app/modules/auth/core/_requests'
 import clsx from 'clsx'
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 import {RegistrationModel} from '../../../partials'
 
 type Props = {
@@ -39,6 +39,7 @@ const initialValues = {
 const modalsRoot = document.getElementById('root-modals') || document.body
 
 const LoginModel = ({show, handleClose}: Props) => {
+  const navigate = useNavigate()
   const [showRegistrationModel, setRegistrationModel] = useState<boolean>(false)
   const [loading, setLoading] = useState(false)
   const {saveAuth, setCurrentUser} = useAuth()
@@ -52,11 +53,15 @@ const LoginModel = ({show, handleClose}: Props) => {
         const {data: auth} = await login(values.user_email, values.password)
         saveAuth(auth)
         console.log(auth)
-        const {data: user} = await getUserByToken(auth.api_token)
-        setCurrentUser(user)
+        // const {data: user} = await getUserByToken(auth.access)
+        // setCurrentUser(user)
         setLoading(false)
         handleClose()
-        document.location.reload()
+        if(auth?.roles === 1) {
+          navigate('/dashboard')
+        } else {
+          navigate('/home')
+        }
       } catch (error) {
         console.error(error)
         saveAuth(undefined)

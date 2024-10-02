@@ -4,17 +4,23 @@ import MegaMenu from './MegaMenu'
 import {useIntl} from 'react-intl'
 import React, {useEffect, useState} from 'react'
 import ApiAxios from '../../../../app/modules/auth/core/ApiAxios'
+import { useAuth } from '../../../../app/modules/auth'
 
 export const MenuInner = () => {
+  const {auth} = useAuth()
   const intl = useIntl()
+  const [user, setUser] = useState<any>(auth)
   const [getMainCategory, setMainCategory] = useState<any>([])
   const [getSubCategory, setSubCategory] = useState<any>([])
-  // const userRole = 0;
+
+  useEffect(() => {
+    setUser(auth)
+  }, [auth])
   useEffect(() => {
     let adminMain = [
       {
         "id": 51,
-        "category_name": "Category",
+        "category_name": "Category Management",
         "category_description": "Unstoppable Memories",
         "long_description": "",
         "category_image": "public/images/categories/1725816472989--dhoti09.jpeg",
@@ -39,7 +45,7 @@ export const MenuInner = () => {
     },
     {
       "id": 52,
-      "category_name": "Users",
+      "category_name": "User Management",
       "category_description": "Unstoppable Memories",
       "long_description": "",
       "category_image": "public/images/categories/1725816472989--dhoti09.jpeg",
@@ -64,7 +70,7 @@ export const MenuInner = () => {
     },
     {
       "id": 53,
-      "category_name": "Products",
+      "category_name": "Template Management",
       "category_description": "Unstoppable Memories",
       "long_description": "",
       "category_image": "public/images/categories/1725816472989--dhoti09.jpeg",
@@ -90,17 +96,44 @@ export const MenuInner = () => {
     ]
     let adminSubMain = [
         {
-          "id": 55,
-          "category_name": "Add Sub Category",
+          "id": 54,
+          "category_name": "Category",
           "category_description": "It is only Begining\r\n",
           "long_description": "\"Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?\"",
-          "category_image": "public/images/categories/1651297386554--topcollection2.jpg",
+          "category_image": "http://74.208.123.31:5001/media/template_thumbs/Invatationimage00005.jpeg",
+          "image_type": "",
+          "category_video": "",
+          "route": 'categories',
+          "video_type": "",
+          "is_addon": 0,
+          "is_sub": 1,
+          "category": 51,
+          "status": "Active",
+          "created_on": "2022-04-30T05:41:03.000Z",
+          "featured": "",
+          "vendor_discount_percent": "50",
+          "reseller_descount_percentage": "70",
+          "meta_tag_title": "Add Sub Category",
+          "meta_tag_description": "Add Sub Category",
+          "meta_tag_keywords": "Add Sub Category",
+          "created_by": 1,
+          "updated_by": 0,
+          "createdAt": "2022-04-30T05:43:06.000Z",
+          "updatedAt": "2022-04-30T05:43:06.000Z"
+      },
+        {
+          "id": 55,
+          "category_name": "Sub Category",
+          "category_description": "It is only Begining\r\n",
+          "long_description": "\"Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?\"",
+          "category_image": "http://74.208.123.31:5001/media/template_thumbs/Invatationimage00005.jpeg",
           "image_type": "",
           "category_video": "",
           "video_type": "",
           "is_addon": 0,
           "is_sub": 1,
-          "parent_id": 51,
+          "category": 51,
+          "route": 'subcategories',
           "status": "Active",
           "created_on": "2022-04-30T05:41:03.000Z",
           "featured": "",
@@ -119,13 +152,13 @@ export const MenuInner = () => {
         "category_name": "Employees",
         "category_description": "It is only Begining\r\n",
         "long_description": "\"Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?\"",
-        "category_image": "public/images/categories/1651297386554--topcollection2.jpg",
+        "category_image": "http://74.208.123.31:5001/media/template_thumbs/Invatationimage00005.jpeg",
         "image_type": "",
         "category_video": "",
         "video_type": "",
         "is_addon": 0,
         "is_sub": 1,
-        "parent_id": 52,
+        "category": 52,
         "status": "Active",
         "created_on": "2022-04-30T05:41:03.000Z",
         "featured": "",
@@ -141,16 +174,16 @@ export const MenuInner = () => {
     },
     {
       "id": 58,
-      "category_name": "Admins",
+      "category_name": "Super Admins",
       "category_description": "It is only Begining\r\n",
       "long_description": "\"Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?\"",
-      "category_image": "public/images/categories/1651297386554--topcollection2.jpg",
+      "category_image": "http://74.208.123.31:5001/media/template_thumbs/Invatationimage00005.jpeg",
       "image_type": "",
       "category_video": "",
       "video_type": "",
       "is_addon": 0,
       "is_sub": 1,
-      "parent_id": 52,
+      "category": 52,
       "status": "Active",
       "created_on": "2022-04-30T05:41:03.000Z",
       "featured": "",
@@ -166,16 +199,16 @@ export const MenuInner = () => {
     },
     {
       "id": 59,
-      "category_name": "End Users",
+      "category_name": "Users",
       "category_description": "It is only Begining\r\n",
       "long_description": "\"Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?\"",
-      "category_image": "public/images/categories/1651297386554--topcollection2.jpg",
+      "category_image": "http://74.208.123.31:5001/media/template_thumbs/Invatationimage00005.jpeg",
       "image_type": "",
       "category_video": "",
       "video_type": "",
       "is_addon": 0,
       "is_sub": 1,
-      "parent_id": 52,
+      "category": 52,
       "status": "Active",
       "created_on": "2022-04-30T05:41:03.000Z",
       "featured": "",
@@ -194,13 +227,13 @@ export const MenuInner = () => {
       "category_name": "Store Managers",
       "category_description": "It is only Begining\r\n",
       "long_description": "\"Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?\"",
-      "category_image": "public/images/categories/1651297386554--topcollection2.jpg",
+      "category_image": "http://74.208.123.31:5001/media/template_thumbs/Invatationimage00005.jpeg",
       "image_type": "",
       "category_video": "",
       "video_type": "",
       "is_addon": 0,
       "is_sub": 1,
-      "parent_id": 52,
+      "category": 52,
       "status": "Active",
       "created_on": "2022-04-30T05:41:03.000Z",
       "featured": "",
@@ -216,16 +249,16 @@ export const MenuInner = () => {
     },
     {
       "id": 61,
-      "category_name": "Employees",
+      "category_name": "Resalers",
       "category_description": "It is only Begining\r\n",
       "long_description": "\"Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?\"",
-      "category_image": "public/images/categories/1651297386554--topcollection2.jpg",
+      "category_image": "http://74.208.123.31:5001/media/template_thumbs/Invatationimage00005.jpeg",
       "image_type": "",
       "category_video": "",
       "video_type": "",
       "is_addon": 0,
       "is_sub": 1,
-      "parent_id": 52,
+      "category": 52,
       "status": "Active",
       "created_on": "2022-04-30T05:41:03.000Z",
       "featured": "",
@@ -241,16 +274,16 @@ export const MenuInner = () => {
     },
     {
       "id": 62,
-      "category_name": "All Products",
+      "category_name": "Templates",
       "category_description": "It is only Begining\r\n",
       "long_description": "\"Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?\"",
-      "category_image": "public/images/categories/1651297386554--topcollection2.jpg",
+      "category_image": "http://74.208.123.31:5001/media/template_thumbs/Invatationimage00005.jpeg",
       "image_type": "",
       "category_video": "",
       "video_type": "",
       "is_addon": 0,
       "is_sub": 1,
-      "parent_id": 53,
+      "category": 53,
       "status": "Active",
       "created_on": "2022-04-30T05:41:03.000Z",
       "featured": "",
@@ -264,38 +297,38 @@ export const MenuInner = () => {
       "createdAt": "2022-04-30T05:43:06.000Z",
       "updatedAt": "2022-04-30T05:43:06.000Z"
     },
-    {
-      "id": 63,
-      "category_name": "Add New product",
-      "category_description": "It is only Begining\r\n",
-      "long_description": "\"Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?\"",
-      "category_image": "public/images/categories/1651297386554--topcollection2.jpg",
-      "image_type": "",
-      "category_video": "",
-      "video_type": "",
-      "is_addon": 0,
-      "is_sub": 1,
-      "parent_id": 53,
-      "status": "Active",
-      "created_on": "2022-04-30T05:41:03.000Z",
-      "featured": "",
-      "vendor_discount_percent": "50",
-      "reseller_descount_percentage": "70",
-      "meta_tag_title": "Add New Product",
-      "meta_tag_description": "Add New Product",
-      "meta_tag_keywords": "Add New Product",
-      "created_by": 1,
-      "updated_by": 0,
-      "createdAt": "2022-04-30T05:43:06.000Z",
-      "updatedAt": "2022-04-30T05:43:06.000Z"
-  }
+  //   {
+  //     "id": 63,
+  //     "category_name": "Add New product",
+  //     "category_description": "It is only Begining\r\n",
+  //     "long_description": "\"Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?\"",
+  //     "category_image": "public/images/categories/1651297386554--topcollection2.jpg",
+  //     "image_type": "",
+  //     "category_video": "",
+  //     "video_type": "",
+  //     "is_addon": 0,
+  //     "is_sub": 1,
+  //     "parent_id": 53,
+  //     "status": "Active",
+  //     "created_on": "2022-04-30T05:41:03.000Z",
+  //     "featured": "",
+  //     "vendor_discount_percent": "50",
+  //     "reseller_descount_percentage": "70",
+  //     "meta_tag_title": "Add New Product",
+  //     "meta_tag_description": "Add New Product",
+  //     "meta_tag_keywords": "Add New Product",
+  //     "created_by": 1,
+  //     "updated_by": 0,
+  //     "createdAt": "2022-04-30T05:43:06.000Z",
+  //     "updatedAt": "2022-04-30T05:43:06.000Z"
+  // }
     ]
-    // if(userRole === 1) {
-    //   setMainCategory(adminMain)
-    //   setSubCategory(adminSubMain)
-    // } else {
+    if(user?.roles === 1) {
+      setMainCategory(adminMain)
+      setSubCategory(adminSubMain)
+    } else {
       getFunction()
-    // }
+    }
 
 
     // http://74.208.123.31:5001/categories/allcategories
@@ -320,7 +353,10 @@ export const MenuInner = () => {
     <>
     {getMainCategory?.length > 0 &&
     <>
+      {user?.roles === 1 ? 
+       <MenuItem title={intl.formatMessage({id: 'Dashboard', defaultMessage: 'Dashboard'})} to='/dashboard' />: 
       <MenuItem title={intl.formatMessage({id: 'Home'})} to='/home' />
+      }
       {/* <MenuItem title='Layout Builder' to='/builder' /> */}
       {getMainCategory?.map((MainCategory: any, i: any) => {
         return (
