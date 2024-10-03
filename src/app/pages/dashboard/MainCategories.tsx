@@ -29,7 +29,6 @@ export default function MainCategories(mainCategories: any) {
                 >
                   {mainCategories.mainCategories?.map((category: any, i:number) => {
                     return (
-                      <>
                         <div className='col-sm-3 mb-3 mb-sm-0 w-100 pb-5 ps-2 pe-3' key={i}>
                         <div className="position-relative ">
                             <div>
@@ -44,7 +43,6 @@ export default function MainCategories(mainCategories: any) {
                             </div>
                         </div>
                         </div>
-                      </>
                     )
                   })}
                 </Carousel>

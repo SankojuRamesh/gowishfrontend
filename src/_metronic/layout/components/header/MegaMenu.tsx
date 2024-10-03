@@ -31,7 +31,7 @@ const MegaMenu = (Categories: any) => {
                 return (
                   <div className='col-lg-6 mb-3' key={i}>
                     <div className='menu-item p-0 m-0'>
-                      <Link to={toAbsoluteUrl(auth?.roles === 4 ? '/products/' + subc?.id : '/admin/' + subc?.route )} className='menu-link'>
+                      <Link to={toAbsoluteUrl(auth?.roles === 1 ? '/admin/' + subc?.route : '/templates/' + subc?.id )} className='menu-link'>
                         <div className='symbol symbol-50px me-3'>
                         {auth?.roles === 1 ? <img src={subc?.category_image} className='' alt='' /> :
                           <img src={subc?.small_thumbnail} className='' alt='' />}

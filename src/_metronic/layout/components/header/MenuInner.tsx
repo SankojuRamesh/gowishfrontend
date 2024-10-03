@@ -353,9 +353,8 @@ export const MenuInner = () => {
     <>
       {user?.roles === 1 ? 
        <MenuItem title={intl.formatMessage({id: 'Dashboard', defaultMessage: 'Dashboard'})} to='/dashboard' />: 
-      <MenuItem title={intl.formatMessage({id: 'Home'})} to='/home' />
+        <MenuItem title={intl.formatMessage({id: 'Home',  defaultMessage: 'Home'})} to='/home' />
       }
-      {/* <MenuItem title='Layout Builder' to='/builder' /> */}
       {getMainCategory?.map((MainCategory: any, i: any) => {
         return (
           <MenuInnerWithSub
