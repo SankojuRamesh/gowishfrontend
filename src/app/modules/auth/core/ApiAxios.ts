@@ -1,19 +1,30 @@
-import axios from 'axios';
-import { getCookie, setCookie } from 'typescript-cookie';
+import axios from "axios";
 
-let access_token = getCookie('access_token');
-// console.log(access_token);
-if(!access_token){
-    access_token = '';
-}
-export default axios.create({
+// Create an Axios instance
+const ApiAxios = axios.create({
   baseURL: 'http://74.208.123.31:5001',
-  // baseURL: "http://localhost:3002/",
-  // headers: {
-  //   'Content-type': 'application/json',
-  //   'x-access-token' : access_token,
-  // },
-})
+  headers: {
+    'Content-type': 'application/json',
+  },
+});
+
+// Add a request interceptor
+ApiAxios.interceptors.request.use((config: any) => {
+  // Retrieve the access token from local storage
+  const access_token = localStorage.getItem('access_token');
+
+  // If the access token exists, set the Authorization header
+  if (access_token) {
+    config.headers['Authorization'] = `Bearer ${access_token}`;
+  }
+
+  return config;
+}, (error: any) => {
+  // Handle the error if needed
+  return Promise.reject(error);
+});
+
+export default ApiAxios;
 
 // export const baseUrl2 = 'https://arkwrxapi.cafemobility.com/'
 

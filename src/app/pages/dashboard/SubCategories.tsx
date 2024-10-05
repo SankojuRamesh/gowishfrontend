@@ -1,23 +1,63 @@
-import { faCartShopping, faHeart, faPaperPlane, faPlay } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRightFromBracket, faCartShopping, faHeart, faPlay } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Carousel from "react-multi-carousel";
 import { Responsive } from "../../../_metronic/sliders/responsive";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../modules/auth";
+import { Button, OverlayTrigger, Toast, ToastContainer, Tooltip } from "react-bootstrap";
+import ApiAxios from "../../modules/auth/core/ApiAxios";
+import { ToasterPage } from "../../modules/shared/Toaster/toaster";
+import { useState } from "react";
 
-const SubCategories = ({subCategories}: any) => {
+const SubCategories = ({subCategories, reload}: any) => {
     const navigate = useNavigate()
+    let msg = ''
     const responsive = Responsive
+    const [show, setShow] = useState(false)
+    const {auth} = useAuth()
+    console.log('authhhh', auth)
+    const handleFav = (item: any) => {
+      let payload = {
+        "user": auth?.id,
+        "template": item.id
+      }
+      ApiAxios.post('mywishlist/', payload).then((resp: any) => {
+        msg = 'Wishlisted successfully'
+        setShow(true)
+        reload()
+      }, (error) => {
+        console.log(error)
+      })
+    }
+    const handleCart = (item: any) => {
+      let payload = {
+        "user": auth?.id,
+        "template": item.id
+      }
+      ApiAxios.post('cart/', payload).then((resp: any) => {
+        msg = 'Added successfully'
+        setShow(true)
+        reload()
+      }, (error) => {
+        console.log(error)
+      })
+    }
+    const renderTooltip = (props: any) => (
+      <Tooltip id="button-tooltip" {...props}>
+        Login to make the changes
+      </Tooltip>
+    );
     return (
         <div className='row gx-5 gx-xl-8 mb-5 mb-xl-8'>
         <div className='col-xl-12'>
           <div className='card card-flush h-xl-100'>
             <div className='card-header pt-7'>
               <h3 className='card-title align-items-start flex-row'>
-                <span className='card-label fw-bold text-dark'>{subCategories?.[0]?.subcategory_name}</span>
+                <span className='card-label fw-bold text-dark fs-5'>{subCategories?.[0]?.subcategory_name}</span>
               </h3>
             </div>
             <div className='card-body pt-7'>
-              <div className='row flex g-5 g-xl-9 mb-5 mb-xl-9'>
+              <div className='row flex g-5 g-xl-9 mb-5 mb-xl-0'>
               <Carousel
                   responsive={responsive}
                   swipeable={true}
@@ -44,7 +84,7 @@ const SubCategories = ({subCategories}: any) => {
                                   }>{category?.template_name}</a>
                             </div>
                             <div className="btn-chips d-flex justify-content-between mt-1">
-                              <span className="fw-bold fs-8 text-gray-400 d-block lh-1 mx-2">WEDINV00045</span>
+                              <span className="fw-bold fs-8 text-gray-400 d-block lh-1 mx-2">{category.prifix_id}</span>
                               <div>
                                 <span className="badge badge-light fw-bold mx-2">Hindus</span>
                                 <span className="badge badge-light fw-bold">Standard</span>
@@ -53,19 +93,42 @@ const SubCategories = ({subCategories}: any) => {
                             <div className="align-items-center btn-chips d-flex justify-content-between mt-1">
                               <span className="badge border border-dashed fs-6 fw-bold text-dark p-2"> <span className="fs-6 fw-semibold text-gray-600  ">Rs.</span>450.00</span>
                               <div>
-                              <span className="btn btn-icon btn-active-light-primary w-35px h-35px w-md-40px h-md-40px">
+                              {auth ? <span className="btn btn-icon btn-active-light-primary w-35px h-35px w-md-40px h-md-40px" onClick={() => handleFav(category)}>
+                                <span className={`svg-icon ${category?.wishlist_state ? 'svg-icon-primary' : 'svg-icon-muted'} svg-icon-1hx`}>
+                                  <FontAwesomeIcon icon={faHeart} size={'2x'} />
+                                </span>
+                              </span> : 
+                              <OverlayTrigger
+                                  placement="bottom"
+                                  delay={{ show: 250, hide: 400 }}
+                                  overlay={renderTooltip}
+                                >
+                                  <span className="btn btn-icon opacity-50 w-35px h-35px w-md-40px h-md-40px">
                                 <span className="svg-icon svg-icon-muted svg-icon-1hx">
                                   <FontAwesomeIcon icon={faHeart} size={'2x'} />
                                 </span>
                               </span>
-                              <span className="btn btn-icon btn-active-light-primary w-35px h-35px w-md-40px h-md-40px">
+                                </OverlayTrigger>}
+                              {auth ? 
+                              <span className="btn btn-icon btn-active-light-primary w-35px h-35px w-md-40px h-md-40px" onClick={() => handleCart(category)}>
                                 <span className="svg-icon svg-icon-muted svg-icon-1hx">
                                   <FontAwesomeIcon icon={faCartShopping} size={'2x'} />
                                 </span>
+                              </span> : 
+                              <OverlayTrigger
+                                  placement="bottom"
+                                  delay={{ show: 250, hide: 400 }}
+                                  overlay={renderTooltip}
+                                >
+                                  <span className="btn btn-icon opacity-50 w-35px h-35px w-md-40px h-md-40px">
+                                  <span className="svg-icon svg-icon-muted svg-icon-1hx">
+                                  <FontAwesomeIcon icon={faCartShopping} size={'2x'} />
+                                </span>
                               </span>
+                                </OverlayTrigger>}
                               <span className="btn btn-icon btn-active-light-primary w-35px h-35px w-md-40px h-md-40px" onClick={() => navigate(`/templates/${category.subcategory}`)}>
                                 <span className="svg-icon svg-icon-muted svg-icon-1hx">
-                                  <FontAwesomeIcon icon={faPaperPlane} size={'2x'} />
+                                  <FontAwesomeIcon icon={faArrowRightFromBracket} size={'2x'} />
                                 </span>
                               </span>
                               </div>
@@ -79,6 +142,7 @@ const SubCategories = ({subCategories}: any) => {
             </div>
           </div>
         </div>
+        <ToasterPage show={show} setShow={setShow} />
       </div>
     )
 }

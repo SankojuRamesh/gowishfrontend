@@ -43,7 +43,9 @@ const LoginModel = ({show, handleClose}: Props) => {
   const [showRegistrationModel, setRegistrationModel] = useState<boolean>(false)
   const [loading, setLoading] = useState(false)
   const {saveAuth, setCurrentUser} = useAuth()
-
+const setSessionCookie = (name: any, value: any) => {
+  document.cookie = `${name}=${value}; path=/`;
+}
   const formik = useFormik({
     initialValues,
     validationSchema: loginSchema,
@@ -53,6 +55,7 @@ const LoginModel = ({show, handleClose}: Props) => {
         const {data: auth} = await login(values.user_email, values.password)
         saveAuth(auth)
         console.log(auth)
+        localStorage.setItem('access_token', auth.access);
         // const {data: user} = await getUserByToken(auth.access)
         // setCurrentUser(user)
         setLoading(false)

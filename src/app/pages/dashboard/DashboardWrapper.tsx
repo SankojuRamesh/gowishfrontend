@@ -61,62 +61,10 @@ const DashboardPage = () => {
       {getCategories?.length > 0 && <MainCategories mainCategories={getCategories} />}
 
       <div className='row g-7 g-xl-5 mb-0 mb-xl-5'>
-
-        <SubCategories subCategories={subCategories1} />
+        <SubCategories subCategories={subCategories1} reload={getCategoriesData} />
       </div>
       <div className='row g-7 g-xl-5 mb-0 mb-xl-5'>
-        {/* {getCategories?.map((category: any, i: number) => {
-          return (
-            <>
-              <div className='row g-7 g-xl-2 mb-0 mb-xl-2' key={i}>
-                <div className='col-xl-12'>
-                  <div className='card card-flush h-xl-100'>
-                    <div className='card-header'>
-                      <div className='card-title'>
-                        <h4 className='card-title d-flex align-items-start flex-column'>
-                          <span className='card-label fw-bold text-gray-800'>
-                            {category?.category_name} - Horizontal Videos
-                          </span>
-                        </h4>
-                      </div>
-                      <div className='card-toolbar'>
-                        <div
-                          className='d-flex justify-content-end'
-                          data-kt-user-table-toolbar='base'
-                        >
-                          <a href='' className='btn btn-sm btn-light fs-8 fw-bold'>
-                            More View
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                    <div className='card-header border-0 pt-0'>
-                      <div className='card-title'>
-                        <h4 className='card-title d-flex align-items-start flex-column'>
-                          <span className='card-label fw-bold text-gray-800'>
-                            {category?.category_name} - Verticals Videos
-                          </span>
-                        </h4>
-                      </div>
-                      <div className='card-toolbar'>
-                        <div
-                          className='d-flex justify-content-end'
-                          data-kt-user-table-toolbar='base'
-                        >
-                          <a href='' className='btn btn-sm btn-light fs-8 fw-bold'>
-                            More View
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                    <CategoryTopProducts2 />
-                  </div>
-                </div>
-              </div>
-            </>
-          )
-        })} */}
-        <SubCategories subCategories={subCategories2} />
+        <SubCategories subCategories={subCategories2} reload={getCategoriesData} />
       </div>
     </>
   )

@@ -1,17 +1,19 @@
 import {
+  faArrowRightFromBracket,
   faCartShopping,
   faChevronLeft,
   faChevronRight,
   faHeart,
-  faPaperPlane,
   faPlay,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import ApiAxios from "../../modules/auth/core/ApiAxios";
 import { Button, Dropdown, DropdownButton, Form } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 export const TemplatesPage = () => {
+  const navigate = useNavigate()
   const [templates, setTemplates] = useState([]);
   const [categories, setCategories] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
@@ -87,7 +89,6 @@ export const TemplatesPage = () => {
 
     ApiAxios.get(endpoint).then(
       (resp) => {
-        console.log("resppp", resp);
         setExtraPage(resp?.data?.links)
         setTemplates(resp?.data?.results);
       },
@@ -101,9 +102,14 @@ export const TemplatesPage = () => {
     setSelectedSub(null)
     setSelectedStatus(null)
   }
+
+  const handleTemplate = (e: any, template: any) => {
+    e.preventDefault()
+    navigate(`/templates/details/${template.id}`)
+  }
   return (
     <div className="container">
-      <h2 className="fs-4">Templates page</h2>
+      <h2 className="fs-4">Video Templates</h2>
       <div className="d-flex gap-10 my-10">
         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
           <Form.Label className="fs-8">Category Name</Form.Label>
@@ -191,14 +197,14 @@ export const TemplatesPage = () => {
               <div className="m-2">
                 <a
                   className="text-gray-800 text-hover-primary fs-3 fw-bold d-block mb-2"
-                  href="index.html"
+                  href="#" onClick={(e) => handleTemplate(e, template)}
                 >
                   {template?.template_name}
                 </a>
               </div>
               <div className="btn-chips d-flex justify-content-between mt-1">
                 <span className="fw-bold fs-8 text-gray-400 d-block lh-1 mx-2">
-                  WEDINV00045
+                  {template.prifix_id}
                 </span>
                 <div>
                   <span className="badge badge-light fw-bold mx-2">Hindus</span>
@@ -224,7 +230,7 @@ export const TemplatesPage = () => {
                   </span>
                   <span className="btn btn-icon btn-active-light-primary w-35px h-35px w-md-40px h-md-40px">
                     <span className="svg-icon svg-icon-muted svg-icon-1hx">
-                      <FontAwesomeIcon icon={faPaperPlane} size={"2x"} />
+                      <FontAwesomeIcon icon={faArrowRightFromBracket} size={"2x"} />
                     </span>
                   </span>
                 </div>

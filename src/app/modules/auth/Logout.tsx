@@ -5,6 +5,7 @@ import {useAuth} from './core/Auth'
 export function Logout() {
   const {logout} = useAuth()
   useEffect(() => {
+    localStorage.removeItem('access_token')
     logout()
     document.location.reload()
   }, [logout])

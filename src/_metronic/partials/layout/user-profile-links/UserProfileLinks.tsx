@@ -143,7 +143,7 @@ const UserProfileLinks: FC = () => {
           </Link>
         </div>
 
-        <div className='col-6 menu-item'>
+        {/* <div className='col-6 menu-item'>
           <Link
             to={'/'}
             // to={'/favorites'}
@@ -155,7 +155,7 @@ const UserProfileLinks: FC = () => {
             />
             <span className='fs-5 fw-semibold text-gray-800 mb-0'>My Favorites</span>
           </Link>
-        </div>
+        </div> */}
 
         <div className='col-6 menu-item'>
           <a

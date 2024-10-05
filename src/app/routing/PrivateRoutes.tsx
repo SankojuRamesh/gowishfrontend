@@ -10,7 +10,6 @@ import BuilderPageWrapper from '../pages/layout-builder/BuilderPageWrapper'
 import {SubCategoryPage} from '../pages/sub-categories/SubCategories'
 import {ProductsListPage} from '../pages/products/ProductsListPage'
 import {ProductDetailsPage} from '../pages/product_details/ProductDetailsPage'
-import {CartPage} from '../pages/cart/CartPage'
 import {FavoritePage} from '../pages/favorite/FavoritePage'
 import {QuickOrderPage} from '../pages/orders/quick_order/QuickOrderPage'
 import {ProfileDetailsPage} from '../modules/profile_details/ProfileDetailsPage'
@@ -25,6 +24,9 @@ import { CategoriesList } from '../pages/categories/CategoriesList'
 import { SubCategoriesList } from '../pages/subcategories/SubCategoriesList'
 import { TemplatesPage } from '../pages/templatesPage/TemplatesPage'
 import { Templates } from '../pages/home_templates/Templates'
+import { WishList } from '../pages/wishList/WishList'
+import { TemplatesDetailsPage } from '../pages/templateDetails/TemplateDetailsPage'
+import { CartPage } from '../pages/cart/CartPage'
 
 const PrivateRoutes = () => {
   const ProfilePage = lazy(() => import('../modules/profile/ProfilePage'))
@@ -48,7 +50,7 @@ const PrivateRoutes = () => {
         element={
           <ProtectedRoute
             element={<DashboardWrapper />}
-            allowedRoles={[2, 3, 4]} // Both roles can access
+            allowedRoles={[2, 3, 4]}
           />
         }
       />
@@ -57,7 +59,7 @@ const PrivateRoutes = () => {
         element={
           <ProtectedRoute
             element={<DashboardPage />}
-            allowedRoles={[1]} // Both roles can access
+            allowedRoles={[1]}
           />
         }
       />
@@ -66,7 +68,7 @@ const PrivateRoutes = () => {
         element={
           <ProtectedRoute
             element={<CategoriesList />}
-            allowedRoles={[1]} // Both roles can access
+            allowedRoles={[1]}
           />
         }
       />
@@ -75,7 +77,7 @@ const PrivateRoutes = () => {
         element={
           <ProtectedRoute
             element={<SubCategoriesList />}
-            allowedRoles={[1]} // Both roles can access
+            allowedRoles={[1]}
           />
         }
       />
@@ -84,7 +86,34 @@ const PrivateRoutes = () => {
         element={
           <ProtectedRoute
             element={<TemplatesPage />}
-            allowedRoles={[1]} // Both roles can access
+            allowedRoles={[1]}
+          />
+        }
+      />
+      <Route
+        path='/mywishlist'
+        element={
+          <ProtectedRoute
+            element={<WishList />}
+            allowedRoles={[1, 2, 3, 4]}
+          />
+        }
+      />
+      <Route
+        path='/templates/details/:id'
+        element={
+          <ProtectedRoute
+            element={<TemplatesDetailsPage />}
+            allowedRoles={[1]}
+          />
+        }
+      />
+      <Route
+        path='/cart'
+        element={
+          <ProtectedRoute
+            element={<CartPage />}
+            allowedRoles={[1,2,3,4]}
           />
         }
       />
@@ -94,7 +123,7 @@ const PrivateRoutes = () => {
         <Route path='products/:subCategoryId' element={<ProductsListPage />} />
         <Route path='product_details/:productId' element={<ProductDetailsPage />} />
         <Route path='order_list' element={<OrderListPage />} />
-        <Route path='cart' element={<CartPage />} />
+        {/* <Route path='cart' element={<CartPage />} /> */}
         <Route path='favorites' element={<FavoritePage />} />
         <Route path='quick_order' element={<QuickOrderPage />} />
         <Route

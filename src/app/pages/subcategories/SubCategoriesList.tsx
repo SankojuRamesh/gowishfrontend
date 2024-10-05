@@ -10,10 +10,10 @@ import { AddSubcategoryModal } from './AddSubcategoryModal';
 export const SubCategoriesList = () => {
     const [categories, setCategories] = useState<any>([])
     const [show, setShow] = useState(false)
+    const [delId, setDelId] = useState(null)
     const [isEdit, setIsEdit] = useState(false)
     const [selectedRow, setSelectedRow] = useState(null)
     const [showDelete, setShowDelete] = useState(false)
-    const [delId, setDelId] = useState(null)
     const [showToaster, setShowToaster] = useState(false);
     const [toastMsg, setToastMsg] = useState('')
     useEffect(() => {
@@ -88,6 +88,7 @@ export const SubCategoriesList = () => {
                         <th>Category Name</th>
                         <th>SubCategory Name</th>
                         <th>Price</th>
+                        <th>Total Templates</th>
                         <th>Status</th>
                         <th>Actions</th>
                     </tr>
@@ -100,6 +101,7 @@ export const SubCategoriesList = () => {
                         <td>{item?.category_name}</td>
                         <td>{item?.subcategory_name}</td>
                         <td>{item?.price}</td>
+                        <td>{item?.templates_count}</td>
                         <td>
                         <Form.Check
                             type="switch"

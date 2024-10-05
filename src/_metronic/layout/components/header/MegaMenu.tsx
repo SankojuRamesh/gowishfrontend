@@ -4,6 +4,8 @@ import {Link} from 'react-router-dom'
 import {baseUrl2} from '../../../../app/modules/auth/core/ApiAxios'
 import {toAbsoluteUrl} from '../../../helpers'
 import { useAuth } from '../../../../app/modules/auth'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faList, faUser, faVideo } from '@fortawesome/free-solid-svg-icons'
 
 const MegaMenu = (Categories: any) => {
   const [getSubCategories, setSubCategories] = useState([])
@@ -28,12 +30,16 @@ const MegaMenu = (Categories: any) => {
           <div className='row'>
             {getSubCategories.length > 0 &&
               getSubCategories.map((subc: any, i) => {
+                {console.log('subcsubc', subc)}
                 return (
                   <div className='col-lg-6 mb-3' key={i}>
                     <div className='menu-item p-0 m-0'>
-                      <Link to={toAbsoluteUrl(auth?.roles === 1 ? '/admin/' + subc?.route : '/templates/' + subc?.id )} className='menu-link'>
+                      <Link to={toAbsoluteUrl(auth?.roles === 1 ? (subc?.route ? '/admin/' + subc?.route : '#') : '/templates/' + subc?.id )} className='menu-link'>
                         <div className='symbol symbol-50px me-3'>
-                        {auth?.roles === 1 ? <img src={subc?.category_image} className='' alt='' /> :
+                        {auth?.roles === 1 ? 
+                          <FontAwesomeIcon
+                            icon={subc?.category === 51 ? faList : subc?.category === 52 ? faUser : faVideo} 
+                          /> :
                           <img src={subc?.small_thumbnail} className='' alt='' />}
                         </div>
                         <span className='d-flex flex-column'>

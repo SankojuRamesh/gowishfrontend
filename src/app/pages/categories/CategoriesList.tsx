@@ -86,6 +86,7 @@ export const CategoriesList = () => {
                         <th>#</th>
                         <th>Category Image</th>
                         <th>Category Name</th>
+                        <th>Total Sub Categories</th>
                         <th>Status</th>
                         <th>Actions</th>
                     </tr>
@@ -96,6 +97,7 @@ export const CategoriesList = () => {
                         <td>{i+1}</td>
                         <td style={{width: '300px'}}><img src={item?.image_thumbnail} alt={item?.category_name} width={'20%'} /></td>
                         <td>{item?.category_name}</td>
+                        <td>{item?.subcategories_count}</td>
                         <td>
                         <Form.Check
                             type="switch"
