@@ -4,6 +4,7 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import ApiAxios from "../../modules/auth/core/ApiAxios";
 import Dropdown from 'react-bootstrap/Dropdown';
+import { PageLoader } from "../../modules/shared/loader/PageLoader";
 
 type categoryProps = {
   show: boolean;
@@ -27,7 +28,8 @@ export const AddSubcategoryModal: FC<categoryProps> = ({ show, handleClose, isEd
   const [showToaster, setShowToaster] = useState(false);
   const [imageFile, setImageFile] = useState<any>(null);
   const [thumbnailFile, setThumbnailFile] = useState<any>(null);
-  const [toastMsg, setToastMsg] = useState('')
+  const [toastMsg, setToastMsg] = useState('');
+  const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
       getCategories();
@@ -53,10 +55,13 @@ export const AddSubcategoryModal: FC<categoryProps> = ({ show, handleClose, isEd
     }, [selectedRow])
 
     const getCategories = () => {
+      setIsLoading(true)
       ApiAxios.get('categories/').then((resp) => {
-          setCategories(resp?.data?.results)
+        setCategories(resp?.data?.results)
+        setIsLoading(false)
       },(error) => {
-          console.log('error', error)
+        setIsLoading(false)
+        console.log('error', error)
       })
   }
 
@@ -81,6 +86,7 @@ export const AddSubcategoryModal: FC<categoryProps> = ({ show, handleClose, isEd
             formData.append('image_thumbnail', thumbnailFile); // Pass the actual file object
         }
         if(isEdit) {
+          setIsLoading(true)
             formData.append('id', selectedRow.id);
             try {
                 const response = await ApiAxios.put(`subcategories/${selectedRow?.id}/`, formData, {
@@ -98,10 +104,13 @@ export const AddSubcategoryModal: FC<categoryProps> = ({ show, handleClose, isEd
                     reload()
                     handleClose()
                 }
+                setIsLoading(false)
                 }catch (error) {
-                    console.error('Upload failed:', error);
+                  setIsLoading(false)
+                  console.error('Upload failed:', error);
                 }
         } else {
+          setIsLoading(true)
             try {
                 const response = await ApiAxios.post('subcategories/', formData, {
                 headers: {
@@ -118,8 +127,10 @@ export const AddSubcategoryModal: FC<categoryProps> = ({ show, handleClose, isEd
                     reload()
                     handleClose()
                 }
+                setIsLoading(false)
                 }catch (error) {
-                    console.error('Upload failed:', error);
+                  setIsLoading(false)
+                  console.error('Upload failed:', error);
                 }
         }
         
@@ -157,6 +168,7 @@ export const AddSubcategoryModal: FC<categoryProps> = ({ show, handleClose, isEd
   };
   return (
     <>
+    {isLoading && <PageLoader />}
       <Modal show={show} onHide={handleClose} centered size="lg">
         <Modal.Header closeButton>
           <Modal.Title>Add Sub Category</Modal.Title>

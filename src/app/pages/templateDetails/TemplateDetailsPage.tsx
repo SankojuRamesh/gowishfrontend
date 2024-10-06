@@ -9,16 +9,20 @@ import { faHeart, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 export const TemplatesDetailsPage = () => {
     const { id } = useParams();
     const [details, setDetails] = useState<any>(null)
+    const [isLoading, setIsLoading] = useState(false)
     useEffect(() => {
         getTemplateDetails()
     }, [id])
 
     const getTemplateDetails = () => {
+      setIsLoading(true)
         ApiAxios.get(`tempalts/${id}/`).then(
             (resp) => {
               setDetails(resp?.data);
+              setIsLoading(false)
             },
             (error) => {
+              setIsLoading(false)
               console.log("error", error);
             }
           );

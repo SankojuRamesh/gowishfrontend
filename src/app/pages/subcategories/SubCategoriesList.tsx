@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencil, faSearch, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import './SubCategories.scss'
 import { AddSubcategoryModal } from './AddSubcategoryModal';
+import { PageLoader } from '../../modules/shared/loader/PageLoader';
 
 export const SubCategoriesList = () => {
     const [categories, setCategories] = useState<any>([])
@@ -16,13 +17,17 @@ export const SubCategoriesList = () => {
     const [showDelete, setShowDelete] = useState(false)
     const [showToaster, setShowToaster] = useState(false);
     const [toastMsg, setToastMsg] = useState('')
+    const [isLoading, setIsLoading] = useState(false)
     useEffect(() => {
         getCategories()
     }, [])
     const getCategories = () => {
+        setIsLoading(true)
         ApiAxios.get('subcategories/').then((resp) => {
             setCategories(resp?.data?.results)
+            setIsLoading(false)
         },(error) => {
+            setIsLoading(false)
             console.log('error', error)
         })
     }
@@ -51,107 +56,113 @@ export const SubCategoriesList = () => {
     }
 
     const deleteCategory = async () => {
+        setIsLoading(true)
         try {
             const response = await ApiAxios.delete(`subcategories/${delId}/`);
             setShowToaster(true);
             setToastMsg('category deleted successfully.')
             handleClose()
             getCategories()
+            setIsLoading(false)
         }catch (error) {
-                console.error('Upload failed:', error);
-            }
+            setIsLoading(false)
+            console.error('Upload failed:', error);
+        }
     }
 
     return (
-        <div className='container'>
-            <h1 className='fs-4'>Sub Categories List</h1>
-            <div>
-                <div className='d-flex justify-content-between'>
-                    <InputGroup className="mb-3 w-400px">
-                        <InputGroup.Text id="basic-addon1">
-                            <FontAwesomeIcon icon={faSearch} size='1x' />
-                        </InputGroup.Text>
-                        <Form.Control
-                        placeholder="Search"
-                        aria-label="Username"
-                        aria-describedby="basic-addon1"
-                        />
-                    </InputGroup>
-                    <Button variant='primary' className='h-75' onClick={handleAdd}>New</Button>
-                </div>
+        <>
+            {isLoading && <PageLoader />}
+            <div className='container'>
+                <h1 className='fs-4'>Sub Categories List</h1>
                 <div>
-                <Table responsive="sm" striped hover  className="table-center">
-                    <thead>
-                    <tr className='bg-dark text-muted'>
-                        <th>#</th>
-                        <th>Category Image</th>
-                        <th>Category Name</th>
-                        <th>SubCategory Name</th>
-                        <th>Price</th>
-                        <th>Total Templates</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {categories?.map((item: any, i: number) =>
-                    <tr key={i}>
-                        <td>{i+1}</td>
-                        <td style={{width: '300px'}}><img src={item?.small_thumbnail} alt={item?.subcategory_name} width={'20%'} /></td>
-                        <td>{item?.category_name}</td>
-                        <td>{item?.subcategory_name}</td>
-                        <td>{item?.price}</td>
-                        <td>{item?.templates_count}</td>
-                        <td>
-                        <Form.Check
-                            type="switch"
-                            id="custom-switch"
-                            className='custom-switch d-inline-block'
-                            label=""
-                            checked={item?.subcategory_state}
-                        />
-                        </td>
-                        <td>
-                            <div className='d-flex gap-4 justify-content-center'>
-                            <Button variant="secondary" onClick={() => handleEdit(item)}>
-                                <FontAwesomeIcon icon={faPencil} size='1x' color='#fff' />
-                            </Button>
-                            <Button variant="secondary" onClick={() => handleDelete(item.id)}>
-                                <FontAwesomeIcon icon={faTrashCan} size='1x' />
-                            </Button>
-                            </div>
-                        </td>
-                    </tr>)}
-                    </tbody>
-                </Table>
+                    <div className='d-flex justify-content-between'>
+                        <InputGroup className="mb-3 w-400px">
+                            <InputGroup.Text id="basic-addon1">
+                                <FontAwesomeIcon icon={faSearch} size='1x' />
+                            </InputGroup.Text>
+                            <Form.Control
+                            placeholder="Search"
+                            aria-label="Username"
+                            aria-describedby="basic-addon1"
+                            />
+                        </InputGroup>
+                        <Button variant='primary' className='h-75' onClick={handleAdd}>New</Button>
+                    </div>
+                    <div>
+                    <Table responsive="sm" striped hover  className="table-center">
+                        <thead>
+                        <tr className='bg-dark text-muted'>
+                            <th>#</th>
+                            <th>Category Image</th>
+                            <th>Category Name</th>
+                            <th>SubCategory Name</th>
+                            <th>Price</th>
+                            <th>Total Templates</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {categories?.map((item: any, i: number) =>
+                        <tr key={i}>
+                            <td>{i+1}</td>
+                            <td style={{width: '300px'}}><img src={item?.small_thumbnail} alt={item?.subcategory_name} width={'20%'} /></td>
+                            <td>{item?.category_name}</td>
+                            <td>{item?.subcategory_name}</td>
+                            <td>{item?.price}</td>
+                            <td>{item?.templates_count}</td>
+                            <td>
+                            <Form.Check
+                                type="switch"
+                                id="custom-switch"
+                                className='custom-switch d-inline-block'
+                                label=""
+                                checked={item?.subcategory_state}
+                            />
+                            </td>
+                            <td>
+                                <div className='d-flex gap-4 justify-content-center'>
+                                <Button variant="secondary" onClick={() => handleEdit(item)}>
+                                    <FontAwesomeIcon icon={faPencil} size='1x' color='#fff' />
+                                </Button>
+                                <Button variant="secondary" onClick={() => handleDelete(item.id)}>
+                                    <FontAwesomeIcon icon={faTrashCan} size='1x' />
+                                </Button>
+                                </div>
+                            </td>
+                        </tr>)}
+                        </tbody>
+                    </Table>
+                    </div>
                 </div>
+                <Modal show={showDelete} onHide={handleClose} centered size="sm">
+            <Modal.Header closeButton>
+            <Modal.Title>Delete Sub Category</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                Are you sure you want to delete the Sub Category?
+            </Modal.Body>
+            <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+                Cancel
+            </Button>
+            <Button type="submit" variant="primary" onClick={deleteCategory}>
+                Yes
+            </Button>
+            </Modal.Footer>
+            </Modal>
+                <AddSubcategoryModal show={show} handleClose={handleClose} isEdit={isEdit} selectedRow={selectedRow} reload={getCategories} />
+                {showToaster && (
+                    <ToastContainer position={'middle-center'}>
+                    <Toast onClose={() => setShowToaster(false)} show={showToaster} className="d-inline-block m-1" bg={"danger"} delay={3000} autohide key={1}>
+                    <Toast.Body className="text-white">
+                        {toastMsg}
+                    </Toast.Body>
+                    </Toast>
+                    </ToastContainer>
+                )}
             </div>
-            <Modal show={showDelete} onHide={handleClose} centered size="sm">
-        <Modal.Header closeButton>
-          <Modal.Title>Delete Sub Category</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-            Are you sure you want to delete the Sub Category?
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Cancel
-          </Button>
-          <Button type="submit" variant="primary" onClick={deleteCategory}>
-            Yes
-          </Button>
-        </Modal.Footer>
-        </Modal>
-            <AddSubcategoryModal show={show} handleClose={handleClose} isEdit={isEdit} selectedRow={selectedRow} reload={getCategories} />
-            {showToaster && (
-                <ToastContainer position={'middle-center'}>
-                <Toast onClose={() => setShowToaster(false)} show={showToaster} className="d-inline-block m-1" bg={"danger"} delay={3000} autohide key={1}>
-                <Toast.Body className="text-white">
-                    {toastMsg}
-                </Toast.Body>
-                </Toast>
-                </ToastContainer>
-            )}
-        </div>
+        </>
     )
 }

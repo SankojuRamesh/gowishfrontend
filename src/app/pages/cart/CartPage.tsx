@@ -4,6 +4,7 @@ import {
       faChevronLeft,
       faChevronRight,
       faHeart,
+      faIndianRupeeSign,
       faPlay,
       faTrash,
     } from "@fortawesome/free-solid-svg-icons";
@@ -13,6 +14,7 @@ import {
     import { Button, Dropdown, DropdownButton, Form, Modal } from "react-bootstrap";
   import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../../modules/auth";
+import { PageLoader } from "../../modules/shared/loader/PageLoader";
     
     export const CartPage = () => {
       const { id } = useParams();
@@ -23,18 +25,22 @@ import { useAuth } from "../../modules/auth";
       const [page, setPage] = useState(1)
       const [show, setShow] = useState(false)
       const [delId, setDelId] = useState(null)
+      const [isLoading, setIsLoading] = useState(false)
   
       useEffect(() => {
         getTemplates();
       }, [page]);
     
       const getTemplates = () => {
+        setIsLoading(true)
         ApiAxios.get(`cart/`).then(
           (resp) => {
             setTemplates(resp.data.results)
             handleClose()
+            setIsLoading(false)
           },
           (error) => {
+            setIsLoading(false)
             console.log("error", error);
           }
         );
@@ -46,12 +52,15 @@ import { useAuth } from "../../modules/auth";
       }
   
       const deleteFav = () => {
+        setIsLoading(true)
           ApiAxios.delete(`cart/${delId}/`).then(
               (resp) => {
                 getTemplates();
                 updateCartCount()
+                setIsLoading(false)
               },
               (error) => {
+                setIsLoading(false)
                 console.log("error", error);
               }
             );
@@ -63,6 +72,8 @@ import { useAuth } from "../../modules/auth";
       }
   
       return (
+        <>
+        {isLoading && <PageLoader />}
         <div className="container">
           <h2 className="fs-4">My Cart</h2>
           <div className="d-flex flex-wrap">
@@ -113,7 +124,9 @@ import { useAuth } from "../../modules/auth";
                   <div className="align-items-center btn-chips d-flex justify-content-between mt-1">
                     <span className="badge border border-dashed fs-6 fw-bold text-dark p-2">
                       {" "}
-                      <span className="fs-6 fw-semibold text-gray-600  ">Rs.</span>
+                      <span className="fs-6 fw-semibold text-gray-600  ">
+                        <FontAwesomeIcon icon={faIndianRupeeSign} size="1x" />
+                      </span>
                       450.00
                     </span>
                     <div>
@@ -169,6 +182,7 @@ import { useAuth } from "../../modules/auth";
           </Modal.Footer>
           </Modal>
         </div>
+        </>
       );
     };
     

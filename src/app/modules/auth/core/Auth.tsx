@@ -55,7 +55,7 @@ const AuthProvider: FC<WithChildren> = ({children}) => {
   useEffect(() => {
     updateWishlistCount()
     updateCartCount()
-  }, [])
+  }, [auth])
 
   const saveAuth = (auth: AuthModel | undefined) => {
     setAuth(auth)

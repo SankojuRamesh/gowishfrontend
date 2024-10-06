@@ -14,21 +14,27 @@ import axios from 'axios'
 import SubCategories from './SubCategories'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlayCircle } from '@fortawesome/free-solid-svg-icons'
+import { PageLoader } from '../../modules/shared/loader/PageLoader'
+import { useAuth } from '../../modules/auth'
+import { useNavigate } from 'react-router-dom'
 // import {dispatch, useDispatch, useSelector} from '../../../redux/store'
 
 const DashboardPage = () => {
-  const responsive = Responsive
+  const {logout} = useAuth()
+  const navigate = useNavigate()
   const [playing, setPlaying] = useState(false)
   const [getCategories, setCategories] = useState<any>([])
   const [subCategories1, setSubCategories1] = useState<any>([])
   const [subCategories2, setSubCategories2] = useState<any>([])
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [showPlayModal, setShowPlayModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false)
   useEffect(() => {
     getCategoriesData()
   }, [])
 
   const getCategoriesData = async () => {
+    setIsLoading(true)
     try {
       const getData = await ApiAxios.get('categories/')
       setCategories(getData?.data?.results)
@@ -36,8 +42,16 @@ const DashboardPage = () => {
       setSubCategories1(subData1?.data?.results)
       const subData2 = await ApiAxios.get('tempalts/?subcategory=2')
       setSubCategories2(subData2?.data?.results)
-    } catch (error) {
-      console.log(error)
+      setIsLoading(false)
+    } catch (error:any) {
+      setIsLoading(false)
+      if(error?.response?.status === 401) {
+        logout()
+        localStorage.removeItem('access_token')
+        // navigate('')
+        document.location.reload();
+      }
+      console.log('errr', error?.response)
     }
   }
 
@@ -50,6 +64,7 @@ const DashboardPage = () => {
   }
   return (
     <>
+    {isLoading && <PageLoader />}
       <div className='row g-4'>
         {/* <div className='col-xl-12 position-relative mt-0'>
         <img src='/media/images/video_thumbnail.jpeg' width={'100%'} height={500} style={{objectFit: 'cover'}} />

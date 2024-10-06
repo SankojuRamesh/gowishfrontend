@@ -3,6 +3,7 @@ import {Link, useParams} from 'react-router-dom'
 import Carousel from 'react-multi-carousel'
 import {Responsive} from '../../../_metronic/sliders/responsive'
 import ApiAxios, {baseUrl2} from '../../modules/auth/core/ApiAxios'
+import { PageLoader } from '../../modules/shared/loader/PageLoader'
 
 export default function SubCategoryList() {
   const responsive = Responsive
@@ -10,20 +11,25 @@ export default function SubCategoryList() {
   const {mainCategoryId} = useParams()
 
   const [getSubCategoriesList, setSubCategories] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
   useEffect(() => {
     getSubCategoriesData()
   }, [])
 
   const getSubCategoriesData = async () => {
+    setIsLoading(true)
     try {
       const getData = await ApiAxios.get(`categories/subcategory/${mainCategoryId}`)
       setSubCategories(getData.data)
+      setIsLoading(false)
     } catch (error) {
+      setIsLoading(false)
       console.log(error)
     }
   }
   return (
     <>
+      {isLoading && <PageLoader />}
       {/*begin::Col*/}
       <div className='col-xl-12'>
         {/*begin::Player widget 1*/}

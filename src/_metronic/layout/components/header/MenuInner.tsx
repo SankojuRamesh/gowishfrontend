@@ -5,6 +5,7 @@ import {useIntl} from 'react-intl'
 import React, {useEffect, useState} from 'react'
 import ApiAxios from '../../../../app/modules/auth/core/ApiAxios'
 import { useAuth } from '../../../../app/modules/auth'
+import { PageLoader } from '../../../../app/modules/shared/loader/PageLoader'
 
 export const MenuInner = () => {
   const {auth} = useAuth()
@@ -12,6 +13,7 @@ export const MenuInner = () => {
   const [user, setUser] = useState<any>(auth)
   const [getMainCategory, setMainCategory] = useState<any>([])
   const [getSubCategory, setSubCategory] = useState<any>([])
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     setUser(auth)
@@ -337,18 +339,22 @@ export const MenuInner = () => {
   }, [])
 
   const getCategories = async () => {
+    setIsLoading(true)
       try {
         const Categories = await ApiAxios.get('/categories')
         const subCategories = await ApiAxios.get('/subcategories')
         const MainCategories = Categories.data?.results
         setMainCategory(MainCategories)
         setSubCategory(subCategories?.data?.results)
+        setIsLoading(false)
       } catch (error) {
+        setIsLoading(false)
         console.log(error)
       }
   }
   return (
     <>
+    {isLoading && <PageLoader />}
     {getMainCategory?.length > 0 &&
     <>
       {user?.roles === 1 ? 

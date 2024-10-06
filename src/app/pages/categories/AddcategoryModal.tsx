@@ -4,6 +4,7 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import ApiAxios from "../../modules/auth/core/ApiAxios";
 import axios from "axios";
+import { PageLoader } from "../../modules/shared/loader/PageLoader";
 
 type categoryProps = {
   show: boolean;
@@ -25,6 +26,7 @@ export const AddCategoryModal: FC<categoryProps> = ({ show, handleClose, isEdit,
   const [imageFile, setImageFile] = useState<any>(null);
   const [thumbnailFile, setThumbnailFile] = useState<any>(null);
   const [toastMsg, setToastMsg] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
         if(selectedRow?.id) {
@@ -60,6 +62,7 @@ export const AddCategoryModal: FC<categoryProps> = ({ show, handleClose, isEdit,
         }
         if(isEdit) {
             formData.append('id', selectedRow.id);
+            setIsLoading(true)
             try {
                 const response = await ApiAxios.put(`categories/${selectedRow?.id}/`, formData, {
                 headers: {
@@ -76,10 +79,13 @@ export const AddCategoryModal: FC<categoryProps> = ({ show, handleClose, isEdit,
                     reload()
                     handleClose()
                 }
+                setIsLoading(false)
                 }catch (error) {
+                  setIsLoading(false)
                     console.error('Upload failed:', error);
                 }
         } else {
+          setIsLoading(true)
             try {
                 const response = await ApiAxios.post('categories/', formData, {
                 headers: {
@@ -96,7 +102,9 @@ export const AddCategoryModal: FC<categoryProps> = ({ show, handleClose, isEdit,
                     reload()
                     handleClose()
                 }
+                setIsLoading(false)
                 }catch (error) {
+                  setIsLoading(false)
                     console.error('Upload failed:', error);
                 }
         }
@@ -130,6 +138,7 @@ export const AddCategoryModal: FC<categoryProps> = ({ show, handleClose, isEdit,
   };
   return (
     <>
+    {isLoading && <PageLoader />}
       <Modal show={show} onHide={handleClose} centered size="lg">
         <Modal.Header closeButton>
           <Modal.Title>Add Category</Modal.Title>
