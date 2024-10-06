@@ -10,12 +10,13 @@ import {
   import React, { useEffect, useState } from "react";
   import ApiAxios from "../../modules/auth/core/ApiAxios";
   import { Button, Dropdown, DropdownButton, Form } from "react-bootstrap";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../../modules/auth";
 import { ToasterPage } from "../../modules/shared/Toaster/toaster";
   
   export const Templates = () => {
     const { id } = useParams();
+    const navigate = useNavigate()
     const {auth, updateWishlistCount, updateCartCount} = useAuth()
     const [templates, setTemplates] = useState<any>([]);
     const [extraPage, setExtraPage] = useState<any>({})
@@ -94,7 +95,11 @@ import { ToasterPage } from "../../modules/shared/Toaster/toaster";
                 <div className="m-2">
                   <a
                     className="text-gray-800 text-hover-primary fs-3 fw-bold d-block mb-2"
-                    href="index.html"
+                    href="#"
+                    onClick={(e: any) => {
+                      e.preventDefault()
+                      navigate(`/templates/details/${template?.id}`)
+                    }}
                   >
                     {template?.template_name}
                   </a>
@@ -125,7 +130,7 @@ import { ToasterPage } from "../../modules/shared/Toaster/toaster";
                         <FontAwesomeIcon icon={faCartShopping} size={"2x"} />
                       </span>
                     </span>
-                    <span className="btn btn-icon btn-active-light-primary w-35px h-35px w-md-40px h-md-40px">
+                    <span className="btn btn-icon btn-active-light-primary w-35px h-35px w-md-40px h-md-40px" onClick={() => navigate(`/templates/details/${template?.id}`)}>
                       <span className="svg-icon svg-icon-muted svg-icon-1hx">
                         <FontAwesomeIcon icon={faArrowRightFromBracket} size={"2x"} />
                       </span>

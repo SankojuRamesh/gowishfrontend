@@ -260,7 +260,7 @@ export const TemplatesPage = () => {
                       <FontAwesomeIcon icon={faCartShopping} size={"2x"} />
                     </span>
                   </span>
-                  <span className="btn btn-icon btn-active-light-primary w-35px h-35px w-md-40px h-md-40px">
+                  <span className="btn btn-icon btn-active-light-primary w-35px h-35px w-md-40px h-md-40px" onClick={() => navigate(`/templates/details/${template?.id}`)}>
                     <span className="svg-icon svg-icon-muted svg-icon-1hx">
                       <FontAwesomeIcon icon={faArrowRightFromBracket} size={"2x"} />
                     </span>

@@ -54,7 +54,7 @@ const SubCategories = ({subCategories, reload}: any) => {
         <div className='col-xl-12'>
           <div className='card card-flush h-xl-100'>
             <div className='card-header pt-7'>
-              <h3 className='card-title align-items-start flex-row'>
+              <h3 className='card-title align-items-start flex-row cursor-pointer' onClick={() => navigate(`/templates/${subCategories?.[0]?.subcategory}`)}>
                 <span className='card-label fw-bold text-dark fs-5'>{subCategories?.[0]?.subcategory_name}</span>
               </h3>
             </div>
@@ -82,7 +82,7 @@ const SubCategories = ({subCategories, reload}: any) => {
                             <div className="m-2">
                                 <a className="text-gray-800 text-hover-primary fs-3 fw-bold d-block mb-2" href="#" onClick={(e) => {
                                     e.preventDefault()
-                                    navigate(`/templates/${category.subcategory}`)}
+                                    navigate(`/templates/details/${category?.id}`)}
                                   }>{category?.template_name}</a>
                             </div>
                             <div className="btn-chips d-flex justify-content-between mt-1">
@@ -128,7 +128,7 @@ const SubCategories = ({subCategories, reload}: any) => {
                                 </span>
                               </span>
                                 </OverlayTrigger>}
-                              <span className="btn btn-icon btn-active-light-primary w-35px h-35px w-md-40px h-md-40px" onClick={() => navigate(`/templates/${category.subcategory}`)}>
+                              <span className="btn btn-icon btn-active-light-primary w-35px h-35px w-md-40px h-md-40px" onClick={() => navigate(`/templates/details/${category?.id}`)}>
                                 <span className="svg-icon svg-icon-muted svg-icon-1hx">
                                   <FontAwesomeIcon icon={faArrowRightFromBracket} size={'2x'} />
                                 </span>

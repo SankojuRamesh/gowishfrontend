@@ -104,7 +104,7 @@ const PrivateRoutes = () => {
         element={
           <ProtectedRoute
             element={<TemplatesDetailsPage />}
-            allowedRoles={[1]}
+            allowedRoles={[1, 2, 3, 4]}
           />
         }
       />

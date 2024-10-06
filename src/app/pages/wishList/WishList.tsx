@@ -10,12 +10,13 @@ import {
   import React, { useEffect, useState } from "react";
   import ApiAxios from "../../modules/auth/core/ApiAxios";
   import { Button, Dropdown, DropdownButton, Form, Modal } from "react-bootstrap";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../../modules/auth";
   
   export const WishList = () => {
     const {auth, updateWishlistCount, updateCartCount} = useAuth()
     const { id } = useParams();
+    const navigate = useNavigate()
     const [templates, setTemplates] = useState([]);
     const [extraPage, setExtraPage] = useState<any>({})
     const [page, setPage] = useState(1)
@@ -41,7 +42,7 @@ import { useAuth } from "../../modules/auth";
     };
 
     const handleDeleteFav = (item: any) => {
-        setDelId(item.template)
+        setDelId(item?.id)
         setShow(true)
     }
 
@@ -105,7 +106,11 @@ import { useAuth } from "../../modules/auth";
                 <div className="m-2">
                   <a
                     className="text-gray-800 text-hover-primary fs-3 fw-bold d-block mb-2"
-                    href="index.html"
+                    href=""
+                    onClick={(e: any) => {
+                      e.preventDefault()
+                      navigate(`/templates/details/${template?.id}`)
+                    }}
                   >
                     {template?.template_data[0].template_name}
                   </a>
@@ -136,7 +141,7 @@ import { useAuth } from "../../modules/auth";
                         <FontAwesomeIcon icon={faCartShopping} size={"2x"} />
                       </span>
                     </span>
-                    <span className="btn btn-icon btn-active-light-primary w-35px h-35px w-md-40px h-md-40px">
+                    <span className="btn btn-icon btn-active-light-primary w-35px h-35px w-md-40px h-md-40px" onClick={() => navigate(`/templates/details/${template?.id}`)}>
                       <span className="svg-icon svg-icon-muted svg-icon-1hx">
                         <FontAwesomeIcon icon={faArrowRightFromBracket} size={"2x"} />
                       </span>
