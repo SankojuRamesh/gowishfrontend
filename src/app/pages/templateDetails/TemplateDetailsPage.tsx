@@ -16,7 +16,6 @@ export const TemplatesDetailsPage = () => {
     const getTemplateDetails = () => {
         ApiAxios.get(`tempalts/${id}/`).then(
             (resp) => {
-                console.log('cascac', resp)
               setDetails(resp?.data);
             },
             (error) => {
@@ -40,7 +39,7 @@ export const TemplatesDetailsPage = () => {
         <Card.Text>
             <h2>{details?.template_name}</h2>
             <div className="btn-chips d-flex justify-content-between align-items-center mt-1">
-                <span className="fw-bold fs-8 text-gray-400 d-block lh-1 mx-2">{details.prifix_id}</span>
+                <span className="fw-bold fs-8 text-gray-400 d-block lh-1 mx-2">{details?.prifix_id}</span>
             {/* <div> */}
             <div className='d-flex flex-stack fw-bold'>
                     {/*begin::Label*/}

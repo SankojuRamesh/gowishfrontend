@@ -16,7 +16,6 @@ const SubCategories = ({subCategories, reload}: any) => {
     const responsive = Responsive
     const [show, setShow] = useState(false)
     const {auth} = useAuth()
-    console.log('authhhh', auth)
     const handleFav = (item: any) => {
       let payload = {
         "user": auth?.id,

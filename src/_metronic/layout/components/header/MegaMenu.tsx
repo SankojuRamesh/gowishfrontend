@@ -30,7 +30,6 @@ const MegaMenu = (Categories: any) => {
           <div className='row'>
             {getSubCategories.length > 0 &&
               getSubCategories.map((subc: any, i) => {
-                {console.log('subcsubc', subc)}
                 return (
                   <div className='col-lg-6 mb-3' key={i}>
                     <div className='menu-item p-0 m-0'>

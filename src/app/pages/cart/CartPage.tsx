@@ -12,9 +12,11 @@ import {
     import ApiAxios from "../../modules/auth/core/ApiAxios";
     import { Button, Dropdown, DropdownButton, Form, Modal } from "react-bootstrap";
   import { useParams } from "react-router-dom";
+import { useAuth } from "../../modules/auth";
     
     export const CartPage = () => {
       const { id } = useParams();
+      const {updateCartCount} = useAuth()
       const [templates, setTemplates] = useState([]);
       const [extraPage, setExtraPage] = useState<any>({})
       const [page, setPage] = useState(1)
@@ -45,8 +47,8 @@ import {
       const deleteFav = () => {
           ApiAxios.delete(`cart/${delId}/`).then(
               (resp) => {
-                console.log("resppp", resp);
                 getTemplates();
+                updateCartCount()
               },
               (error) => {
                 console.log("error", error);
@@ -64,11 +66,13 @@ import {
           <h2 className="fs-4">My Cart</h2>
           <div className="d-flex flex-wrap">
             {templates.map((template: any) => (
+              <>
+              {template?.template_data?.length > 0 && 
               <div className="col-sm-3 mb-3 mb-sm-0 pb-5 ps-2 pe-3" key={1}>
                 <div className="position-relative ">
                   <div>
                     <img
-                      src={`${template?.template_data[0].template_small_thumb}`}
+                      src={`${template?.template_data?.[0]?.template_small_thumb}`}
                       alt=""
                       className="bgi-position-center bgi-no-repeat bgi-size-cover h-200px card-rounded"
                       width={"100%"}
@@ -89,12 +93,12 @@ import {
                       className="text-gray-800 text-hover-primary fs-3 fw-bold d-block mb-2"
                       href="index.html"
                     >
-                      {template?.template_data[0].template_name}
+                      {template?.template_data?.[0]?.template_name}
                     </a>
                   </div>
                   <div className="btn-chips d-flex justify-content-between mt-1">
                     <span className="fw-bold fs-8 text-gray-400 d-block lh-1 mx-2">
-                      {template?.template_data[0]?.prifix_id}
+                      {template?.template_data?.[0]?.prifix_id}
                     </span>
                     <div>
                       <span className="badge badge-light fw-bold mx-2">Hindus</span>
@@ -127,6 +131,8 @@ import {
                   </div>
                 </div>
               </div>
+              }
+              </>
             ))}
             {templates?.length === 0 && 
                 <p className="fs-2 text-center w-100"><i>No templates found.</i></p>
