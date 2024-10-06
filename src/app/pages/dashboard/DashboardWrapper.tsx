@@ -1,7 +1,7 @@
 import React, {FC, useEffect, useState} from 'react'
 import {useIntl} from 'react-intl'
 import {PageTitle, PageLink} from '../../../_metronic/layout/core'
-import ReactPlayer from 'react-player'
+import ReactPlayer from 'react-player/lazy'
 import ApiAxios, {baseUrl2} from '../../../app/modules/auth/core/ApiAxios'
 import MainCategories from './MainCategories'
 import {Responsive} from '../../../_metronic/sliders/responsive'
@@ -12,6 +12,8 @@ import './dashboard.scss'
 import {Modal} from 'react-bootstrap'
 import axios from 'axios'
 import SubCategories from './SubCategories'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlayCircle } from '@fortawesome/free-solid-svg-icons'
 // import {dispatch, useDispatch, useSelector} from '../../../redux/store'
 
 const DashboardPage = () => {
@@ -21,16 +23,7 @@ const DashboardPage = () => {
   const [subCategories1, setSubCategories1] = useState<any>([])
   const [subCategories2, setSubCategories2] = useState<any>([])
   const [modalIsOpen, setModalIsOpen] = useState(false);
-
-  const openModal = () => {
-    setModalIsOpen(true);
-    setPlaying(false);
-  };
-
-  const closeModal = () => {
-    setModalIsOpen(false);
-    setPlaying(false);
-  };
+  const [showPlayModal, setShowPlayModal] = useState(false);
   useEffect(() => {
     getCategoriesData()
   }, [])
@@ -47,16 +40,32 @@ const DashboardPage = () => {
       console.log(error)
     }
   }
+
+  const handlePlayVideo = () => {
+    setShowPlayModal(true)
+  }
+
+  const handleClose = () => {
+    setShowPlayModal(false)
+  }
   return (
     <>
       <div className='row g-4'>
-        <div className='col-xl-12 position-relative mt-0'>
-        <img src='https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=2880,fit=crop/meP0L7x9QGubkjV4/dammann-1-13-YD0yNzRgB2fbxj2e.jpg' width={'100%'} height={500} style={{objectFit: 'cover'}} />
+        {/* <div className='col-xl-12 position-relative mt-0'>
+        <img src='/media/images/video_thumbnail.jpeg' width={'100%'} height={500} style={{objectFit: 'cover'}} />
         <div className='abs-banner position-absolute text-center'>
-          <h2 className='text-uppercase'>Gowish Studio</h2>
-          <h5>Categories | Products | Greetings & Events</h5>
+          <h5 onClick={handlePlayVideo}>
+            <FontAwesomeIcon icon={faPlayCircle} size='3x' color='#000' />
+          </h5>
         </div>
-        </div>
+        </div> */}
+        <ReactPlayer
+          url="http://gowish.studio/video/intro_blue.mp4"
+          playing={true}
+          muted
+          width={'100%'}
+          height={'100%'}
+        />
       </div>
       {getCategories?.length > 0 && <MainCategories mainCategories={getCategories} />}
 
@@ -66,6 +75,22 @@ const DashboardPage = () => {
       <div className='row g-7 g-xl-5 mb-0 mb-xl-5'>
         <SubCategories subCategories={subCategories2} reload={getCategoriesData} />
       </div>
+
+      <Modal show={showPlayModal} onHide={handleClose} centered size="xl">
+        {/* <Modal.Header closeButton>
+          <Modal.Title>Add Sub Category</Modal.Title>
+        </Modal.Header> */}
+        <Modal.Body className='p-0'>
+           <ReactPlayer
+          url="http://gowish.studio/video/intro_blue.mp4"
+          playing={true}
+          controls
+          thumbnail=""
+          width={'100%'}
+          height={'100%'}
+        />
+        </Modal.Body>
+      </Modal>
     </>
   )
 }

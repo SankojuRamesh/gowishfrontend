@@ -25,7 +25,7 @@ const toolbarButtonMarginClass = 'ms-1 ms-lg-3',
 
 const Topbar: FC = () => {
   const [showLoginModel, setLoginModel] = useState<boolean>(false)
-  const {auth} = useAuth()
+  const {auth, wishCount, cartCount} = useAuth()
   const [user, setUser] = useState<any>(auth)
   const navigate = useNavigate()
   return (
@@ -34,13 +34,13 @@ const Topbar: FC = () => {
         <span className='my-auto mx-4 text-muted heart-icon cursor-pointer position-relative d-inline-block' onClick={() => navigate('/mywishlist')}>
           <FontAwesomeIcon icon={faHeart} size='2x' />
           <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill" style={{background: 'linear-gradient(45deg, rgb(19 71 231), rgb(163 173 240 / 90%))'}}>
-            {auth?.wishlist_count}
+            {wishCount || ''}
           </span>
         </span>
         <span className='m-auto mx-4 text-muted cart-icon cursor-pointer position-relative d-inline-block' onClick={() => navigate('/cart')}>
         <FontAwesomeIcon icon={faCartShopping} size='2x' />
         <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill" style={{background: 'linear-gradient(45deg, rgb(19 71 231), rgb(163 173 240 / 90%))'}}>
-            {auth?.mycart_count}
+            {cartCount || ''}
           </span>
         </span>
         {user ? (

@@ -13,6 +13,7 @@ import {AuthModel, UserModel} from './_models'
 import * as authHelper from './AuthHelpers'
 import {getUserByToken} from './_requests'
 import {WithChildren} from '../../../../_metronic/helpers'
+import ApiAxios from './ApiAxios'
 
 type AuthContextProps = {
   auth: AuthModel | undefined
@@ -20,6 +21,11 @@ type AuthContextProps = {
   currentUser: UserModel | undefined
   setCurrentUser: Dispatch<SetStateAction<UserModel | undefined>>
   logout: () => void
+  wishCount: number;
+  updateWishlistCount: () => void;
+  cartCount: number;
+  updateCartCount: () => void;
+
 }
 
 const initAuthContextPropsState = {
@@ -28,6 +34,10 @@ const initAuthContextPropsState = {
   currentUser: undefined,
   setCurrentUser: () => {},
   logout: () => {},
+  wishCount: 0,
+  updateWishlistCount: () => {},
+  cartCount: 0,
+  updateCartCount: () => {}
 }
 
 const AuthContext = createContext<AuthContextProps>(initAuthContextPropsState)
@@ -39,6 +49,14 @@ const useAuth = () => {
 const AuthProvider: FC<WithChildren> = ({children}) => {
   const [auth, setAuth] = useState<AuthModel | undefined>(authHelper.getAuth())
   const [currentUser, setCurrentUser] = useState<UserModel | undefined>()
+  const [wishCount, setWishCount] = useState(0);
+  const [cartCount, setCartCount] = useState(0);
+
+  useEffect(() => {
+    updateWishlistCount()
+    updateCartCount()
+  }, [])
+
   const saveAuth = (auth: AuthModel | undefined) => {
     setAuth(auth)
     if (auth) {
@@ -48,13 +66,35 @@ const AuthProvider: FC<WithChildren> = ({children}) => {
     }
   }
 
+  const updateWishlistCount = () => {
+    ApiAxios.get(`mywishlist/`).then(
+      (resp) => {
+        setWishCount(resp?.data?.count)
+      },
+      (error) => {
+        console.log("error", error);
+      }
+    );
+  };
+
+  const updateCartCount = () => {
+    ApiAxios.get(`cart/`).then(
+      (resp) => {
+        setCartCount(resp?.data?.count)
+      },
+      (error) => {
+        console.log("error", error);
+      }
+    );
+  };
+
   const logout = () => {
     saveAuth(undefined)
     setCurrentUser(undefined)
   }
 
   return (
-    <AuthContext.Provider value={{auth, saveAuth, currentUser, setCurrentUser, logout}}>
+    <AuthContext.Provider value={{auth, saveAuth, currentUser, setCurrentUser, logout, wishCount, updateWishlistCount, cartCount, updateCartCount}}>
       {children}
     </AuthContext.Provider>
   )

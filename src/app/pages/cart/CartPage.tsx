@@ -26,10 +26,8 @@ import {
       }, [page]);
     
       const getTemplates = () => {
-  
         ApiAxios.get(`cart/`).then(
           (resp) => {
-            console.log("resppp", resp);
             setTemplates(resp.data.results)
             handleClose()
           },
@@ -70,7 +68,7 @@ import {
                 <div className="position-relative ">
                   <div>
                     <img
-                      src={`http://74.208.123.31:5001/media/${template?.template_data[0].template_small_thumb}`}
+                      src={`${template?.template_data[0].template_small_thumb}`}
                       alt=""
                       className="bgi-position-center bgi-no-repeat bgi-size-cover h-200px card-rounded"
                       width={"100%"}

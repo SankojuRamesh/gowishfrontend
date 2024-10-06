@@ -16,7 +16,7 @@ import { ToasterPage } from "../../modules/shared/Toaster/toaster";
   
   export const Templates = () => {
     const { id } = useParams();
-    const {auth} = useAuth()
+    const {auth, updateWishlistCount, updateCartCount} = useAuth()
     const [templates, setTemplates] = useState<any>([]);
     const [extraPage, setExtraPage] = useState<any>({})
     const [page, setPage] = useState(1)
@@ -47,6 +47,7 @@ import { ToasterPage } from "../../modules/shared/Toaster/toaster";
         msg = 'Added successfully'
         setShow(true)
         getTemplates()
+        updateCartCount()
       }, (error) => {
         console.log(error)
       })
@@ -60,6 +61,7 @@ import { ToasterPage } from "../../modules/shared/Toaster/toaster";
         msg = 'Wishlisted successfully'
         setShow(true)
         getTemplates()
+        updateWishlistCount()
       }, (error) => {
         console.log(error)
       })

@@ -11,9 +11,11 @@ import React, { useEffect, useState } from "react";
 import ApiAxios from "../../modules/auth/core/ApiAxios";
 import { Button, Dropdown, DropdownButton, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../modules/auth";
 
 export const TemplatesPage = () => {
   const navigate = useNavigate()
+  const {auth, updateWishlistCount, updateCartCount} = useAuth()
   const [templates, setTemplates] = useState([]);
   const [categories, setCategories] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
@@ -101,6 +103,36 @@ export const TemplatesPage = () => {
     setSelectedCat(null)
     setSelectedSub(null)
     setSelectedStatus(null)
+  }
+
+  const handleCart = (item: any) => {
+    let payload = {
+      "user": auth?.id,
+      "template": item.id
+    }
+    ApiAxios.post('cart/', payload).then((resp: any) => {
+      // msg = 'Added successfully'
+      // setShow(true)
+      getTemplates()
+      updateCartCount()
+    }, (error) => {
+      console.log(error)
+    })
+  }
+
+  const handleFav = (item: any) => {
+    let payload = {
+      "user": auth?.id,
+      "template": item.id
+    }
+    ApiAxios.post('mywishlist/', payload).then((resp: any) => {
+      // msg = 'Wishlisted successfully'
+      // setShow(true)
+      getTemplates()
+      updateWishlistCount()
+    }, (error) => {
+      console.log(error)
+    })
   }
 
   const handleTemplate = (e: any, template: any) => {
@@ -218,12 +250,12 @@ export const TemplatesPage = () => {
                   450.00
                 </span>
                 <div>
-                  <span className="btn btn-icon btn-active-light-primary w-35px h-35px w-md-40px h-md-40px">
+                  <span className="btn btn-icon btn-active-light-primary w-35px h-35px w-md-40px h-md-40px" onClick={() => handleFav(template)}>
                     <span className="svg-icon svg-icon-muted svg-icon-1hx">
                       <FontAwesomeIcon icon={faHeart} size={"2x"} />
                     </span>
                   </span>
-                  <span className="btn btn-icon btn-active-light-primary w-35px h-35px w-md-40px h-md-40px">
+                  <span className="btn btn-icon btn-active-light-primary w-35px h-35px w-md-40px h-md-40px" onClick={() => handleCart(template)}>
                     <span className="svg-icon svg-icon-muted svg-icon-1hx">
                       <FontAwesomeIcon icon={faCartShopping} size={"2x"} />
                     </span>

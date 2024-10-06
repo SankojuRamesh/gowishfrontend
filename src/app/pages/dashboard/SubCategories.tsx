@@ -10,6 +10,7 @@ import { ToasterPage } from "../../modules/shared/Toaster/toaster";
 import { useState } from "react";
 
 const SubCategories = ({subCategories, reload}: any) => {
+  const {updateWishlistCount, updateCartCount} = useAuth()
     const navigate = useNavigate()
     let msg = ''
     const responsive = Responsive
@@ -24,6 +25,7 @@ const SubCategories = ({subCategories, reload}: any) => {
       ApiAxios.post('mywishlist/', payload).then((resp: any) => {
         msg = 'Wishlisted successfully'
         setShow(true)
+        updateWishlistCount()
         reload()
       }, (error) => {
         console.log(error)
@@ -37,6 +39,7 @@ const SubCategories = ({subCategories, reload}: any) => {
       ApiAxios.post('cart/', payload).then((resp: any) => {
         msg = 'Added successfully'
         setShow(true)
+        updateCartCount()
         reload()
       }, (error) => {
         console.log(error)
