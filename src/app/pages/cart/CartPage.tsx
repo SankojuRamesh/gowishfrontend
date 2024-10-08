@@ -130,9 +130,10 @@ import { PageLoader } from "../../modules/shared/loader/PageLoader";
                       450.00
                     </span>
                     <div>
-                      <span className="btn btn-icon btn-active-light-primary w-35px h-35px w-md-40px h-md-40px">
+                      <span className="btn btn-icon btn-active-light-primary w-35px h-35px w-md-40px h-md-40px" onClick={() => navigate(`/cart-order/${template.template}`)}>
                         <span className="svg-icon svg-icon-muted svg-icon-1hx">
-                          <FontAwesomeIcon icon={faHeart} size={"2x"} />
+                          {/* <FontAwesomeIcon icon={faHeart} size={"2x"} /> */}
+                          Buy
                         </span>
                       </span>
                       <span className="btn btn-icon btn-active-light-primary w-35px h-35px w-md-40px h-md-40px" onClick={() => handleDeleteFav(template)}>

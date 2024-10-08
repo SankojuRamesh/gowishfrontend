@@ -160,3 +160,14 @@ body {
   bottom: 0;
   z-index: 999;
 }
+
+.relation-dd {
+  button {
+    width: 100%;
+    text-align: start;
+    &:after {
+      float: right;
+      margin-top: 10px;
+    }
+  }
+}

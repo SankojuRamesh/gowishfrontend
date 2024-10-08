@@ -27,6 +27,8 @@ import { Templates } from '../pages/home_templates/Templates'
 import { WishList } from '../pages/wishList/WishList'
 import { TemplatesDetailsPage } from '../pages/templateDetails/TemplateDetailsPage'
 import { CartPage } from '../pages/cart/CartPage'
+import { CartOrderPage } from '../pages/cartOrder/CartOrderPage'
+import { BillingPage } from '../pages/billing/BillingPage'
 
 const PrivateRoutes = () => {
   const ProfilePage = lazy(() => import('../modules/profile/ProfilePage'))
@@ -117,8 +119,27 @@ const PrivateRoutes = () => {
           />
         }
       />
+      <Route
+        path='/cart-order/:id'
+        element={
+          <ProtectedRoute
+            element={<CartOrderPage />}
+            allowedRoles={[1,2,3,4]}
+          />
+        }
+      />
+      <Route
+        path='/billing-page'
+        element={
+          <ProtectedRoute
+            element={<BillingPage />}
+            allowedRoles={[1,2,3,4]}
+          />
+        }
+      />
         {/* <Route path='dashboard' element={<DashboardPage />} /> */}
         <Route path='templates/:id' element={<Templates />} />
+        <Route path='cart-order' element={<CartOrderPage />} />
         <Route path='sub_categories/:mainCategoryId' element={<SubCategoryPage />} />
         <Route path='products/:subCategoryId' element={<ProductsListPage />} />
         <Route path='product_details/:productId' element={<ProductDetailsPage />} />
