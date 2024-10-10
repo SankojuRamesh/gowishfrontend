@@ -5,15 +5,19 @@ import {
   faChevronRight,
   faHeart,
   faIndianRupeeSign,
+  faList,
   faPlay,
+  faTableCells,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import ApiAxios from "../../modules/auth/core/ApiAxios";
-import { Button, Dropdown, DropdownButton, Form } from "react-bootstrap";
+import { Button, ButtonGroup, Dropdown, DropdownButton, Form, Modal, Table } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../modules/auth";
 import { PageLoader } from "../../modules/shared/loader/PageLoader";
+import { ToasterPage } from "../../modules/shared/Toaster/toaster";
+import ReactPlayer from "react-player";
 
 export const TemplatesPage = () => {
   const navigate = useNavigate()
@@ -27,6 +31,10 @@ export const TemplatesPage = () => {
   const [extraPage, setExtraPage] = useState<any>({})
   const [page, setPage] = useState(1)
   const [isLoading, setIsLoading] = useState(false)
+  const [show, setShow] = useState(false)
+  const [showPlayModal, setShowPlayModal] = useState(false)
+  const [displayType, setDisplayType] = useState('grid')
+  const [msg, setMsg] = useState('grid')
   const statusList = [
     { name: "Published", id: 1 },
     { name: "Un Published", id: 0 },
@@ -157,12 +165,42 @@ export const TemplatesPage = () => {
     e.preventDefault()
     navigate(`/templates/details/${template.id}`)
   }
+
+  const handleDisplay = (type: string) => {
+    setDisplayType(type)
+  }
+
+  const handlePublish = (row: any, type: string) => {
+    const obj: any = {
+      id: row?.id,
+      category: row?.category,
+      subcategory: row?.subcategory,
+      template_name: row?.template_name,
+      template_path: row?.template_path,
+      status: type === 'publish' ? true : false
+    }
+    const formData = new FormData();
+    formData.append('id', row?.id);
+    formData.append('category', row?.category);
+    formData.append('subcategory', row?.subcategory);
+    formData.append('template_name', row?.template_name);
+    formData.append('template_path', row?.template_path);
+    formData.append('status', String(type === 'publish'));
+    ApiAxios.put(`tempalts/${row.id}/`, formData).then((resp) => {
+      setShow(true);
+      setMsg(`Template ${type}ed successfully`)
+    }, (error) => console.log(error))
+  }
+  const handlePlay = (item: any) => {
+    setShowPlayModal(true)
+  }
   return (
     <>
       {isLoading && <PageLoader />}
       <div className="container">
         <h2 className="fs-4">Video Templates</h2>
-        <div className="d-flex gap-10 my-10">
+        <div className="d-flex gap-10 justify-content-between my-10">
+          <div className="d-flex gap-10">
           <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
             <Form.Label className="fs-8">Category Name</Form.Label>
             <DropdownButton
@@ -223,10 +261,22 @@ export const TemplatesPage = () => {
             </DropdownButton>
           </Form.Group>
           <Button onClick={handleClear} className="h-40px mt-4 align-self-center">Clear</Button>
+          </div>
+          <div>
+          <ButtonGroup aria-label="Basic example">
+          <Button variant="secondary" onClick={() => handleDisplay('grid')}>
+            <FontAwesomeIcon icon={faTableCells} size="2x" />
+          </Button>
+          <Button variant="secondary" onClick={() => handleDisplay('list')}>
+            <FontAwesomeIcon icon={faList} size="2x" />
+          </Button>
+        </ButtonGroup>
+          </div>
         </div>
         <div className="d-flex flex-wrap">
+          {displayType === 'grid' ? <>
           {templates.map((template: any) => (
-            <div className="col-sm-3 mb-3 mb-sm-0 pb-5 ps-2 pe-3" key={1}>
+            <div className="col-sm-3 mb-3 mb-20 pb-5 ps-2 pe-3" key={1}>
               <div className="position-relative ">
                 <div>
                   <img
@@ -238,6 +288,7 @@ export const TemplatesPage = () => {
                   <button
                     className="btn btn-icon position-absolute center-play-button"
                     data-kt-element="list-play-button"
+                    onClick={() => handlePlay(template)}
                   >
                     <FontAwesomeIcon
                       icon={faPlay}
@@ -289,9 +340,50 @@ export const TemplatesPage = () => {
                     </span>
                   </div>
                 </div>
+                <div className='d-flex gap-4'>
+                        <Button variant="secondary" className="w-50" onClick={() => handlePublish(template, 'publish')}>
+                            Publish
+                        </Button>
+                        <Button variant="secondary" className="w-50" onClick={() => handlePublish(template, 'unpublish')}>
+                            Un Publish
+                        </Button>
+                        </div>
               </div>
             </div>
           ))}
+          </> : 
+          <Table striped hover  className="table-center w-100">
+            <thead>
+              <tr className='bg-dark text-muted'>
+                <th>#</th>
+                <th>Category Image</th>
+                <th>Category Name</th>
+                <th>SubCategory Name</th>
+                <th>Price</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {templates?.map((item: any, i: number) =>
+                <tr key={i}>
+                    <td>{i+1}</td>
+                    <td style={{width: '300px'}}><img src={item?.template_small_thumb} alt={item?.subcategory_name} width={'20%'} /></td>
+                    <td>{item?.category_name}</td>
+                    <td>{item?.subcategory_name}</td>
+                    <td>{450.00}</td>
+                    <td>
+                        <div className='d-flex gap-4 justify-content-center'>
+                        <Button variant="secondary" onClick={() => handlePublish(item, 'publish')}>
+                            Publish
+                        </Button>
+                        <Button variant="secondary" onClick={() => handlePublish(item, 'unpublish')}>
+                            Un Publish
+                        </Button>
+                        </div>
+                    </td>
+                </tr>)}
+            </tbody>
+          </Table>}
           {templates?.length === 0 && 
               <p className="fs-2 text-center w-100"><i>No templates found.</i></p>
           }
@@ -305,6 +397,21 @@ export const TemplatesPage = () => {
           </Button>
         </div>
       </div>
+      <ToasterPage show={show} setShow={setShow} toastMsg={msg} />
+      <Modal show={showPlayModal} onHide={() => setShowPlayModal(false)} centered size="lg">
+        <Modal.Header closeButton>
+        </Modal.Header>
+        <Modal.Body>
+        <ReactPlayer
+          url="http://gowish.studio/video/intro_blue.mp4"
+          playing={true}
+          controls
+          thumbnail=""
+          width={'100%'}
+          height={'100%'}
+        />
+          </Modal.Body>
+          </Modal>
     </>
   );
 };

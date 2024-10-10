@@ -39,9 +39,9 @@ const DashboardPage = () => {
       const getData = await ApiAxios.get('categories/')
       setCategories(getData?.data?.results)
       const subData1 = await ApiAxios.get('tempalts/?subcategory=1')
-      setSubCategories1(subData1?.data?.results)
+      setSubCategories1(subData1?.data?.results?.filter((t: any) => t.status))
       const subData2 = await ApiAxios.get('tempalts/?subcategory=2')
-      setSubCategories2(subData2?.data?.results)
+      setSubCategories2(subData2?.data?.results?.filter((t: any) => t.status))
       setIsLoading(false)
     } catch (error:any) {
       setIsLoading(false)

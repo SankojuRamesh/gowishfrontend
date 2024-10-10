@@ -26,7 +26,7 @@ const MegaMenu = (Categories: any) => {
   return (
     <>
       <div className='row'>
-        <div className='col-lg-8 mb-3 mb-lg-0 py-3 px-3 py-lg-6 px-lg-6'>
+        <div className='col-lg-12 mb-3 mb-lg-0 py-3 px-3 py-lg-6 px-lg-6'>
           <div className='row'>
             {getSubCategories.length > 0 &&
               getSubCategories.map((subc: any, i) => {
@@ -54,9 +54,9 @@ const MegaMenu = (Categories: any) => {
               })}
           </div>
         </div>
-        <div className='col-lg-4 col-lg-4 py-3 px-3 py-lg-6 px-lg-6 rounded-end'>
+        {/* <div className='col-lg-4 col-lg-4 py-3 px-3 py-lg-6 px-lg-6 rounded-end'>
           <img src={baseUrl2 + getMainCategory?.category_image} className='rounded mw-100' alt='' />
-        </div>
+        </div> */}
       </div>
     </>
   )

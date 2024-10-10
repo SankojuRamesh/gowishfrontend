@@ -14,6 +14,7 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../../modules/auth";
 import { PageLoader } from "../../modules/shared/loader/PageLoader";
+import ReactPlayer from "react-player";
   
   export const WishList = () => {
     const {auth, updateWishlistCount, updateCartCount} = useAuth()
@@ -21,6 +22,7 @@ import { PageLoader } from "../../modules/shared/loader/PageLoader";
     const navigate = useNavigate()
     const [templates, setTemplates] = useState([]);
     const [extraPage, setExtraPage] = useState<any>({})
+    const [showPlayModal, setShowPlayModal] = useState(false)
     const [page, setPage] = useState(1)
     const [show, setShow] = useState(false)
     const [delId, setDelId] = useState(null)
@@ -89,6 +91,10 @@ import { PageLoader } from "../../modules/shared/loader/PageLoader";
         setDelId(null)
     }
 
+    const handlePlay = (item: any) => {
+      setShowPlayModal(true)
+    }
+
     return (
       <>
         {isLoading && <PageLoader />}
@@ -108,6 +114,7 @@ import { PageLoader } from "../../modules/shared/loader/PageLoader";
                     <button
                       className="btn btn-icon position-absolute center-play-button"
                       data-kt-element="list-play-button"
+                      onClick={() => handlePlay(template)}
                     >
                       <FontAwesomeIcon
                         icon={faPlay}
@@ -194,6 +201,20 @@ import { PageLoader } from "../../modules/shared/loader/PageLoader";
               Yes
             </Button>
           </Modal.Footer>
+          </Modal>
+          <Modal show={showPlayModal} onHide={() => setShowPlayModal(false)} centered size="lg">
+        <Modal.Header closeButton>
+        </Modal.Header>
+        <Modal.Body>
+        <ReactPlayer
+          url="http://gowish.studio/video/intro_blue.mp4"
+          playing={true}
+          controls
+          thumbnail=""
+          width={'100%'}
+          height={'100%'}
+        />
+          </Modal.Body>
           </Modal>
         </div>
       </>

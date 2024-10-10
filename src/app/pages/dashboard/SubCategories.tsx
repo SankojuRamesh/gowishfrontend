@@ -4,14 +4,16 @@ import Carousel from "react-multi-carousel";
 import { Responsive } from "../../../_metronic/sliders/responsive";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../modules/auth";
-import { Button, OverlayTrigger, Toast, ToastContainer, Tooltip } from "react-bootstrap";
+import { Button, Modal, OverlayTrigger, Toast, ToastContainer, Tooltip } from "react-bootstrap";
 import ApiAxios from "../../modules/auth/core/ApiAxios";
 import { ToasterPage } from "../../modules/shared/Toaster/toaster";
 import { useState } from "react";
 import { PageLoader } from "../../modules/shared/loader/PageLoader";
+import ReactPlayer from "react-player";
 
 const SubCategories = ({subCategories, reload}: any) => {
   const [isLoading, setIsLoading] = useState(false)
+  const [showPlayModal, setShowPlayModal] = useState(false)
   const {updateWishlistCount, updateCartCount} = useAuth()
     const navigate = useNavigate()
     let msg = ''
@@ -57,6 +59,10 @@ const SubCategories = ({subCategories, reload}: any) => {
         Login to make the changes
       </Tooltip>
     );
+
+    const handlePlay = (item: any) => {
+      setShowPlayModal(true)
+    }
     return (
       <>
         {isLoading && <PageLoader />}
@@ -86,7 +92,7 @@ const SubCategories = ({subCategories, reload}: any) => {
                           <div className="position-relative ">
                               <div>
                                   <img src={category?.template_small_thumb} alt="" className="bgi-position-center bgi-no-repeat bgi-size-cover h-200px card-rounded" width={'100%'} />
-                                  <button className="btn btn-icon position-absolute center-play-button" data-kt-element="list-play-button">
+                                  <button className="btn btn-icon position-absolute center-play-button" data-kt-element="list-play-button" onClick={() => handlePlay(category)}>
                                     <FontAwesomeIcon icon={faPlay} className="text-white" size="2x" />
                                   </button>
                               </div>
@@ -158,6 +164,20 @@ const SubCategories = ({subCategories, reload}: any) => {
             </div>
           </div>
           <ToasterPage show={show} setShow={setShow} />
+          <Modal show={showPlayModal} onHide={() => setShowPlayModal(false)} centered size="lg">
+        <Modal.Header closeButton>
+        </Modal.Header>
+        <Modal.Body>
+        <ReactPlayer
+          url="http://gowish.studio/video/intro_blue.mp4"
+          playing={true}
+          controls
+          thumbnail=""
+          width={'100%'}
+          height={'100%'}
+        />
+          </Modal.Body>
+          </Modal>
         </div>
       </>
     )

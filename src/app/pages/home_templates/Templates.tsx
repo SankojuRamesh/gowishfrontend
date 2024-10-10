@@ -10,11 +10,12 @@ import {
   import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
   import React, { useEffect, useState } from "react";
   import ApiAxios from "../../modules/auth/core/ApiAxios";
-  import { Button, Dropdown, DropdownButton, Form } from "react-bootstrap";
+  import { Button, Dropdown, DropdownButton, Form, Modal } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../../modules/auth";
 import { ToasterPage } from "../../modules/shared/Toaster/toaster";
 import { PageLoader } from "../../modules/shared/loader/PageLoader";
+import ReactPlayer from "react-player";
   
   export const Templates = () => {
     const { id } = useParams();
@@ -24,6 +25,7 @@ import { PageLoader } from "../../modules/shared/loader/PageLoader";
     const [extraPage, setExtraPage] = useState<any>({})
     const [page, setPage] = useState(1)
     const [show, setShow] = useState(false);
+    const [showPlayModal, setShowPlayModal] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     useEffect(() => {
       getTemplates();
@@ -79,6 +81,9 @@ import { PageLoader } from "../../modules/shared/loader/PageLoader";
         console.log(error)
       })
     }
+    const handlePlay = (item: any) => {
+      setShowPlayModal(true)
+    }
     return (
       <>
         {isLoading && <PageLoader />}
@@ -98,6 +103,7 @@ import { PageLoader } from "../../modules/shared/loader/PageLoader";
                     <button
                       className="btn btn-icon position-absolute center-play-button"
                       data-kt-element="list-play-button"
+                      onClick={() => handlePlay(template)}
                     >
                       <FontAwesomeIcon
                         icon={faPlay}
@@ -170,6 +176,20 @@ import { PageLoader } from "../../modules/shared/loader/PageLoader";
           </div>
           <ToasterPage show={show} setShow={setShow} toastMsg={msg} />
         </div>
+        <Modal show={showPlayModal} onHide={() => setShowPlayModal(false)} centered size="lg">
+        <Modal.Header closeButton>
+        </Modal.Header>
+        <Modal.Body>
+        <ReactPlayer
+          url="http://gowish.studio/video/intro_blue.mp4"
+          playing={true}
+          controls
+          thumbnail=""
+          width={'100%'}
+          height={'100%'}
+        />
+          </Modal.Body>
+          </Modal>
       </>
     );
   };
