@@ -101,7 +101,7 @@ const PrivateRoutes = () => {
           />
         }
       />
-      <Route
+      {/* <Route
         path='/templates/details/:id'
         element={
           <ProtectedRoute
@@ -109,7 +109,7 @@ const PrivateRoutes = () => {
             allowedRoles={[1, 2, 3, 4]}
           />
         }
-      />
+      /> */}
       <Route
         path='/cart'
         element={
@@ -119,7 +119,7 @@ const PrivateRoutes = () => {
           />
         }
       />
-      <Route
+      {/* <Route
         path='/cart-order/:id'
         element={
           <ProtectedRoute
@@ -127,7 +127,7 @@ const PrivateRoutes = () => {
             allowedRoles={[1,2,3,4]}
           />
         }
-      />
+      /> */}
       <Route
         path='/billing-page'
         element={
@@ -139,6 +139,8 @@ const PrivateRoutes = () => {
       />
         {/* <Route path='dashboard' element={<DashboardPage />} /> */}
         <Route path='templates/:id' element={<Templates />} />
+        <Route path='/templates/details/:id' element={<TemplatesDetailsPage />} />
+        <Route path='/cart-order/:id' element={<CartOrderPage />} />
         <Route path='cart-order' element={<CartOrderPage />} />
         <Route path='sub_categories/:mainCategoryId' element={<SubCategoryPage />} />
         <Route path='products/:subCategoryId' element={<ProductsListPage />} />

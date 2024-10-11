@@ -20,6 +20,8 @@ import {ProductDetailsPage} from '../pages/product_details/ProductDetailsPage'
 import { EmployeesPage } from '../admin/employees/Employees'
 import DashboardPage from '../pages/dashboard/DashboardPage'
 import { Templates } from '../pages/home_templates/Templates'
+import { TemplatesDetailsPage } from '../pages/templateDetails/TemplateDetailsPage'
+import { CartOrderPage } from '../pages/cartOrder/CartOrderPage'
 
 /**
  * Base URL of the website.
@@ -60,6 +62,9 @@ const AppRoutes: FC = () => {
                 <Route index element={<Navigate to='/home' />} />
               }
                 <Route path='templates/:id' element={<Templates />} />
+
+                <Route path='/cart-order/:id' element={<CartOrderPage />} />
+                <Route path='/templates/details/:id' element={<TemplatesDetailsPage />} />
                 <Route path='sub_categories/:mainCategoryId' element={<SubCategoryPage />} />
                 <Route path='products/:subCategoryId' element={<ProductsListPage />} />
                 <Route path='product_details/:productId' element={<ProductDetailsPage />} />

@@ -7,16 +7,16 @@ export default function MainCategories(mainCategories: any) {
   const responsive = Responsive
   return (
     <>
-      <div className='row gx-5 gx-xl-8 mb-5 mb-xl-8'>
+      <div className='row page-bg gx-5 gx-xl-8 mb-5 mb-xl-8'>
         <div className='col-xl-12'>
-          <div className='card card-flush h-xl-100'>
+          <div className='card page-bg card-flush h-xl-100'>
             <div className='card-header pt-7'>
               <h3 className='card-title align-items-start flex-row'>
                 <span className='card-label fw-bold text-dark fs-5'>Category</span>
                 <span className='text-gray-400 mt-1 fw-semibold fs-6'>Category list</span>
               </h3>
             </div>
-            <div className='card-body pt-7'>
+            <div className='card-body  pt-7'>
               <div className='row flex g-5 g-xl-9 mb-5 mb-xl-0'>
                 <Carousel
                   responsive={responsive}

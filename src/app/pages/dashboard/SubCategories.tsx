@@ -68,7 +68,7 @@ const SubCategories = ({subCategories, reload}: any) => {
         {isLoading && <PageLoader />}
         <div className='row gx-5 gx-xl-8 mb-5 mb-xl-8'>
           <div className='col-xl-12'>
-            <div className='card card-flush h-xl-100'>
+            <div className='card card-flush  page-bg h-xl-100'>
               <div className='card-header pt-7'>
                 <h3 className='card-title align-items-start flex-row cursor-pointer'>
                   <span className='card-label fw-bold text-dark fs-5'>{subCategories?.[0]?.subcategory_name}</span>

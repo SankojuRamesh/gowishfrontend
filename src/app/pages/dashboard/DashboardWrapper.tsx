@@ -65,7 +65,7 @@ const DashboardPage = () => {
   return (
     <>
     {isLoading && <PageLoader />}
-      <div className='row g-4'>
+      <div className='row g-4 page-bg'>
         {/* <div className='col-xl-12 position-relative mt-0'>
         <img src='/media/images/video_thumbnail.jpeg' width={'100%'} height={500} style={{objectFit: 'cover'}} />
         <div className='abs-banner position-absolute text-center'>
