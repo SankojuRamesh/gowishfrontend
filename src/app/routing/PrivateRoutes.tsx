@@ -29,6 +29,9 @@ import { TemplatesDetailsPage } from '../pages/templateDetails/TemplateDetailsPa
 import { CartPage } from '../pages/cart/CartPage'
 import { CartOrderPage } from '../pages/cartOrder/CartOrderPage'
 import { BillingPage } from '../pages/billing/BillingPage'
+import { EditPage } from '../pages/editPage/EditPage'
+import Composits from '../pages/composits/Composits'
+import Layers from '../pages/layers/Layers'
 
 const PrivateRoutes = () => {
   const ProfilePage = lazy(() => import('../modules/profile/ProfilePage'))
@@ -119,15 +122,33 @@ const PrivateRoutes = () => {
           />
         }
       />
-      {/* <Route
-        path='/cart-order/:id'
+      <Route
+        path='/composits/:id'
         element={
           <ProtectedRoute
-            element={<CartOrderPage />}
+            element={<Composits />}
+            allowedRoles={[1]}
+          />
+        }
+      />
+      <Route
+        path='/layers'
+        element={
+          <ProtectedRoute
+            element={<Layers />}
+            allowedRoles={[1]}
+          />
+        }
+      />
+      <Route
+        path='/edit-template/:id'
+        element={
+          <ProtectedRoute
+            element={<EditPage />}
             allowedRoles={[1,2,3,4]}
           />
         }
-      /> */}
+      />
       <Route
         path='/billing-page'
         element={
