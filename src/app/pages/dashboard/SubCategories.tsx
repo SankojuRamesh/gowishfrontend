@@ -10,6 +10,7 @@ import { ToasterPage } from "../../modules/shared/Toaster/toaster";
 import { useState } from "react";
 import { PageLoader } from "../../modules/shared/loader/PageLoader";
 import ReactPlayer from "react-player";
+import VideoScrub from "../../modules/shared/VideoScrub/VideoScrub";
 
 const SubCategories = ({subCategories, reload}: any) => {
   const [isLoading, setIsLoading] = useState(false)
@@ -91,10 +92,11 @@ const SubCategories = ({subCategories, reload}: any) => {
                           <div className='col-sm-3 mb-3 mb-sm-0 pb-5 ps-2 pe-3 w-100' key={i}>
                           <div className="position-relative ">
                               <div>
-                                  <img src={category?.template_small_thumb} alt="" className="bgi-position-center bgi-no-repeat bgi-size-cover h-200px card-rounded" width={'100%'} />
-                                  <button className="btn btn-icon position-absolute center-play-button" data-kt-element="list-play-button" onClick={() => handlePlay(category)}>
+                                  <VideoScrub src={category?.template_small_thumb} handleDoubleClick={() => handlePlay(category)} />
+                                  {/* <img src={category?.template_small_thumb} alt="" className="bgi-position-center bgi-no-repeat bgi-size-cover h-200px card-rounded" width={'100%'} /> */}
+                                  {/* <button className="btn btn-icon position-absolute center-play-button" data-kt-element="list-play-button" onClick={() => handlePlay(category)}>
                                     <FontAwesomeIcon icon={faPlay} className="text-white" size="2x" />
-                                  </button>
+                                  </button> */}
                               </div>
                               <div className="m-2">
                                   <a className="text-gray-800 text-hover-primary fs-3 fw-bold d-block mb-2" href="#" onClick={(e) => {

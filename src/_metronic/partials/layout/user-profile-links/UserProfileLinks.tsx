@@ -143,19 +143,18 @@ const UserProfileLinks: FC = () => {
           </Link>
         </div>
 
-        {/* <div className='col-6 menu-item'>
+        <div className='col-6 menu-item'>
           <Link
-            to={'/'}
-            // to={'/favorites'}
+            to={'/my-templates'}
             className='d-flex flex-column flex-center h-100 p-6 bg-hover-light border-bottom menu-link'
           >
             <KTSVG
               className='svg-icon-3x svg-icon-primary mb-2'
               path={toAbsoluteUrl('/media/custom-svg/love.svg')}
             />
-            <span className='fs-5 fw-semibold text-gray-800 mb-0'>My Favorites</span>
+            <span className='fs-5 fw-semibold text-gray-800 mb-0'>My Templates</span>
           </Link>
-        </div> */}
+        </div>
 
         <div className='col-6 menu-item'>
           <a

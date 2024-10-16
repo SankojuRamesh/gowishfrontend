@@ -31,13 +31,13 @@ const Topbar: FC = () => {
   return (
     <div className='d-flex align-items-stretch flex-shrink-0'>
       <div className='topbar d-flex align-items-stretch flex-shrink-0'>
-        <span className='my-auto mx-4 text-muted heart-icon cursor-pointer position-relative d-inline-block' onClick={() => navigate('/mywishlist')}>
+        <span className='my-auto mx-4 text-muted heart-icon cursor-pointer position-relative d-inline-block' onClick={() => auth ? navigate('/mywishlist') : setLoginModel(true)}>
           <FontAwesomeIcon icon={faHeart} size='2x' />
           <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill" style={{background: 'linear-gradient(45deg, rgb(19 71 231), rgb(163 173 240 / 90%))'}}>
             {wishCount || ''}
           </span>
         </span>
-        <span className='m-auto mx-4 text-muted cart-icon cursor-pointer position-relative d-inline-block' onClick={() => navigate('/cart')}>
+        <span className='m-auto mx-4 text-muted cart-icon cursor-pointer position-relative d-inline-block' onClick={() => auth ? navigate('/cart') : setLoginModel(true)}>
         <FontAwesomeIcon icon={faCartShopping} size='2x' />
         <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill" style={{background: 'linear-gradient(45deg, rgb(19 71 231), rgb(163 173 240 / 90%))'}}>
             {cartCount || ''}

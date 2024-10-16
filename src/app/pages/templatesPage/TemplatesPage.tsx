@@ -163,7 +163,7 @@ export const TemplatesPage = () => {
 
   const handleTemplate = (e: any, template: any) => {
     e.preventDefault()
-    navigate(`/templates/details/${template.id}`)
+    navigate(`/composits/${template.id}`)
   }
 
   const handleDisplay = (type: string) => {

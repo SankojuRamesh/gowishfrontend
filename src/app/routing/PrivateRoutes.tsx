@@ -32,6 +32,7 @@ import { BillingPage } from '../pages/billing/BillingPage'
 import { EditPage } from '../pages/editPage/EditPage'
 import Composits from '../pages/composits/Composits'
 import Layers from '../pages/layers/Layers'
+import { MyTemplates } from '../pages/my_templates/MyTemplates'
 
 const PrivateRoutes = () => {
   const ProfilePage = lazy(() => import('../modules/profile/ProfilePage'))
@@ -101,6 +102,15 @@ const PrivateRoutes = () => {
           <ProtectedRoute
             element={<WishList />}
             allowedRoles={[1, 2, 3, 4]}
+          />
+        }
+      />
+      <Route
+        path='/my-templates'
+        element={
+          <ProtectedRoute
+            element={<MyTemplates />}
+            allowedRoles={[4]}
           />
         }
       />
