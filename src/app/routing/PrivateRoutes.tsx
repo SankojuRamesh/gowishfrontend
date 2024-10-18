@@ -142,7 +142,7 @@ const PrivateRoutes = () => {
         }
       />
       <Route
-        path='/layers'
+        path='/layers/:id'
         element={
           <ProtectedRoute
             element={<Layers />}

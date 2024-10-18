@@ -16,6 +16,7 @@ import {
   import { ToasterPage } from "../../modules/shared/Toaster/toaster";
   import { PageLoader } from "../../modules/shared/loader/PageLoader";
   import ReactPlayer from "react-player";
+import VideoScrub from "../../modules/shared/VideoScrub/VideoScrub";
     
     export const MyTemplates = () => {
       const { id } = useParams();
@@ -27,6 +28,7 @@ import {
       const [show, setShow] = useState(false);
       const [showPlayModal, setShowPlayModal] = useState(false)
       const [isLoading, setIsLoading] = useState(false)
+      const [videoUrl, setVideoUrl] = useState('')
       useEffect(() => {
         getTemplates();
       }, [page]);
@@ -83,6 +85,7 @@ import {
       }
       const handlePlay = (item: any) => {
         setShowPlayModal(true)
+        setVideoUrl(item.template_video)
       }
       return (
         <>
@@ -94,7 +97,8 @@ import {
                 <div className="col-sm-3 mb-3 mb-sm-0 pb-5 ps-2 pe-3" key={1}>
                   <div className="position-relative ">
                     <div>
-                      <img
+                    <VideoScrub src={template?.template_data[0]?.template_video} handleDoubleClick={() => handlePlay(template?.template_data[0])} />
+                      {/* <img
                         src={template?.template_data[0]?.template_small_thumb}
                         alt=""
                         className="bgi-position-center bgi-no-repeat bgi-size-cover h-200px card-rounded"
@@ -110,7 +114,7 @@ import {
                           className="text-white"
                           size="2x"
                         />
-                      </button>
+                      </button> */}
                     </div>
                     <div className="m-2">
                       <a
@@ -182,7 +186,7 @@ import {
           </Modal.Header>
           <Modal.Body>
           <ReactPlayer
-            url="http://gowish.studio/video/intro_blue.mp4"
+            url={videoUrl}
             playing={true}
             controls
             thumbnail=""

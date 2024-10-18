@@ -18,6 +18,7 @@ import { useAuth } from "../../modules/auth";
 import { PageLoader } from "../../modules/shared/loader/PageLoader";
 import { ToasterPage } from "../../modules/shared/Toaster/toaster";
 import ReactPlayer from "react-player";
+import VideoScrub from "../../modules/shared/VideoScrub/VideoScrub";
 
 export const TemplatesPage = () => {
   const navigate = useNavigate()
@@ -35,6 +36,7 @@ export const TemplatesPage = () => {
   const [showPlayModal, setShowPlayModal] = useState(false)
   const [displayType, setDisplayType] = useState('grid')
   const [msg, setMsg] = useState('grid')
+  const [videoUrl, setVideoUrl] = useState('')
   const statusList = [
     { name: "Published", id: 1 },
     { name: "Un Published", id: 0 },
@@ -193,6 +195,7 @@ export const TemplatesPage = () => {
   }
   const handlePlay = (item: any) => {
     setShowPlayModal(true)
+    setVideoUrl(item.template_video)
   }
   return (
     <>
@@ -279,7 +282,8 @@ export const TemplatesPage = () => {
             <div className="col-sm-3 mb-3 mb-20 pb-5 ps-2 pe-3" key={1}>
               <div className="position-relative ">
                 <div>
-                  <img
+                <VideoScrub src={template?.template_video} handleDoubleClick={() => handlePlay(template)} />
+                  {/* <img
                     src={template?.template_small_thumb}
                     alt=""
                     className="bgi-position-center bgi-no-repeat bgi-size-cover h-200px card-rounded"
@@ -295,7 +299,7 @@ export const TemplatesPage = () => {
                       className="text-white"
                       size="2x"
                     />
-                  </button>
+                  </button> */}
                 </div>
                 <div className="m-2">
                   <a
@@ -403,7 +407,7 @@ export const TemplatesPage = () => {
         </Modal.Header>
         <Modal.Body>
         <ReactPlayer
-          url="http://gowish.studio/video/intro_blue.mp4"
+          url={videoUrl}
           playing={true}
           controls
           thumbnail=""

@@ -32,7 +32,7 @@ const VideoScrub = ({src, handleDoubleClick}: any) => {
       <video
         onDoubleClick={handleDoubleClick}
         ref={videoRef}
-        src={'https://static.videezy.com/system/resources/previews/000/004/293/original/17_20Dragon_20Coaster_20Part_201.mp4'}
+        src={src}
         preload="metadata"
         style={{ width: '325px', height: '200px' }}
       />

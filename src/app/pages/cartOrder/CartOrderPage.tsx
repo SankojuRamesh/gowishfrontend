@@ -279,7 +279,7 @@ export const CartOrderPage = () => {
                               }}
                             >
                               <FontAwesomeIcon icon={faPlusSquare} size="1x" />{" "}
-                              Add Share Users{" "}
+                              Add Users{" "}
                             </a>{" "}
                           </div>
                         </div>

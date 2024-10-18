@@ -33,9 +33,9 @@ export default function MainCategories(mainCategories: any) {
                         <div className="position-relative ">
                             <div>
                                 <img src={category?.thumbnail} alt="" className="bgi-position-center bgi-no-repeat bgi-size-cover h-200px card-rounded" width={'100%'} />
-                                <button className="btn btn-icon position-absolute center-play-button top-40" data-kt-element="list-play-button">
+                                {/* <button className="btn btn-icon position-absolute center-play-button top-40" data-kt-element="list-play-button">
                                   <FontAwesomeIcon icon={faPlay} className="text-white" size="2x" />
-                                </button>
+                                </button> */}
                             </div>
                             <div className="m-2">
                                 <a className="text-gray-800 text-hover-primary fs-3 fw-bold d-block mb-2" href="index.html">{category?.category_name}</a>

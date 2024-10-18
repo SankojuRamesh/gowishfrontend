@@ -20,22 +20,21 @@ const Composits = () => {
     }, [id, page])
     const getComposits = () => {
         ApiAxios.get(`/composits/?page=${page}`).then((resp: any) => {
-            console.log('ressss', resp)
-            setComposits(resp?.data?.results)
+            let cmps = resp?.data?.results?.filter((t: any) => t.project_id.toString() === id?.toString())
+            setComposits(cmps)
             setExtraPage(resp?.data?.links)
             const initialCheckedState = resp.data.results.reduce((acc: any, item: any) => {
-                acc[item.id] = item.isLocked === 'true'; // Assuming isLocked is a string
+                acc[item.id] = item.isLocked === 'true';
                 return acc;
             }, {});
             setCheckedItems(initialCheckedState);
         }, (error) => console.log(error))
     }
     const handleIsLocked = (e: any, row: any) => {
-        console.log('eeeee', e.target.checked, row)
         const checked = e.target.checked;
         setCheckedItems((prev: any) => ({
             ...prev,
-            [row.id]: checked // Update only the specific item's checked state
+            [row.id]: checked
         }));
         const obj: any = {
             "composit_name": row.composit_name,
@@ -83,7 +82,7 @@ const Composits = () => {
                         <td>{item?.workAreaEndTime}</td>
                         <td>
                         <div className='d-flex gap-4 justify-content-center align-items-center'>
-                                <Button variant="secondary" onClick={() => navigate(`/layers/`)}>
+                                <Button variant="secondary" onClick={() => navigate(`/layers/${item.id}`)}>
                                     <FontAwesomeIcon icon={faLink} size='1x' color='#fff' />
                                 </Button>
                                 {/* <Button variant="secondary" >
@@ -106,7 +105,7 @@ const Composits = () => {
                 }
             </tbody>
             </Table>
-            
+            {composits?.length === 0 && <p className='text-center'><i>No composits available</i></p>}
         {composits?.length > 10 && 
             <div className="d-flex gap-5 justify-content-end my-10">
                 <Button disabled={!extraPage?.previous} onClick={() => setPage(page - 1)}>

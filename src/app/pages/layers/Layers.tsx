@@ -21,7 +21,8 @@ const Layers = () => {
     const getLayers = () => {
         ApiAxios.get(`/layers/?page=${page}`).then((resp: any) => {
             console.log('ressss', resp)
-            setLayers(resp?.data?.results)
+            let lrs = resp?.data?.results?.filter((t: any) => t.compositid.toString() === id?.toString())
+            setLayers(lrs)
             setExtraPage(resp?.data?.links)
             const initialCheckedState = resp.data.results.reduce((acc: any, item: any) => {
                 acc[item.id] = item.show === 'true'; // Assuming isLocked is a string
@@ -117,7 +118,7 @@ const Layers = () => {
                 }
             </tbody>
             </Table>
-            
+            {layers?.length === 0 && <p className='text-center'><i>No layers available</i></p>}
         {layers?.length > 10 && 
             <div className="d-flex gap-5 justify-content-end my-10">
                 <Button disabled={!extraPage?.previous} onClick={() => setPage(page - 1)}>
