@@ -50,8 +50,8 @@ const PrivateRoutes = () => {
         {/* Redirect to Dashboard after success login/registartion */}
         <Route path='auth/*' element={<Navigate to='/home' />} />
         {/* Pages */}
-        {/* <Route path='home' element={<DashboardWrapper />} /> */}
-        <Route
+        <Route path='home' element={<DashboardWrapper />} />
+        {/* <Route
         path='home'
         element={
           <ProtectedRoute
@@ -59,7 +59,7 @@ const PrivateRoutes = () => {
             allowedRoles={[2, 3, 4]}
           />
         }
-      />
+      /> */}
         <Route
         path='dashboard'
         element={
