@@ -20,7 +20,6 @@ const Layers = () => {
     }, [id, page])
     const getLayers = () => {
         ApiAxios.get(`/layers/?page=${page}`).then((resp: any) => {
-            console.log('ressss', resp)
             let lrs = resp?.data?.results?.filter((t: any) => t.compositid.toString() === id?.toString())
             setLayers(lrs)
             setExtraPage(resp?.data?.links)
@@ -33,7 +32,6 @@ const Layers = () => {
     }
 
     const handleIsLocked = (e: any, row: any) => {
-        console.log('eeeee', e.target.checked, row)
         const checked = e.target.checked;
         setCheckedItems((prev: any) => ({
             ...prev,

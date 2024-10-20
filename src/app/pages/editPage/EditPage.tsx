@@ -121,7 +121,6 @@ export const EditPage = () => {
       reader.readAsDataURL(file);
     }
   };
-  console.log('authhhh', auth)
   const handleSave = () => {
     const obj = {
       "templaate_state": "Edited",
@@ -130,7 +129,6 @@ export const EditPage = () => {
       "main_template": 2
     }
     ApiAxios.post('/mytemplates/', obj).then((resp) => {
-      console.log('resppp', resp)
       setShow(true);
       setMsg('Saved successfully');
     }, (error) => console.log(error))

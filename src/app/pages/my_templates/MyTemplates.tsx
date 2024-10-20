@@ -41,7 +41,6 @@ import VideoScrub from "../../modules/shared/VideoScrub/VideoScrub";
         setIsLoading(true)
         ApiAxios.get(`mytemplates?page=${page}`).then(
           (resp) => {
-            console.log("resppp", resp);
             setExtraPage(resp?.data?.links)
             setTemplates(resp?.data?.results);
             setIsLoading(false)
@@ -129,7 +128,6 @@ import VideoScrub from "../../modules/shared/VideoScrub/VideoScrub";
                           navigate(`/templates/details/${template?.template_data[0]?.id}`)
                         }}
                       >
-                        {console.log('csacasca', template)}
                         {template?.template_data[0]?.template_name}
                       </a>
                     </div>

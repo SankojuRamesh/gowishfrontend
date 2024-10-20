@@ -5,7 +5,6 @@ import {Responsive} from '../../../_metronic/sliders/responsive'
 
 export default function CategoryTopProducts1(cateTopProducts: any) {
   const responsive = Responsive
-  console.log('ascasca', cateTopProducts)
   return (
     <>
       <div className='card-body pt-0'>

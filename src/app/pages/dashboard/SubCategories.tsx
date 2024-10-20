@@ -66,7 +66,6 @@ const SubCategories = ({subCategories, reload}: any) => {
     const handlePlay = (item: any) => {
       setVideoUrl(item?.template_video)
       setSelected(item)
-      console.log('itemmmmm', item)
       setShowPlayModal(true)
     }
     return (

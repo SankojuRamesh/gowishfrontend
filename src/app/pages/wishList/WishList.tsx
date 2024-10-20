@@ -41,7 +41,6 @@ import VideoScrub from "../../modules/shared/VideoScrub/VideoScrub";
       setIsLoading(true)
       ApiAxios.get(`mywishlist/`).then(
         (resp) => {
-          console.log("resppp", resp);
           setTemplates(resp.data.results)
           handleClose()
           setIsLoading(false)

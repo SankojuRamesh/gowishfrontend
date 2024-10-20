@@ -54,7 +54,6 @@ const setSessionCookie = (name: any, value: any) => {
       try {
         const {data: auth} = await login(values.user_email, values.password)
         saveAuth(auth)
-        console.log(auth)
         localStorage.setItem('access_token', auth.access);
         // const {data: user} = await getUserByToken(auth.access)
         // setCurrentUser(user)

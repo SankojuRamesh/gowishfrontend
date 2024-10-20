@@ -68,7 +68,6 @@ const EditUserModel = ({show, currentUserId, handleClose}: Props) => {
   const [loading, setLoading] = useState(false)
 
   const {currentUser} = useAuth()
-  console.log(currentUserId)
 
   const initialValues = {
     fullname: '',

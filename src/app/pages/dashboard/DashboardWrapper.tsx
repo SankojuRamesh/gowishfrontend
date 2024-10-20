@@ -51,7 +51,6 @@ const DashboardPage = () => {
         // navigate('')
         document.location.reload();
       }
-      console.log('errr', error?.response)
     }
   }
 

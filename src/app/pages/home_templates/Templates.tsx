@@ -41,7 +41,6 @@ import VideoScrub from "../../modules/shared/VideoScrub/VideoScrub";
       setIsLoading(true)
       ApiAxios.get(`tempalts/?subcategory=${id}&page=${page}`).then(
         (resp) => {
-          console.log("resppp", resp);
           setExtraPage(resp?.data?.links)
           setTemplates(resp?.data?.results);
           setIsLoading(false)
