@@ -2,7 +2,7 @@
   "name": "demo2",
   "version": "8.1.8",
   "private": true,
-  "homepage": ".",
+  "homepage": "/",
   "dependencies": {
     "@formatjs/intl-pluralrules": "4.3.3",
     "@formatjs/intl-relativetimeformat": "10.0.1",
