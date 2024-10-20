@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 
-const VideoScrub = ({src, handleDoubleClick}: any) => {
+const VideoScrub = ({src, handleDoubleClick, width, height}: any) => {
   const videoRef: any = useRef(null);
   const lineRef: any = useRef(null);
   const containerRef: any = useRef(null);
@@ -28,21 +28,23 @@ const VideoScrub = ({src, handleDoubleClick}: any) => {
   };
 
   return (
-    <div className="video-container" ref={containerRef} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave} style={{ position: 'relative', width: '800px', margin: '50px auto' }}>
+    <div className="video-container" ref={containerRef} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave} style={{ position: 'relative', width: width || '325px', margin: '50px auto' }}>
       <video
         onDoubleClick={handleDoubleClick}
         ref={videoRef}
-        src={src}
+        src={'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4'}
+        // src={src}
         preload="metadata"
-        style={{ width: '325px', height: '200px' }}
+        style={{ width: width || '325px', height: height || '200px' }}
       />
       <div
         ref={lineRef}
         className="line"
         style={{
           position: 'absolute',
-          top: 0,
+          top: 15,
           bottom: 0,
+          height: width ? 370 : 170,
           width: '2px',
           backgroundColor: 'red',
           pointerEvents: 'none',

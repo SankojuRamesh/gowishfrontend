@@ -4,13 +4,15 @@ import {
     faChevronLeft,
     faChevronRight,
     faIndianRupeeSign,
+    faMoneyBill,
+    faPencil,
     faPlay,
     faTrash,
   } from "@fortawesome/free-solid-svg-icons";
   import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
   import React, { useEffect, useState } from "react";
   import ApiAxios from "../../modules/auth/core/ApiAxios";
-  import { Button, Dropdown, DropdownButton, Form, Modal } from "react-bootstrap";
+  import { Button, Card, Col, Dropdown, DropdownButton, Form, Modal, Row } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../../modules/auth";
 import { PageLoader } from "../../modules/shared/loader/PageLoader";
@@ -28,7 +30,8 @@ import VideoScrub from "../../modules/shared/VideoScrub/VideoScrub";
     const [show, setShow] = useState(false)
     const [delId, setDelId] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
-    const [videoUrl, setVideoUrl] = useState('')
+    const [videourl, setVideoUrl] = useState('')
+    const [selected, setSelected] = useState<any>(null)
 
     useEffect(() => {
       getTemplates();
@@ -94,6 +97,7 @@ import VideoScrub from "../../modules/shared/VideoScrub/VideoScrub";
     }
 
     const handlePlay = (item: any) => {
+      setSelected(item)
       setShowPlayModal(true)
       setVideoUrl(item.template_video)
     }
@@ -172,6 +176,11 @@ import VideoScrub from "../../modules/shared/VideoScrub/VideoScrub";
                           <FontAwesomeIcon icon={faArrowRightFromBracket} size={"2x"} />
                         </span>
                       </span>
+                      <span className="btn btn-icon btn-active-light-primary w-35px h-35px w-md-40px h-md-40px" onClick={() => navigate(`/edit-template/${template?.id}`)}>
+                        <span className="svg-icon svg-icon-muted svg-icon-1hx">
+                          <FontAwesomeIcon icon={faPencil} size={'2x'} />
+                        </span>
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -208,16 +217,75 @@ import VideoScrub from "../../modules/shared/VideoScrub/VideoScrub";
           </Modal>
           <Modal show={showPlayModal} onHide={() => setShowPlayModal(false)} centered size="lg">
         <Modal.Header closeButton>
+          {selected?.template_name}
         </Modal.Header>
         <Modal.Body>
+        <Row>
+        <Col xs={8}>
         <ReactPlayer
-          url={videoUrl}
+          url={videourl}
           playing={true}
           controls
           thumbnail=""
           width={'100%'}
           height={'100%'}
         />
+        </Col>
+        <Col xs={4}>
+            <Card>
+              {/* <Card.Header>Featured</Card.Header> */}
+              <Card.Body className="p-2">
+                {/* <Card.Title>Special title treatment</Card.Title> */}
+                <Card.Text>
+                  <h2>{selected?.template_name}</h2>
+                  <div className="btn-chips d-flex justify-content-between align-items-center mt-1">
+                    <span className="fw-bold fs-8 text-gray-400 d-block lh-1 mx-2">
+                      {selected?.prifix_id}
+                    </span>
+                    {/* <div> */}
+                    <div className="d-flex flex-stack fw-bold">
+                      {/*begin::Label*/}
+                      <span className="badge border border-dashed fs-2 fw-bold text-dark p-2">
+                        <span className="fs-6 fw-semibold text-gray-600 p-2">
+                          $
+                        </span>
+                        450.00
+                      </span>
+                      <span className="text-danger">
+                        <s>$ 500</s>
+                      </span>
+                    </div>
+                  </div>
+                  <div className="btn-chips d-flex justify-content-between mt-6">
+                    <span className="fw-bold fs-8 text-gray-400 d-block lh-1 mx-2">
+                      Duration 45 sec
+                    </span>
+                    {/* <div> */}
+                    <div className="d-flex gap-12 flex-stack fw-bold">
+                      {/*begin::Label*/}
+                      <span className="badge badge-light fw-bold">Hindus</span>
+                      <span className="badge badge-light fw-bold">
+                        Standred
+                      </span>
+                      <span className="badge badge-light fw-bold">Modern</span>
+                    </div>
+                  </div>
+                </Card.Text>
+                <div className="d-flex gap-10 justify-content-center my-12">
+                  {/* <Button variant="secondary" onClick={() => handleFav(selected)}>
+                    <FontAwesomeIcon icon={faHeart} />
+                  </Button> */}
+                  <Button variant="secondary" onClick={() => handleCart(selected)}>
+                    <FontAwesomeIcon icon={faCartShopping} />
+                  </Button> 
+                  <Button variant="secondary" onClick={() => navigate(`/cart-order/${selected?.id}`)}>
+                    <FontAwesomeIcon icon={faMoneyBill} />
+                  </Button>
+                </div>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
           </Modal.Body>
           </Modal>
         </div>

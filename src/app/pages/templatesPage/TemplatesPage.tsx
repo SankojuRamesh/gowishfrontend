@@ -6,13 +6,15 @@ import {
   faHeart,
   faIndianRupeeSign,
   faList,
+  faMoneyBill,
+  faPencil,
   faPlay,
   faTableCells,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import ApiAxios from "../../modules/auth/core/ApiAxios";
-import { Button, ButtonGroup, Dropdown, DropdownButton, Form, Modal, Table } from "react-bootstrap";
+import { Button, ButtonGroup, Card, Col, Dropdown, DropdownButton, Form, Modal, Row, Table } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../modules/auth";
 import { PageLoader } from "../../modules/shared/loader/PageLoader";
@@ -36,7 +38,8 @@ export const TemplatesPage = () => {
   const [showPlayModal, setShowPlayModal] = useState(false)
   const [displayType, setDisplayType] = useState('grid')
   const [msg, setMsg] = useState('grid')
-  const [videoUrl, setVideoUrl] = useState('')
+  const [videourl, setVideoUrl] = useState('')
+  const [selected, setSelected] = useState<any>('')
   const statusList = [
     { name: "Published", id: 1 },
     { name: "Un Published", id: 0 },
@@ -172,14 +175,14 @@ export const TemplatesPage = () => {
     setDisplayType(type)
   }
 
-  const handlePublish = (row: any, type: string) => {
+  const handlePublish = (e: any, row: any) => {
     const obj: any = {
       id: row?.id,
       category: row?.category,
       subcategory: row?.subcategory,
       template_name: row?.template_name,
       template_path: row?.template_path,
-      status: type === 'publish' ? true : false
+      status: e.target.checked ? true : false
     }
     const formData = new FormData();
     formData.append('id', row?.id);
@@ -187,13 +190,15 @@ export const TemplatesPage = () => {
     formData.append('subcategory', row?.subcategory);
     formData.append('template_name', row?.template_name);
     formData.append('template_path', row?.template_path);
-    formData.append('status', String(type === 'publish'));
+    formData.append('status', String(e.target.checked));
     ApiAxios.put(`tempalts/${row.id}/`, formData).then((resp) => {
+      getTemplates()
       setShow(true);
-      setMsg(`Template ${type}ed successfully`)
+      setMsg(`Template ${e.target.checked ? 'unpublish' : 'publish'}ed successfully`)
     }, (error) => console.log(error))
   }
   const handlePlay = (item: any) => {
+    setSelected(item)
     setShowPlayModal(true)
     setVideoUrl(item.template_video)
   }
@@ -267,11 +272,11 @@ export const TemplatesPage = () => {
           </div>
           <div>
           <ButtonGroup aria-label="Basic example">
-          <Button variant="secondary" onClick={() => handleDisplay('grid')}>
-            <FontAwesomeIcon icon={faTableCells} size="2x" />
+          <Button variant="secondary" className="p-4" onClick={() => handleDisplay('grid')}>
+            <FontAwesomeIcon icon={faTableCells} size="1x" />
           </Button>
-          <Button variant="secondary" onClick={() => handleDisplay('list')}>
-            <FontAwesomeIcon icon={faList} size="2x" />
+          <Button variant="secondary" className="p-4" onClick={() => handleDisplay('list')}>
+            <FontAwesomeIcon icon={faList} size="1x" />
           </Button>
         </ButtonGroup>
           </div>
@@ -342,15 +347,27 @@ export const TemplatesPage = () => {
                         <FontAwesomeIcon icon={faArrowRightFromBracket} size={"2x"} />
                       </span>
                     </span>
+                    <span className="btn btn-icon btn-active-light-primary w-35px h-35px w-md-40px h-md-40px" onClick={() => navigate(`/edit-template/${template?.id}`)}>
+                      <span className="svg-icon svg-icon-muted svg-icon-1hx">
+                        <FontAwesomeIcon icon={faPencil} size={'2x'} />
+                      </span>
+                    </span>
                   </div>
                 </div>
                 <div className='d-flex gap-4'>
-                        <Button variant="secondary" className="w-50" onClick={() => handlePublish(template, 'publish')}>
+                        {/* <Button variant="secondary" className="w-50" onClick={() => handlePublish(template, 'publish')}>
                             Publish
                         </Button>
                         <Button variant="secondary" className="w-50" onClick={() => handlePublish(template, 'unpublish')}>
                             Un Publish
-                        </Button>
+                        </Button> */}
+                        <Form.Check // prettier-ignore
+                          type="switch"
+                          id="custom-switch"
+                          label="Publish this template"
+                          checked={template.status}
+                          onChange={(e) => handlePublish(e, template)}
+                        />
                         </div>
               </div>
             </div>
@@ -377,12 +394,19 @@ export const TemplatesPage = () => {
                     <td>{450.00}</td>
                     <td>
                         <div className='d-flex gap-4 justify-content-center'>
-                        <Button variant="secondary" onClick={() => handlePublish(item, 'publish')}>
+                        {/* <Button variant="secondary" onClick={() => handlePublish(item, 'publish')}>
                             Publish
                         </Button>
                         <Button variant="secondary" onClick={() => handlePublish(item, 'unpublish')}>
                             Un Publish
-                        </Button>
+                        </Button> */}
+                        <Form.Check // prettier-ignore
+                          type="switch"
+                          id="custom-switch"
+                          label="Publish this template"
+                          checked={item.status}
+                          onChange={(e) => handlePublish(e, item)}
+                        />
                         </div>
                     </td>
                 </tr>)}
@@ -404,16 +428,75 @@ export const TemplatesPage = () => {
       <ToasterPage show={show} setShow={setShow} toastMsg={msg} />
       <Modal show={showPlayModal} onHide={() => setShowPlayModal(false)} centered size="lg">
         <Modal.Header closeButton>
+          {selected?.template_name}
         </Modal.Header>
         <Modal.Body>
+        <Row>
+        <Col xs={8}>
         <ReactPlayer
-          url={videoUrl}
+          url={videourl}
           playing={true}
           controls
           thumbnail=""
           width={'100%'}
           height={'100%'}
         />
+        </Col>
+        <Col xs={4}>
+            <Card>
+              {/* <Card.Header>Featured</Card.Header> */}
+              <Card.Body className="p-2">
+                {/* <Card.Title>Special title treatment</Card.Title> */}
+                <Card.Text>
+                  <h2>{selected?.template_name}</h2>
+                  <div className="btn-chips d-flex justify-content-between align-items-center mt-1">
+                    <span className="fw-bold fs-8 text-gray-400 d-block lh-1 mx-2">
+                      {selected?.prifix_id}
+                    </span>
+                    {/* <div> */}
+                    <div className="d-flex flex-stack fw-bold">
+                      {/*begin::Label*/}
+                      <span className="badge border border-dashed fs-2 fw-bold text-dark p-2">
+                        <span className="fs-6 fw-semibold text-gray-600 p-2">
+                          $
+                        </span>
+                        450.00
+                      </span>
+                      <span className="text-danger">
+                        <s>$ 500</s>
+                      </span>
+                    </div>
+                  </div>
+                  <div className="btn-chips d-flex justify-content-between mt-6">
+                    <span className="fw-bold fs-8 text-gray-400 d-block lh-1 mx-2">
+                      Duration 45 sec
+                    </span>
+                    {/* <div> */}
+                    <div className="d-flex gap-12 flex-stack fw-bold">
+                      {/*begin::Label*/}
+                      <span className="badge badge-light fw-bold">Hindus</span>
+                      <span className="badge badge-light fw-bold">
+                        Standred
+                      </span>
+                      <span className="badge badge-light fw-bold">Modern</span>
+                    </div>
+                  </div>
+                </Card.Text>
+                <div className="d-flex gap-10 justify-content-center my-12">
+                  <Button variant="secondary" onClick={() => handleFav(selected)}>
+                    <FontAwesomeIcon icon={faHeart} />
+                  </Button>
+                  <Button variant="secondary" onClick={() => handleCart(selected)}>
+                    <FontAwesomeIcon icon={faCartShopping} />
+                  </Button> 
+                  <Button variant="secondary" onClick={() => navigate(`/cart-order/${selected?.id}`)}>
+                    <FontAwesomeIcon icon={faMoneyBill} />
+                  </Button>
+                </div>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
           </Modal.Body>
           </Modal>
     </>

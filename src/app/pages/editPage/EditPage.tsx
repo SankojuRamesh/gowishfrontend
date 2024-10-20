@@ -4,6 +4,9 @@ import { useParams } from "react-router-dom";
 import ApiAxios from "../../modules/auth/core/ApiAxios";
 import { Stage, Layer, Circle, Rect, Text, Image as KonvaImage } from 'react-konva';
 import './Editpage.scss'
+import { useAuth } from "../../modules/auth";
+import { error } from "console";
+import { ToasterPage } from "../../modules/shared/Toaster/toaster";
 
 interface CircleShape {
   id: number;
@@ -37,10 +40,13 @@ type Shape = CircleShape | RectShape | TextShape;
 
 export const EditPage = () => {
   const { id } = useParams();
+  const {auth} = useAuth()
   const [loading, setIsLoading] = useState(false);
   const [details, setDetails] = useState<any>({});
   const [shapes, setShapes] = useState<Shape[]>([]);
   const [text, setText] = useState<string>("Editable Text");
+  const [show, setShow] = useState(false)
+  const [msg, setMsg] = useState('')
   const [imageUrl, setImageUrl] = useState<string | null>('');
   const imageRef: any = useRef<HTMLImageElement | null>(null);
   useEffect(() => {
@@ -115,6 +121,20 @@ export const EditPage = () => {
       reader.readAsDataURL(file);
     }
   };
+  console.log('authhhh', auth)
+  const handleSave = () => {
+    const obj = {
+      "templaate_state": "Edited",
+      "order_id": id,
+      "user": auth?.id,
+      "main_template": 2
+    }
+    ApiAxios.post('/mytemplates/', obj).then((resp) => {
+      console.log('resppp', resp)
+      setShow(true);
+      setMsg('Saved successfully');
+    }, (error) => console.log(error))
+  }
   return (
     <div>
       <Container>
@@ -237,6 +257,7 @@ export const EditPage = () => {
             /> */}
           </Col>
           <Col xs={4}>
+            <div className="d-flex justify-content-between">
             <div>
             <DropdownButton
               variant="secondary"
@@ -253,9 +274,15 @@ export const EditPage = () => {
               </Dropdown.Menu>
             </DropdownButton>
             </div>
+            <div className="d-flex gap-4">
+              <Button variant="secondary" onClick={() => alert('')}>Render</Button>
+              <Button variant="secondary" onClick={handleSave}>Save</Button>
+            </div>
+            </div>
           </Col>
         </Row>
       </Container>
+      <ToasterPage show={show} setShow={setShow} toastMsg={msg} />
     </div>
   );
 };

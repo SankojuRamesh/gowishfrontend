@@ -6,6 +6,7 @@ export interface AuthModel {
   mycart_count: number
   wishlist_count: number
   cartCount: number
+  user_id: any
 }
 
 export interface UserAddressModel {

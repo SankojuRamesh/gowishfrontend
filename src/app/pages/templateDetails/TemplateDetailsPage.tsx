@@ -11,6 +11,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useAuth } from "../../modules/auth";
 import { ToasterPage } from "../../modules/shared/Toaster/toaster";
+import VideoScrub from "../../modules/shared/VideoScrub/VideoScrub";
 
 export const TemplatesDetailsPage = () => {
   const { id } = useParams();
@@ -79,15 +80,17 @@ export const TemplatesDetailsPage = () => {
   };
   return (
     <div>
+      <h2 className="px-10">{details?.subcategory_name}</h2>
       <Container>
         <Row>
           <Col xs={8}>
             {/* <ReactPlayer url={details?.template_video} /> */}
-            <Image
+            {/* <Image
               src={details?.template_video}
               width={"900px"}
               height={"400px"}
-            />
+            /> */}
+            <VideoScrub src={details?.template_video} width={"900px"} height={"400px"} />
           </Col>
           <Col xs={4}>
             <Card>
@@ -131,18 +134,13 @@ export const TemplatesDetailsPage = () => {
                 </Card.Text>
                 <div className="d-flex gap-10 justify-content-center my-12">
                   <Button variant="secondary" onClick={() => handleFav()}>
-                    <FontAwesomeIcon icon={faHeart} /> Add to Favorite
+                    <FontAwesomeIcon icon={faHeart} /> Add
                   </Button>
                   <Button variant="secondary" onClick={() => handleCart()}>
-                    <FontAwesomeIcon icon={faShoppingCart} /> Add to Cart
-                  </Button>
-                </div>
-                <div
-                  className="flex text-center"
-                  onClick={() => navigate(`/cart-order/${details?.id}`)}
-                >
-                  <Button variant="secondary">
-                    <FontAwesomeIcon icon={faMoneyBill} /> Buy Now
+                    <FontAwesomeIcon icon={faShoppingCart} /> Add
+                  </Button> 
+                  <Button variant="secondary" onClick={() => navigate(`/cart-order/${details?.id}`)}>
+                    <FontAwesomeIcon icon={faMoneyBill} /> Buy
                   </Button>
                 </div>
               </Card.Body>
