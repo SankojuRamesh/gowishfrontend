@@ -1,126 +1,130 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { Button, Col, Container, Dropdown, DropdownButton, Row } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import ApiAxios from "../../modules/auth/core/ApiAxios";
-import { Stage, Layer, Circle, Rect, Text, Image as KonvaImage } from 'react-konva';
 import './Editpage.scss'
 import { useAuth } from "../../modules/auth";
-import { error } from "console";
 import { ToasterPage } from "../../modules/shared/Toaster/toaster";
-
-interface CircleShape {
-  id: number;
-  x: number;
-  y: number;
-  radius: number;
-  stroke: string;
-  strokeWidth: number;
-}
-
-interface RectShape {
-  id: number;
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-  // fill: string;
-  stroke: string;
-  strokeWidth: number;
-}
-
-interface TextShape {
-  id: number;
-  x: number;
-  y: number;
-  text: string;
-  fontSize: number;
-}
-
-type Shape = CircleShape | RectShape | TextShape;
+import { fabric } from 'fabric';
 
 export const EditPage = () => {
+
   const { id } = useParams();
   const {auth} = useAuth()
-  const [loading, setIsLoading] = useState(false);
-  const [details, setDetails] = useState<any>({});
-  const [shapes, setShapes] = useState<Shape[]>([]);
-  const [text, setText] = useState<string>("Editable Text");
-  const [show, setShow] = useState(false)
-  const [msg, setMsg] = useState('')
-  const [imageUrl, setImageUrl] = useState<string | null>('');
-  const imageRef: any = useRef<HTMLImageElement | null>(null);
-  useEffect(() => {
-    getTemplateDetails()
-  }, [id]);
-  const getTemplateDetails = () => {
-    setIsLoading(true);
-    ApiAxios.get(`tempalts/${id}/`).then(
-      (resp) => {
-        setDetails(resp?.data);
-        setImageUrl(resp?.data.template_video)
-        setIsLoading(false);
-      },
-      (error) => {
-        setIsLoading(false);
-        console.log("error", error);
-      }
-    );
-  };
-  useEffect(() => {
-    // Load the default image into the ref
-    const img = new window.Image();
-    img.src = details?.template_video;
-    img.onload = () => {
-      imageRef.current = img;
-    };
-  }, [details]);
+  const colRef: any = useRef(null);  
+  const [loading, setIsLoading] = React.useState(false);
+  const [details, setDetails] = React.useState<any>({});
+  const [text, setText] = React.useState<string>("Editable Text");
+  const [show, setShow] = React.useState(false)
+  const [msg, setMsg] = React.useState('')
+  const canvasRef = useRef(null); 
+  const fabricCanvasRef: any = useRef(null); 
 
-  const handleAddCircle = () => {
-    const newCircle: CircleShape = {
-      id: Date.now(),
-      x: 100,
-      y: 100,
-      radius: 30,
-      stroke: 'white',
-      strokeWidth: 2
+  // Initialize Fabric.js Canvas
+  useEffect(() => {
+    fabricCanvasRef.current = new fabric.Canvas(canvasRef.current, {
+      width: colRef.current.getBoundingClientRect().width - 20,
+      height: 600,
+      backgroundColor: '#f0f0f0',
+    });
+
+    // Load the default image when the canvas is initialized
+    const defaultImageUrl = 'https://images.pexels.com/photos/572897/pexels-photo-572897.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'; // Replace with your desired default image URL
+    fabric.Image.fromURL(defaultImageUrl, (img: any) => {
+      // Calculate scaling to fit the image into the canvas while maintaining the aspect ratio
+      const canvasWidth = fabricCanvasRef.current.width;
+      const canvasHeight = fabricCanvasRef.current.height;
+
+      const scaleFactor = Math.min(canvasWidth / img.width, canvasHeight / img.height);
+
+      img.set({
+        left: 0,
+        top: 0,
+        scaleX: scaleFactor,
+        scaleY: scaleFactor,
+        lockScalingFlip: true,  // Prevent the image from flipping when resizing
+        lockRotation: false,    // Allow rotation
+        cornerControls: true,   // Enable resizing from corners
+      });
+
+      // Add image to canvas
+      fabricCanvasRef.current.add(img);
+
+      // Make the image selectable and resizable
+      img.setControlsVisibility({
+        mt: true, // middle top
+        mb: true, // middle bottom
+        ml: true, // middle left
+        mr: true, // middle right
+        bl: true, // bottom left corner
+        br: true, // bottom right corner
+        tl: true, // top left corner
+        tr: true, // top right corner
+      });
+      
+      img.set({
+        selectable: true,
+        evented: true,
+      });
+
+      // Render the canvas to display the changes
+      fabricCanvasRef.current.renderAll();
+    });
+
+    // Clean up fabric canvas on component unmount
+    return () => {
+      fabricCanvasRef.current.dispose();
     };
-    setShapes(prevShapes => [...prevShapes, newCircle]);
+  }, [colRef]);
+
+  // Add Circle
+  const addCircle = () => {
+    const circle = new fabric.Circle({
+      radius: 50,
+      fill: 'red',
+      left: 100,
+      top: 100,
+    });
+    fabricCanvasRef.current.add(circle);
   };
 
-  const handleAddRectangle = () => {
-    const newRect: RectShape = {
-      id: Date.now(),
-      x: 150,
-      y: 150,
+  // Add Rectangle
+  const addRectangle = () => {
+    const rect = new fabric.Rect({
       width: 100,
-      height: 100,
-      stroke: 'white',
-      strokeWidth: 2
-    };
-    setShapes(prevShapes => [...prevShapes, newRect]);
+      height: 60,
+      fill: 'blue',
+      left: 150,
+      top: 150,
+    });
+    fabricCanvasRef.current.add(rect);
   };
 
-  const handleAddText = () => {
-    const newText: TextShape = {
-      id: Date.now(),
-      x: 200,
-      y: 50,
-      text: text,
-      fontSize: 30,
-    };
-    setShapes(prevShapes => [...prevShapes, newText]);
+  // Add Text
+  const addText = () => {
+    const text = new fabric.Textbox('Hello, Fabric.js!', {
+      left: 200,
+      top: 200,
+      fontSize: 24,
+      fill: 'black',
+    });
+    fabricCanvasRef.current.add(text);
   };
 
-  const handleUploadImage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImageUrl(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
+  // Add Image
+  const addImage = () => {
+    const imageUrl = 'https://via.placeholder.com/150'; // Sample image
+    fabric.Image.fromURL(imageUrl, (img) => {
+      img.set({
+        left: 250,
+        top: 250,
+        scaleX: 0.5,
+        scaleY: 0.5,
+      });
+      fabricCanvasRef.current.add(img);
+    });
   };
+
   const handleSave = () => {
     const obj = {
       "templaate_state": "Edited",
@@ -128,134 +132,26 @@ export const EditPage = () => {
       "user": auth?.id,
       "main_template": 2
     }
-    ApiAxios.post('/mytemplates/', obj).then((resp) => {
+    ApiAxios.post('/mytemplates/', obj).then((resp: any) => {
       setShow(true);
       setMsg('Saved successfully');
-    }, (error) => console.log(error))
+    }, (error: any) => console.log(error))
   }
   return (
     <div>
-      <Container>
-        <Row>
-          <Col xs={8}>
+      <Row>
+      <Col lg={8} md={12} ref={colRef}>
       <div className="icon-container">
-                <img src="/media/images/text.png" onClick={handleAddText} />
-                <img src="/media/images/image (2).png" />
-                <img src="/media/images/rectangle.png" onClick={handleAddRectangle} />
-                <img src="/media/images/circle.png" onClick={handleAddCircle} />
-            </div>
-            {imageRef.current ? 
-      <Stage width={900} height={500}>
-        <Layer>
-          {imageUrl && (
-            <KonvaImage
-              image={imageRef.current}
-              x={0}
-              y={0}
-              width={900}
-              height={500}
-              // draggable // Optionally make the image draggable
-            />
-          )}
-          {shapes.map(shape => {
-            if ('radius' in shape) {
-              return (
-                <Circle
-                  key={shape.id} // Key for React
-                  x={shape.x}
-                  y={shape.y}
-                  radius={shape.radius}
-                  stroke={shape.stroke}
-                  strokeWidth={shape.strokeWidth}
-                  fill="transparent" // No fill
-                  draggable // Make the circle draggable
-                  onDragEnd={(e) => {
-                    const { x, y } = e.target.position();
-                    setShapes(prevShapes =>
-                      prevShapes.map(s =>
-                        s.id === shape.id ? { ...s, x, y } : s
-                      )
-                    );
-                  }}
-                />
-              );
-            }
-            if ('width' in shape) {
-              return (
-                <Rect
-                  key={shape.id} // Key for React
-                  x={shape.x}
-                  y={shape.y}
-                  width={shape.width}
-                  height={shape.height}
-                  stroke={shape.stroke}
-                  strokeWidth={shape.strokeWidth}
-                  fill="transparent" // No fill
-                  draggable // Make the rectangle draggable
-                  onDragEnd={(e) => {
-                    const { x, y } = e.target.position();
-                    setShapes(prevShapes =>
-                      prevShapes.map(s =>
-                        s.id === shape.id ? { ...s, x, y } : s
-                      )
-                    );
-                  }}
-                />
-              );
-            }
-            if ('text' in shape) {
-              return (
-                <Text
-                  key={shape.id} // Key for React
-                  text={shape.text}
-                  fontSize={shape.fontSize}
-                  x={shape.x}
-                  y={shape.y}
-                  draggable
-                  onDragEnd={(e) => {
-                    const { x, y } = e.target.position();
-                    setShapes(prevShapes =>
-                      prevShapes.map(s =>
-                        s.id === shape.id ? { ...s, x, y } : s
-                      )
-                    );
-                  }}
-                  onDblClick={() => {
-                    const newText = prompt("Edit text:", shape.text);
-                    if (newText) {
-                      setShapes(prevShapes =>
-                        prevShapes.map(s =>
-                          s.id === shape.id ? { ...s, text: newText } : s
-                        )
-                      );
-                    }
-                  }}
-                />
-              );
-            }
-            return null;
-          })}
-        </Layer>
-      </Stage> : 
-      <img
-      src={details?.template_video}
-      width={"900px"}
-      height={"500px"}
-    /> }
-            {/* <div className="icon-container">
-                <img src="/media/images/text.png" />
-                <img src="/media/images/image (2).png" />
-                <img src="/media/images/rectangle.png" />
-                <img src="/media/images/circle.png" />
-            </div>
-            <img
-              src={details?.template_video}
-              width={"900px"}
-              height={"500px"}
-            /> */}
-          </Col>
-          <Col xs={4}>
-            <div className="d-flex justify-content-between">
+          <img src="/media/images/text.png" onClick={addText} />
+          <img src="/media/images/image (2).png" />
+          <img src="/media/images/rectangle.png" onClick={addRectangle} />
+          <img src="/media/images/circle.png" onClick={addCircle} />
+      </div>
+      <canvas ref={canvasRef} id="fabricCanvas" />
+        
+      </Col>
+      <Col lg={4} md={12}>
+            <div className="d-flex justify-content-between mt-10">
             <div>
             <DropdownButton
               variant="secondary"
@@ -278,8 +174,7 @@ export const EditPage = () => {
             </div>
             </div>
           </Col>
-        </Row>
-      </Container>
+      </Row>
       <ToasterPage show={show} setShow={setShow} toastMsg={msg} />
     </div>
   );

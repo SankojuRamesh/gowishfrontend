@@ -7,7 +7,7 @@ export default function MainCategories(mainCategories: any) {
   const responsive = Responsive
   return (
     <>
-      <div className='row page-bg gx-5 gx-xl-8 mb-5 mb-xl-8'>
+      <div className='row page-bg gx-5 gx-xl-8 mb-5 mb-xl-5'>
         <div className='col-xl-12'>
           <div className='card page-bg card-flush h-xl-100'>
             <div className='card-header pt-7'>

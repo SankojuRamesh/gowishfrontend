@@ -74,13 +74,13 @@ const SubCategories = ({subCategories, reload}: any) => {
         <div className='row gx-5 gx-xl-8 mb-5 mb-xl-8'>
           <div className='col-xl-12'>
             <div className='card card-flush  page-bg h-xl-100'>
-              <div className='card-header pt-7'>
+              <div className='card-header pt-1'>
                 <h3 className='card-title align-items-start flex-row cursor-pointer'>
                   <span className='card-label fw-bold text-dark fs-5'>{subCategories?.[0]?.subcategory_name}</span>
                 </h3>
                 <span className="btn btn-sm btn-light fs-8 fw-bold h-35px" onClick={() => navigate(`/templates/${subCategories?.[0]?.subcategory}`)}>View More</span>
               </div>
-              <div className='card-body pt-7'>
+              <div className='card-body pt-2'>
                 <div className='row flex g-5 g-xl-9 mb-5 mb-xl-0'>
                 <Carousel
                     responsive={responsive}
@@ -88,7 +88,7 @@ const SubCategories = ({subCategories, reload}: any) => {
                     showDots={true}
                     autoPlay={true}
                     infinite={true}
-                    autoPlaySpeed={30067865687657686870}
+                    autoPlaySpeed={3000}
                     removeArrowOnDeviceType={['tablet', 'mobile']}
                   >
                     {subCategories?.map((category: any, i:number) => {

@@ -28,14 +28,14 @@ const VideoScrub = ({src, handleDoubleClick, width, height}: any) => {
   };
 
   return (
-    <div className="video-container" ref={containerRef} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave} style={{ position: 'relative', width: width || '325px', margin: '50px auto' }}>
+    <div className="video-container" ref={containerRef} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave} style={{ position: 'relative', width: width || '325px', margin: 'auto' }}>
       <video
         onDoubleClick={handleDoubleClick}
         ref={videoRef}
         src={'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4'}
         // src={src}
         preload="metadata"
-        style={{ width: width || '325px', height: height || '200px' }}
+        style={{ width: width || '295px', height: height || '200px' }}
       />
       <div
         ref={lineRef}

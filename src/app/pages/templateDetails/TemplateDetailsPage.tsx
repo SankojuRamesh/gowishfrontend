@@ -90,7 +90,7 @@ export const TemplatesDetailsPage = () => {
               width={"900px"}
               height={"400px"}
             /> */}
-            <VideoScrub src={details?.template_video} width={"900px"} height={"400px"} />
+            <VideoScrub src={details?.template_video} width={"100%"} height={"400px"} />
           </Col>
           <Col xs={4}>
             <Card>
