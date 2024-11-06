@@ -81,16 +81,17 @@ export const TemplatesDetailsPage = () => {
   return (
     <div>
       <h2 className="px-10">{details?.subcategory_name}</h2>
-      <Container>
+      <Container className="mt-18">
         <Row>
-          <Col xs={8}>
+          <Col xs={8} className="react-player-template">
+            <ReactPlayer url={'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4'} controls />
             {/* <ReactPlayer url={details?.template_video} /> */}
             {/* <Image
               src={details?.template_video}
               width={"900px"}
               height={"400px"}
             /> */}
-            <VideoScrub src={details?.template_video} width={"100%"} height={"400px"} />
+            {/* <VideoScrub src={details?.template_video} width={"100%"} height={"400px"} /> */}
           </Col>
           <Col xs={4}>
             <Card>

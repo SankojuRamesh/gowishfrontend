@@ -28,7 +28,7 @@ const VideoScrub = ({src, handleDoubleClick, width, height}: any) => {
   };
 
   return (
-    <div className="video-container" ref={containerRef} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave} style={{ position: 'relative', width: width || '325px', margin: 'auto' }}>
+    <div className="video-container" ref={containerRef} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave} style={{ position: 'relative', width: width || '295px', margin: 'auto' }}>
       <video
         onDoubleClick={handleDoubleClick}
         ref={videoRef}

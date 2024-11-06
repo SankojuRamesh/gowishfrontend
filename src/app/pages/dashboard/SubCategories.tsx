@@ -11,12 +11,14 @@ import { useState } from "react";
 import { PageLoader } from "../../modules/shared/loader/PageLoader";
 import ReactPlayer from "react-player";
 import VideoScrub from "../../modules/shared/VideoScrub/VideoScrub";
+import { LoginModel } from "../../../_metronic/partials";
 
 const SubCategories = ({subCategories, reload}: any) => {
   const [isLoading, setIsLoading] = useState(false)
   const [showPlayModal, setShowPlayModal] = useState(false)
   const [videourl, setVideoUrl] = useState('')
   const [selected, setSelected] = useState<any>(null)
+  const [showLoginModel, setLoginModel] = useState<boolean>(false)
   const {updateWishlistCount, updateCartCount} = useAuth()
     const navigate = useNavigate()
     let msg = ''
@@ -85,13 +87,13 @@ const SubCategories = ({subCategories, reload}: any) => {
                 <Carousel
                     responsive={responsive}
                     swipeable={true}
-                    showDots={true}
+                    showDots={false}
                     autoPlay={true}
                     infinite={true}
                     autoPlaySpeed={3000}
                     removeArrowOnDeviceType={['tablet', 'mobile']}
                   >
-                    {subCategories?.map((category: any, i:number) => {
+                    {subCategories?.slice(0, 8).map((category: any, i:number) => {
                       return (
                           <div className='col-sm-3 mb-3 mb-sm-0 pb-5 ps-2 pe-3 w-100' key={i}>
                           <div className="position-relative ">
@@ -125,34 +127,26 @@ const SubCategories = ({subCategories, reload}: any) => {
                                     <FontAwesomeIcon icon={faHeart} size={'2x'} />
                                   </span>
                                 </span> : 
-                                <OverlayTrigger
-                                    placement="bottom"
-                                    delay={{ show: 250, hide: 400 }}
-                                    overlay={renderTooltip}
-                                  >
+                                <span>
                                     <span className="btn btn-icon opacity-50 w-35px h-35px w-md-40px h-md-40px">
                                   <span className="svg-icon svg-icon-muted svg-icon-1hx">
-                                    <FontAwesomeIcon icon={faHeart} size={'2x'} />
+                                    <FontAwesomeIcon icon={faHeart} size={'2x'} onClick={() => setLoginModel(true)} />
                                   </span>
                                 </span>
-                                  </OverlayTrigger>}
+                                  </span>}
                                 {auth ? 
                                 <span className="btn btn-icon btn-active-light-primary w-35px h-35px w-md-40px h-md-40px" onClick={() => handleCart(category)}>
                                   <span className="svg-icon svg-icon-muted svg-icon-1hx">
                                     <FontAwesomeIcon icon={faCartShopping} size={'2x'} />
                                   </span>
                                 </span> : 
-                                <OverlayTrigger
-                                    placement="bottom"
-                                    delay={{ show: 250, hide: 400 }}
-                                    overlay={renderTooltip}
-                                  >
+                                <span>
                                     <span className="btn btn-icon opacity-50 w-35px h-35px w-md-40px h-md-40px">
                                     <span className="svg-icon svg-icon-muted svg-icon-1hx">
-                                    <FontAwesomeIcon icon={faCartShopping} size={'2x'} />
+                                    <FontAwesomeIcon icon={faCartShopping} size={'2x'} onClick={() => setLoginModel(true)} />
                                   </span>
                                 </span>
-                                  </OverlayTrigger>}
+                                  </span>}
                                 <span className="btn btn-icon btn-active-light-primary w-35px h-35px w-md-40px h-md-40px" onClick={() => navigate(`/templates/details/${category?.id}`)}>
                                   <span className="svg-icon svg-icon-muted svg-icon-1hx">
                                     <FontAwesomeIcon icon={faArrowRightFromBracket} size={'2x'} />
@@ -249,6 +243,7 @@ const SubCategories = ({subCategories, reload}: any) => {
           </Modal.Body>
           </Modal>
         </div>
+        <LoginModel show={showLoginModel} handleClose={() => setLoginModel(false)} />
       </>
     )
 }

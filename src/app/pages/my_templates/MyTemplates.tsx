@@ -179,11 +179,11 @@ import VideoScrub from "../../modules/shared/VideoScrub/VideoScrub";
               }
             </div>
             <div className="d-flex gap-5 justify-content-end my-10">
-              <Button disabled={!extraPage?.previous} onClick={() => setPage(page - 1)}>
-                  <FontAwesomeIcon icon={faChevronLeft} size="1x" />
+              <Button disabled={!extraPage?.previous} variant="link" onClick={() => setPage(page - 1)}>
+                  <FontAwesomeIcon icon={faChevronLeft} size="1x" /> Previous
               </Button>
-              <Button disabled={!extraPage?.next} onClick={() => setPage(page + 1)}>
-                  <FontAwesomeIcon icon={faChevronRight} size="1x" />
+              <Button disabled={!extraPage?.next} variant="link" onClick={() => setPage(page + 1)}>
+                  Next <FontAwesomeIcon icon={faChevronRight} size="1x" />
               </Button>
             </div>
             <ToasterPage show={show} setShow={setShow} toastMsg={msg} />
