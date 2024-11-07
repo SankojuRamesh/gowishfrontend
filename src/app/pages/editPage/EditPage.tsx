@@ -1,87 +1,65 @@
 import React, { useEffect, useRef } from "react";
-import { Button, Col, Container, Dropdown, DropdownButton, Row } from "react-bootstrap";
+import {
+  Button,
+  Card,
+  Col,
+  Container,
+  Dropdown,
+  DropdownButton,
+  Row,
+} from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import ApiAxios from "../../modules/auth/core/ApiAxios";
-import './Editpage.scss'
+import "./Editpage.scss";
 import { useAuth } from "../../modules/auth";
 import { ToasterPage } from "../../modules/shared/Toaster/toaster";
-import { fabric } from 'fabric';
+import Accordion from 'react-bootstrap/Accordion';
+import { fabric } from "fabric";
+import ListGroup from 'react-bootstrap/ListGroup';
+
 
 export const EditPage = () => {
-
   const { id } = useParams();
-  const {auth} = useAuth()
-  const colRef: any = useRef(null);  
+  const { auth } = useAuth();
+  const colRef: any = useRef(null);
   const [loading, setIsLoading] = React.useState(false);
-  const [details, setDetails] = React.useState<any>({});
-  const [text, setText] = React.useState<string>("Editable Text");
-  const [show, setShow] = React.useState(false)
-  const [msg, setMsg] = React.useState('')
-  const canvasRef = useRef(null); 
-  const fabricCanvasRef: any = useRef(null); 
+  const [composits, setComposits] = React.useState<any>([]);
+  const [layers, setLayers] = React.useState<any>([]);
+  const [show, setShow] = React.useState(false);
+  const [msg, setMsg] = React.useState("");
+  const [selectedLayer, setSelectedLayer] = React.useState<any>({})
+  const canvasRef = useRef(null);
+  const fabricCanvasRef: any = useRef(null);
+  const [selectedColor, setSelectedColor] = React.useState('#fff')
 
   // Initialize Fabric.js Canvas
   useEffect(() => {
-    fabricCanvasRef.current = new fabric.Canvas(canvasRef.current, {
-      width: colRef.current.getBoundingClientRect().width - 20,
-      height: 600,
-      backgroundColor: '#f0f0f0',
-    });
-
-    // Load the default image when the canvas is initialized
-    const defaultImageUrl = 'https://images.pexels.com/photos/572897/pexels-photo-572897.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'; // Replace with your desired default image URL
-    fabric.Image.fromURL(defaultImageUrl, (img: any) => {
-      // Calculate scaling to fit the image into the canvas while maintaining the aspect ratio
-      const canvasWidth = fabricCanvasRef.current.width;
-      const canvasHeight = fabricCanvasRef.current.height;
-
-      const scaleFactor = Math.min(canvasWidth / img.width, canvasHeight / img.height);
-
-      img.set({
-        left: 0,
-        top: 0,
-        scaleX: scaleFactor,
-        scaleY: scaleFactor,
-        lockScalingFlip: true,  // Prevent the image from flipping when resizing
-        lockRotation: false,    // Allow rotation
-        cornerControls: true,   // Enable resizing from corners
-      });
-
-      // Add image to canvas
-      fabricCanvasRef.current.add(img);
-
-      // Make the image selectable and resizable
-      img.setControlsVisibility({
-        mt: true, // middle top
-        mb: true, // middle bottom
-        ml: true, // middle left
-        mr: true, // middle right
-        bl: true, // bottom left corner
-        br: true, // bottom right corner
-        tl: true, // top left corner
-        tr: true, // top right corner
-      });
-      
-      img.set({
-        selectable: true,
-        evented: true,
-      });
-
-      // Render the canvas to display the changes
-      fabricCanvasRef.current.renderAll();
-    });
-
-    // Clean up fabric canvas on component unmount
+    getComposits()
+    fabricCanvasRef.current = new fabric.Canvas(canvasRef.current);
+    
+    // Optionally set some properties for the canvas
+    fabricCanvasRef.current.setWidth(800);
+    fabricCanvasRef.current.setHeight(600);
+    
+    // Clear the canvas on component unmount
     return () => {
       fabricCanvasRef.current.dispose();
     };
   }, [colRef]);
 
+  const getComposits = () => {
+    ApiAxios.get('/composits/').then((resp: any) => {
+      setComposits(resp.data.results)
+    }, (error) => {
+      console.log(error)
+    })
+  }
+
   // Add Circle
   const addCircle = () => {
     const circle = new fabric.Circle({
       radius: 50,
-      fill: 'red',
+      fill: "red",
       left: 100,
       top: 100,
     });
@@ -93,7 +71,7 @@ export const EditPage = () => {
     const rect = new fabric.Rect({
       width: 100,
       height: 60,
-      fill: 'blue',
+      fill: "blue",
       left: 150,
       top: 150,
     });
@@ -101,79 +79,169 @@ export const EditPage = () => {
   };
 
   // Add Text
-  const addText = () => {
-    const text = new fabric.Textbox('Hello, Fabric.js!', {
-      left: 200,
-      top: 200,
+  const addText = (layer?: any, color?: any) => {
+    const text = new fabric.Textbox(layer.text, {
+      left: 10,
+      top: 10,
       fontSize: 24,
-      fill: 'black',
+      fill: color,
     });
     fabricCanvasRef.current.add(text);
   };
 
   // Add Image
-  const addImage = () => {
-    const imageUrl = 'https://via.placeholder.com/150'; // Sample image
-    fabric.Image.fromURL(imageUrl, (img) => {
-      img.set({
-        left: 250,
-        top: 250,
-        scaleX: 0.5,
-        scaleY: 0.5,
+  const addImage = (layer?: any) => {
+    const imageUrl = layer?.mainsrc;
+    if (imageUrl) {
+      fabric.Image.fromURL(imageUrl, (img) => {
+        // Set image properties (position, scale, etc.)
+        img.set({
+          left: 50,
+          top: 50,
+          scaleX: 1.2,
+          scaleY: 1.5,
+          width: 800,
+          height: 650,
+          selectable: false,
+        });
+
+        // Add the image to the fabric canvas
+        fabricCanvasRef.current.add(img);
+        fabricCanvasRef.current.renderAll(); // Re-render the canvas
       });
-      fabricCanvasRef.current.add(img);
-    });
+    } else {
+      alert('No image selected');
+    }
   };
 
   const handleSave = () => {
     const obj = {
-      "templaate_state": "Edited",
-      "order_id": id,
-      "user": auth?.id,
-      "main_template": 2
+      templaate_state: "Edited",
+      order_id: id,
+      user: auth?.id,
+      main_template: 2,
+    };
+    ApiAxios.post("/mytemplates/", obj).then(
+      (resp: any) => {
+        setShow(true);
+        setMsg("Saved successfully");
+      },
+      (error: any) => console.log(error)
+    );
+  };
+
+  // Handle image upload
+  const handleImageUpload = (event: any) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        setSelectedLayer({ mainsrc: e.target.result });
+      };
+      reader.readAsDataURL(file);
     }
-    ApiAxios.post('/mytemplates/', obj).then((resp: any) => {
-      setShow(true);
-      setMsg('Saved successfully');
-    }, (error: any) => console.log(error))
+  };
+
+  const handleItem = (layer: any) => {
+    setSelectedLayer(layer)
+    if(layer.type === 'text') {
+      addText(layer, '#000')
+    } else if(layer.type === 'image') {
+      addImage(layer)
+    }
   }
+
+  const handleChangeColor = (e: any) => {
+    const newColor = e.target.value;
+    setSelectedColor(newColor); // Update the state with the new color
+
+    // Optionally update all text objects if you want to change the color of all text at once
+    const activeObject = fabricCanvasRef.current.getActiveObject();
+    if (activeObject && activeObject.type === "textbox") {
+      activeObject.set({ fill: newColor });
+      fabricCanvasRef.current.renderAll(); // Re-render to apply the new color
+    }
+  }
+
+  const handleComposit = (composit: any) => {
+    ApiAxios.get(`/layers/?compositid=${composit.id}`).then((resp: any) => {
+      setLayers(resp.data.results)
+      resp.data.results.map((t: any) => {
+        if(t.type === 'image') {
+          addImage(t)
+        } else if(t.type === 'text') {
+          addText(t, '#fff')
+        }
+      })
+      
+    }, (error) => {console.log(error)})
+  }
+  console.log('layersss', layers)
   return (
     <div>
       <Row>
-      <Col lg={8} md={12} ref={colRef}>
-      <div className="icon-container">
-          <img src="/media/images/text.png" onClick={addText} />
-          <img src="/media/images/image (2).png" />
-          <img src="/media/images/rectangle.png" onClick={addRectangle} />
-          <img src="/media/images/circle.png" onClick={addCircle} />
-      </div>
-      <canvas ref={canvasRef} id="fabricCanvas" />
-        
-      </Col>
-      <Col lg={4} md={12}>
-            <div className="d-flex justify-content-between mt-10">
-            <div>
-            <DropdownButton
-              variant="secondary"
-              title={"Select Composit"}
-              id="dropdown-basic"
-            >
-              <Dropdown.Menu>
-                  <Dropdown.Item
-                    // key={item.id}
-                    // onClick={() => handleSelectCategory(item.id)} // Set category on click
-                  >
-                    Composite 1
-                  </Dropdown.Item>
-              </Dropdown.Menu>
-            </DropdownButton>
-            </div>
-            <div className="d-flex gap-4">
-              <Button variant="secondary" onClick={() => alert('')}>Render</Button>
-              <Button variant="secondary" onClick={handleSave}>Save</Button>
-            </div>
-            </div>
-          </Col>
+        <Col lg={8} md={12} ref={colRef}>
+          <div className="icon-container">
+            <img src="/media/images/text.png" onClick={addText} />
+            <img src="/media/images/image (2).png" />
+            <img src="/media/images/rectangle.png" onClick={addRectangle} />
+            <img src="/media/images/circle.png" onClick={addCircle} />
+            <input type="color" onChange={handleChangeColor} />
+          </div>
+          <canvas ref={canvasRef} id="fabricCanvas" />
+        </Col>
+        <Col lg={4} md={12}>
+          <Card>
+            <Card.Body>
+              <Card.Text>
+                <div className="d-flex justify-content-between mt-10">
+                  <div>
+                    <DropdownButton
+                      variant="secondary"
+                      title={"Select Composit"}
+                      id="dropdown-basic"
+                    >
+                      <Dropdown.Menu>
+                        <Dropdown.Item
+                        // key={item.id}
+                        // onClick={() => handleSelectCategory(item.id)} // Set category on click
+                        >
+                          Composite 1
+                        </Dropdown.Item>
+                      </Dropdown.Menu>
+                    </DropdownButton>
+                  </div>
+                  <div className="d-flex gap-4">
+                    <Button variant="secondary" onClick={() => alert("")}>
+                      Render
+                    </Button>
+                    <Button variant="secondary" onClick={handleSave}>
+                      Save
+                    </Button>
+                  </div>
+                </div>
+                <div className="my-12">
+                  <Accordion defaultActiveKey="0">
+                    {composits.map((item: any, ind: any) => 
+                      <Accordion.Item eventKey={ind}>
+                      <Accordion.Header onClick={() => handleComposit(item)}>{item.composit_name}</Accordion.Header>
+                      <Accordion.Body>
+                      <ListGroup>
+                        {layers.map((item: any, ind: any) => 
+                          <ListGroup.Item className="text-white cursor-pointer my-1 bg-body-secondary"  onClick={() => handleItem(item)}>
+                            <img src={`/media/images/${item.type === 'text' ? 'text' : item.type === 'image' ? 'image (2)' : ''}.png`} width={15} /> {item.name}
+                          </ListGroup.Item>
+                        )}
+                        </ListGroup>
+                      </Accordion.Body>
+                    </Accordion.Item>
+                    )}
+                  </Accordion>
+                  </div>
+              </Card.Text>
+            </Card.Body>
+          </Card>
+        </Col>
       </Row>
       <ToasterPage show={show} setShow={setShow} toastMsg={msg} />
     </div>
