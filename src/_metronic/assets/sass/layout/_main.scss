@@ -177,3 +177,11 @@ body {
     width: 100% !important;
   }
 }
+
+.img-upload-input {
+  opacity: 0;
+  position: relative;
+  bottom: 25px;
+  left: 110px;
+  cursor: pointer;
+}

@@ -110,7 +110,8 @@ export const TemplatesPage = () => {
         params.append('status', selectedStatus.id);
     }
 
-    const endpoint = `tempalts/?${params.toString()}&page=${page}`;
+    // const endpoint = `tempalts/?${params.toString()}&page=${page}&created_by=1`;
+    const endpoint = `tempalts/?${params.toString()}&page=${page}&created_by=${auth?.id}`;
 
     ApiAxios.get(endpoint).then(
       (resp) => {

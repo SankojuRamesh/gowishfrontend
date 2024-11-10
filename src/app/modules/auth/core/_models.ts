@@ -2,7 +2,7 @@ export interface AuthModel {
   access: string
   refreshToken?: string
   roles?: any
-  id?: any
+  id: any
   mycart_count: number
   wishlist_count: number
   cartCount: number
