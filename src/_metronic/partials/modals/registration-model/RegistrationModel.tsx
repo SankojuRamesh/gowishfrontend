@@ -11,6 +11,8 @@ import * as Yup from 'yup'
 import {useFormik} from 'formik'
 import {useAuth} from '../../../../app/modules/auth'
 import {getUserByToken, register} from '../../../../app/modules/auth/core/_requests'
+import ApiAxios from '../../../../app/modules/auth/core/ApiAxios'
+import { ToasterPage } from '../../../../app/modules/shared/Toaster/toaster'
 
 type Props = {
   show: boolean
@@ -23,11 +25,11 @@ const initialValues = {
   phonenumber: '',
   password: '',
   confirmpassword: '',
-  address: '',
-  pincode: '',
-  city: '',
-  state: '',
-  country: '',
+  // address: '',
+  // pincode: '',
+  // city: '',
+  // state: '',
+  // country: '',
 }
 
 const registrationSchema = Yup.object().shape({
@@ -80,31 +82,43 @@ const modalsRoot = document.getElementById('root-modals') || document.body
 const RegistrationModel = ({show, handleClose}: Props) => {
   const [loading, setLoading] = useState(false)
   const {saveAuth, setCurrentUser} = useAuth()
-
+  const [errorText, setErrorText] = useState<any>('')
+  const [showToaster, setShowToaster] = useState(false)
   const formik = useFormik({
     initialValues,
-    validationSchema: registrationSchema,
+    // validationSchema: registrationSchema,
     onSubmit: async (values, {setStatus, setSubmitting}) => {
       setLoading(true)
       try {
-        const {data: auth} = await register(
-          values.fullname,
-          values.email,
-          values.phonenumber,
-          values.password,
-          values.confirmpassword,
-          values.address,
-          values.pincode,
-          values.city,
-          values.state,
-          values.country
-        )
-        saveAuth(auth)
-        console.log(auth)
-        const {data: user} = await getUserByToken(auth.api_token)
-        setCurrentUser(user)
+        // const {data: auth} = await register(
+        //   values.fullname,
+        //   values.email,
+        //   values.phonenumber,
+        //   values.password,
+        //   // values.confirmpassword,
+        //   // values.address,
+        //   // values.pincode,
+        //   // values.city,
+        //   // values.state,
+        //   // values.country
+        // )
+        const obj = {
+          name: values.fullname,
+          phone: values.phonenumber,
+          email: values.email,
+          password: values.password
+        }
+        ApiAxios.post('/signup/', obj).then((resp) => {
+          console.log('resppp', resp)
+        }, (error) => {
+          console.log('errorrrrr', error)
+        })
+        // saveAuth(auth)
+        // console.log(auth)
+        // const {data: user} = await getUserByToken(auth.api_token)
+        // setCurrentUser(user)
         setLoading(false)
-        handleClose()
+        // handleClose()
         document.location.reload()
       } catch (error) {
         console.error(error)
@@ -116,6 +130,46 @@ const RegistrationModel = ({show, handleClose}: Props) => {
     },
   })
 
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    const form = e.target as HTMLFormElement;
+
+  // Access form elements using their name or id
+  const formData = new FormData(form);
+  const values: Record<string, string> = {};
+
+  formData.forEach((value, key) => {
+    values[key] = value as string;
+  });
+
+  const obj = {
+    name: values.fullname,
+    phone: values.phonenumber,
+    email: values.email,
+    password: values.password
+  }
+  const formData1 = new FormData();
+        formData1.append('name', values.fullname);
+        formData1.append('phone', values.phonenumber);
+        formData1.append('email', values.email);
+        formData1.append('password', values.password);
+        
+  console.log(formData1, 'valllllll');
+  ApiAxios.post('/signup/', formData1, {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }).then((resp) => {
+    console.log('resppp', resp)
+    setShowToaster(true)
+    handleClose()
+  }, (error) => {
+    console.log('errorrrrr', error, error.response)
+    {Object.keys(error.response.data).map((key) => setErrorText(error.response.data[key]))}
+  })
+  }
+
+  console.log('errorText', errorText)
   useEffect(() => {
     PasswordMeterComponent.bootstrap()
   }, [])
@@ -136,7 +190,7 @@ const RegistrationModel = ({show, handleClose}: Props) => {
         </div>
         {/* end::Close */}
       </div>
-
+      
       <div className='modal-body py-lg-10 px-lg-10'>
         <div
           id='kt_app_toolbar_container'
@@ -146,23 +200,15 @@ const RegistrationModel = ({show, handleClose}: Props) => {
             className='form w-100 fv-plugins-bootstrap5 fv-plugins-framework'
             noValidate
             id='kt_login_signup_form'
-            onSubmit={formik.handleSubmit}
+            onSubmit={handleSubmit}
           >
-            {/* begin::Heading */}
             <div className='text-center mb-11'>
-              {/* begin::Title */}
               <h1 className='text-dark fw-bolder mb-3'>Sign Up</h1>
-              {/* end::Title */}
-
-              <div className='text-gray-500 fw-semibold fs-6'>Your Social Campaigns</div>
             </div>
             {/* end::Heading */}
 
-            {/* begin::Login options */}
-            <div className='row g-3 mb-9'>
-              {/* begin::Col */}
+            {/* <div className='row g-3 mb-9'>
               <div className='col-md-6'>
-                {/* begin::Google link */}
                 <a
                   href='#'
                   className='btn btn-flex btn-outline btn-text-gray-700 btn-active-color-primary bg-state-light flex-center text-nowrap w-100'
@@ -174,13 +220,8 @@ const RegistrationModel = ({show, handleClose}: Props) => {
                   />
                   Sign in with Google
                 </a>
-                {/* end::Google link */}
               </div>
-              {/* end::Col */}
-
-              {/* begin::Col */}
               <div className='col-md-6'>
-                {/* begin::Google link */}
                 <a
                   href='#'
                   className='btn btn-flex btn-outline btn-text-gray-700 btn-active-color-primary bg-state-light flex-center text-nowrap w-100'
@@ -197,23 +238,21 @@ const RegistrationModel = ({show, handleClose}: Props) => {
                   />
                   Sign in with Apple
                 </a>
-                {/* end::Google link */}
               </div>
-              {/* end::Col */}
             </div>
-            {/* end::Login options */}
 
             <div className='separator separator-content my-14'>
               <span className='w-125px text-gray-500 fw-semibold fs-7'>Or with email</span>
-            </div>
+            </div> */}
 
-            {formik.status && (
+            {/* {errorText?.length && (
               <div className='mb-lg-15 alert alert-danger'>
-                <div className='alert-text font-weight-bold'>{formik.status}</div>
+                <div className='alert-text font-weight-bold'>{errorText.toString()}</div>
               </div>
-            )}
+            )} */}
 
             {/* begin::Form group Firstname */}
+            
             <div className='fv-row mb-8'>
               <label className='form-label fw-bolder text-dark fs-6'>First name</label>
               <input
@@ -374,7 +413,7 @@ const RegistrationModel = ({show, handleClose}: Props) => {
             </div>
             {/* end::Form group */}
             {/* begin::Form group address */}
-            <div className='fv-row mb-8'>
+            {/* <div className='fv-row mb-8'>
               <div className='mb-1'>
                 <label className='form-label fw-bolder text-dark fs-6'>Address</label>
                 <div className='position-relative mb-3'>
@@ -404,8 +443,6 @@ const RegistrationModel = ({show, handleClose}: Props) => {
                 </div>
               </div>
             </div>
-            {/* end::Form group */}
-            {/* begin::Form group Password */}
             <div className='fv-row mb-8'>
               <div className='mb-1'>
                 <label className='form-label fw-bolder text-dark fs-6'>Pincode</label>
@@ -436,8 +473,6 @@ const RegistrationModel = ({show, handleClose}: Props) => {
                 </div>
               </div>
             </div>
-            {/* end::Form group */}
-            {/* begin::Form group Password */}
             <div className='fv-row mb-8'>
               <div className='mb-1'>
                 <label className='form-label fw-bolder text-dark fs-6'>City</label>
@@ -468,8 +503,6 @@ const RegistrationModel = ({show, handleClose}: Props) => {
                 </div>
               </div>
             </div>
-            {/* end::Form group */}
-            {/* begin::Form group Password */}
             <div className='fv-row mb-8'>
               <div className='mb-1'>
                 <label className='form-label fw-bolder text-dark fs-6'>State</label>
@@ -500,8 +533,6 @@ const RegistrationModel = ({show, handleClose}: Props) => {
                 </div>
               </div>
             </div>
-            {/* end::Form group */}
-            {/* begin::Form group Password */}
             <div className='fv-row mb-8'>
               <div className='mb-1'>
                 <label className='form-label fw-bolder text-dark fs-6'>Country</label>
@@ -531,11 +562,12 @@ const RegistrationModel = ({show, handleClose}: Props) => {
                   )}
                 </div>
               </div>
-            </div>
-            {/* end::Form group */}
-
-            {/* begin::Form group */}
+            </div> */}
+            
             <div className='text-center'>
+            {errorText && <div className='mb-lg-15 mt-15 alert alert-danger'>
+              <div className='alert-text font-weight-bold'>{errorText.toString()}</div>
+            </div>}
               <button
                 type='submit'
                 id='kt_sign_up_submit'
@@ -560,10 +592,10 @@ const RegistrationModel = ({show, handleClose}: Props) => {
                 </button>
               </Link>
             </div>
-            {/* end::Form group */}
           </form>
         </div>
       </div>
+      <ToasterPage show={showToaster} setShow={setShowToaster} toastMsg={`User registered successfully`} />
     </Modal>,
     modalsRoot
   )

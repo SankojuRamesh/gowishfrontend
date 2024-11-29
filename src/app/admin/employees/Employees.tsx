@@ -94,7 +94,7 @@ export const EmployeesPage = () => {
 
   const getEmployeeData = async () => {
     // const getData = await ApiAxios.get(`employee_list/`);
-    axios.get('http://74.208.123.31:5001/employee_list/').then(resp => {
+    axios.get('http://3.88.186.149:3000/employee_list/').then(resp => {
       setEmployeeData(resp.data)
     })
     // console.log("ascasca", getData);

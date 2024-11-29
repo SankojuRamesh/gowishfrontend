@@ -13,7 +13,28 @@ body {
     background-size: 100% get($page-bg-image-height-lg, desktop);
   }
 }
+@font-face {
+  font-family: 'Beloved-Teacher';
+  src: url('../../fonticon/beloved teacher.woff') format('woff'),
+       url('../../fonticon/beloved teacher.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
 
+@font-face {
+  font-family: 'Poppins-Light';
+  src: url('../../fonticon/Poppins-Light.ttf') format('woff2');
+      //  url('/path/to/fonts/Poppins-Light.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'FredokaOne-Regular';
+  src: url('../../fonticon/FredokaOne-Regular.ttf') format('woff2');
+      //  url('/path/to/fonts/Poppins-Light.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
 //@include color-mode(light) {
 //  body:not(.app-blank) {
 //    background-image: url('../media/patterns/header-bg.jpg');
@@ -184,4 +205,21 @@ body {
   bottom: 25px;
   left: 110px;
   cursor: pointer;
+}
+
+.edit-table-page {
+  th {
+    color: #fff;
+  }
+  td {
+    color: #fff;
+    button {
+      color: #fff;
+    }
+    input {
+      color: #fff;
+      border: 1px solid #fff;
+      border-radius: 8px;
+    }
+  }
 }

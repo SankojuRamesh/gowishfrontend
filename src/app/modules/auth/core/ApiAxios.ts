@@ -2,7 +2,8 @@ import axios from "axios";
 
 // Create an Axios instance
 const ApiAxios = axios.create({
-  baseURL: 'http://74.208.123.31:5001',
+  baseURL: 'http://3.88.186.149:3000',
+  // baseURL: 'http://74.208.123.31:5001',
   headers: {
     'Content-type': 'application/json',
   },
@@ -30,7 +31,8 @@ export default ApiAxios;
 
 // User Server Api
 
-export const baseUrl = "http://74.208.123.31:5001/";
+export const baseUrl= 'http://3.88.186.149:3000/'
+// export const baseUrl = "http://74.208.123.31:5001/";
 // export const baseUrl = "http://localhost:3002/";
 
 // Admin Server Api
