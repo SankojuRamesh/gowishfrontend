@@ -254,9 +254,11 @@ import React, { useEffect, useState } from 'react';
 import {
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Button, Collapse, IconButton
 } from '@mui/material';
-import { ExpandMore, ExpandLess, Save, Edit } from '@mui/icons-material';
+import { ExpandMore, ExpandLess, Save, Edit, Delete } from '@mui/icons-material';
 import ApiAxios from '../../modules/auth/core/ApiAxios';
 import { Badge } from 'react-bootstrap';
+import { useAuth } from '../../modules/auth';
+import { ToasterPage } from '../../modules/shared/Toaster/toaster';
 
 interface RowData {
   id: number;
@@ -284,11 +286,14 @@ export const EditPage = () => {
   });
 
   // State for expanded row and editing row
+  const { auth } = useAuth();
+  console.log('authhhhh', auth)
   const [expandedRow, setExpandedRow] = useState<number | null>(null);
   const [editingNestedRow, setEditingNestedRow] = useState<number | null>(null);
   const [composits, setComposits] = useState<any>(null)
   const [layers, setLayers] = useState<any>(null)
   const [newValue, setNewValue] = useState<any>('')
+  const [show, setShow] = useState(false)
 
     useEffect(() => {
       getComposits()
@@ -360,6 +365,15 @@ const getLayers = (row: any) => {
     }, (error) => console.log(error))
     setEditingNestedRow(null); // Exit nested edit mode
   };
+
+  const handleDeleteLayer = (parentid: any, layerId: any) => {
+    ApiAxios.delete(`layers/${layerId}/`).then((resp: any) => {
+      setShow(true)
+      getLayers({id: parentid})
+    }, (error: any) => {
+      console.log(error)
+    })
+  }
 
   // Handle input changes for the nested row editable fields
   const handleInputChangeNestedRow = (parentId: number, nestedRowId: number, field: keyof EditableRowData, value: string | number) => {
@@ -463,6 +477,18 @@ const getLayers = (row: any) => {
                                     Save
                                   </Button>
                                 ) : (
+                                  <>
+                                    {auth?.roles === 1  ? 
+                                    <Button
+                                    variant="contained"
+                                    color="primary"
+                                    size="small"
+                                    startIcon={<Delete />}
+                                    onClick={() => handleDeleteLayer(row.id, layer.id)}
+                                  >
+                                    Delete
+                                  </Button>
+                                  : 
                                   <Button
                                     variant="contained"
                                     color="primary"
@@ -472,6 +498,9 @@ const getLayers = (row: any) => {
                                   >
                                     Edit
                                   </Button>
+                                  }
+                                  </>
+                                  
                                 )}
                               </TableCell>
                             </TableRow>
@@ -487,6 +516,7 @@ const getLayers = (row: any) => {
         </TableBody>
       </Table>
     </TableContainer>
+    <ToasterPage show={show} setShow={setShow} toastMsg={'Layer deleted successfully'} />
     </div>
   );
 };
