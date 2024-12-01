@@ -49,6 +49,7 @@
     "redux": "^4.2.1",
     "redux-persist": "^6.0.0",
     "socicon": "3.0.5",
+    "socket.io-client": "^4.8.1",
     "typescript-cookie": "^1.0.6",
     "yup": "^1.0.0"
   },
