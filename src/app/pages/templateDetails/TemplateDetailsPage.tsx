@@ -60,23 +60,25 @@ export const TemplatesDetailsPage = () => {
   };
 
   const handleFav = () => {
-    setIsLoading(true);
-    let payload = {
-      user: auth?.id,
-      template: details.id,
-    };
-    ApiAxios.post("mywishlist/", payload).then(
-      (resp: any) => {
-        setMsg("Wishlisted successfully");
-        setShow(true);
-        updateWishlistCount();
-        setIsLoading(false);
-      },
-      (error) => {
-        setIsLoading(false);
-        console.log(error);
-      }
-    );
+    if(!details?.wishlist_state) {
+      setIsLoading(true);
+      let payload = {
+        user: auth?.id,
+        template: details.id,
+      };
+      ApiAxios.post("mywishlist/", payload).then(
+        (resp: any) => {
+          setMsg("Wishlisted successfully");
+          setShow(true);
+          updateWishlistCount();
+          setIsLoading(false);
+        },
+        (error) => {
+          setIsLoading(false);
+          console.log(error);
+        }
+      );
+    }
   };
   return (
     <div>

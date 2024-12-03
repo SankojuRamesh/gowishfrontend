@@ -26,21 +26,23 @@ const SubCategories = ({subCategories, reload}: any) => {
     const [show, setShow] = useState(false)
     const {auth} = useAuth()
     const handleFav = (item: any) => {
-      setIsLoading(true)
-      let payload = {
-        "user": auth?.id,
-        "template": item.id
+      if(!item?.wishlist_state) {
+        setIsLoading(true)
+        let payload = {
+          "user": auth?.id,
+          "template": item.id
+        }
+        ApiAxios.post('mywishlist/', payload).then((resp: any) => {
+          msg = 'Wishlisted successfully'
+          setShow(true)
+          updateWishlistCount()
+          setIsLoading(false)
+          reload()
+        }, (error) => {
+          setIsLoading(false)
+          console.log(error)
+        })
       }
-      ApiAxios.post('mywishlist/', payload).then((resp: any) => {
-        msg = 'Wishlisted successfully'
-        setShow(true)
-        updateWishlistCount()
-        setIsLoading(false)
-        reload()
-      }, (error) => {
-        setIsLoading(false)
-        console.log(error)
-      })
     }
     const handleCart = (item: any) => {
       setIsLoading(true)

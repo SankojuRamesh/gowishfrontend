@@ -69,21 +69,23 @@ import VideoScrub from "../../modules/shared/VideoScrub/VideoScrub";
       })
     }
     const handleFav = (item: any) => {
-      setIsLoading(true)
-      let payload = {
-        "user": auth?.id,
-        "template": item.id
+      if(!item?.wishlist_state) {
+        setIsLoading(true)
+        let payload = {
+          "user": auth?.id,
+          "template": item.id
+        }
+        ApiAxios.post('mywishlist/', payload).then((resp: any) => {
+          msg = 'Wishlisted successfully'
+          setShow(true)
+          getTemplates()
+          updateWishlistCount()
+          setIsLoading(false)
+        }, (error) => {
+          setIsLoading(false)
+          console.log(error)
+        })
       }
-      ApiAxios.post('mywishlist/', payload).then((resp: any) => {
-        msg = 'Wishlisted successfully'
-        setShow(true)
-        getTemplates()
-        updateWishlistCount()
-        setIsLoading(false)
-      }, (error) => {
-        setIsLoading(false)
-        console.log(error)
-      })
     }
     const handlePlay = (item: any) => {
       setSelected(item)
