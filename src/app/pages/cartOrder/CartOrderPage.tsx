@@ -73,7 +73,7 @@ export const CartOrderPage = () => {
   }, [selectedUser])
 
   const getFamilyById = () => {
-    ApiAxios.get(`my_famaly/?famaly_type=${selectedUser.type}`).then(resp => {
+    ApiAxios.get(`my_famaly/?famaly_type=${selectedUser?.type}`).then(resp => {
       setFamOptions(resp?.data?.results)
     }, (error) => console.log(error))
   }
@@ -164,7 +164,7 @@ export const CartOrderPage = () => {
                   <div className="flex-lg-row-fluid">
                     <div className="card pt-0 mb-5 mb-xl-9">
                       <div className="card-body pt-5">
-                        <div className="d-flex flex-stack">
+                        <div className="d-flex flex-stack flex-wrap">
                           <div className="d-flex align-items-center ">
                             <div className="symbol symbol-45px w-45px bg-light me-5">
                               <img
@@ -238,7 +238,7 @@ export const CartOrderPage = () => {
                       </div>
                       <div className="separator separator-dashed my-2"></div>
                       <div className="card-body pt-5">
-                        <div className="d-flex flex-stack">
+                        <div className="d-flex flex-stack flex-wrap gap-5">
                           <div className="me-5 fw-semibold">
                             <label className="fs-6">
                               {" "}
@@ -1075,7 +1075,7 @@ export const CartOrderPage = () => {
         </div>
         </Modal.Body>
         </Modal>
-        <ToasterPage show={showToaster} setShow={setShowToaster} toastMsg={`User added to ${selectedRelation.type}`} />
+        <ToasterPage show={showToaster} setShow={setShowToaster} toastMsg={`User added to ${selectedRelation?.type}`} />
     </div>
   );
 };

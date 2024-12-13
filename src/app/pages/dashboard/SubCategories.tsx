@@ -72,6 +72,19 @@ const SubCategories = ({subCategories, reload}: any) => {
       setSelected(item)
       setShowPlayModal(true)
     }
+console.log('authhhhh', auth)
+    const handleEditTemplate = (category: any) => {
+      let obj = {
+        "userid": auth?.id,
+        "templateid": category?.id
+      }
+      ApiAxios.post('/newmytemplates', obj).then((resp) => {
+        console.log('resppppp', resp.data.templaate_id)
+        if(resp.data.templaate_id) {
+          navigate(`/edit-template/${resp.data.templaate_id}`)
+        }
+      }, (error) => console.log(error))
+    }
     return (
       <>
         {isLoading && <PageLoader />}
@@ -154,7 +167,7 @@ const SubCategories = ({subCategories, reload}: any) => {
                                     <FontAwesomeIcon icon={faArrowRightFromBracket} size={'2x'} />
                                   </span>
                                 </span>
-                                <span className="btn btn-icon btn-active-light-primary w-35px h-35px w-md-40px h-md-40px" onClick={() => navigate(`/edit-template/${category?.id}`)}>
+                                <span className="btn btn-icon btn-active-light-primary w-35px h-35px w-md-40px h-md-40px" onClick={() => handleEditTemplate(category)}>
                                   <span className="svg-icon svg-icon-muted svg-icon-1hx">
                                     <FontAwesomeIcon icon={faPencil} size={'2x'} />
                                   </span>
@@ -177,7 +190,7 @@ const SubCategories = ({subCategories, reload}: any) => {
         </Modal.Header>
         <Modal.Body>
         <Row>
-        <Col xs={8}>
+        <Col xs={12} md={12} lg={8}>
         <ReactPlayer
           url={videourl}
           playing={true}
@@ -187,7 +200,7 @@ const SubCategories = ({subCategories, reload}: any) => {
           height={'100%'}
         />
         </Col>
-        <Col xs={4}>
+        <Col xs={12} md={12} lg={4}>
             <Card>
               {/* <Card.Header>Featured</Card.Header> */}
               <Card.Body className="p-2">

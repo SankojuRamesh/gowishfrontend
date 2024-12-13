@@ -211,7 +211,7 @@ export const TemplatesPage = () => {
       <div className="container">
         <h2 className="fs-4">Video Templates</h2>
         <div className="d-flex gap-10 justify-content-between my-10">
-          <div className="d-flex gap-10">
+          <div className="d-flex flex-wrap gap-5">
           <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
             <Form.Label className="fs-8">Category Name</Form.Label>
             <DropdownButton
@@ -284,10 +284,10 @@ export const TemplatesPage = () => {
         </ButtonGroup>
           </div>
         </div>
-        <div className="d-flex flex-wrap">
+        <div className="d-flex flex-wrap content-center">
           {displayType === 'grid' ? <>
           {templates.map((template: any) => (
-            <div className="col-sm-3 mb-3 mb-20 pb-5 ps-2 pe-3" key={1}>
+            <div className="col-sm-6 col-lg-3 col-md-5 mb-3 mb-20 pb-5 ps-2 pe-3" key={1}>
               <div className="position-relative ">
                 <div>
                 <VideoScrub src={template?.template_video} handleDoubleClick={() => handlePlay(template)} />

@@ -51,7 +51,8 @@ export const EditPage = () => {
     }, [])
 
   const getComposits = () => {
-    ApiAxios.get('/composits/').then((resp: any) => {
+    ApiAxios.get(`/mytemplates_composits/?template_order_modelId=${id}`).then((resp: any) => {
+      console.log('utyryu', resp)
       setComposits(resp.data.results)
     }, (error) => {
       console.log(error)
@@ -60,7 +61,7 @@ export const EditPage = () => {
 
 
 const getLayers = (row: any) => {
-  ApiAxios.get(`/layers/?compositid=${row.id}`).then((resp: any) => {
+  ApiAxios.get(`/mytemplates_composits_layers/?UserTemplatesCompositId=${row.id}`).then((resp: any) => {
     setLayers(resp.data.results)
     resp.data.results.map((t: any) => {
     })
@@ -70,7 +71,7 @@ const getLayers = (row: any) => {
 
   // Toggle expand/collapse for the outer table row
   const handleToggleExpand = (row: any) => {
-    ApiAxios.get(`/layers/?compositid=${row.id}`).then((resp: any) => {
+    ApiAxios.get(`/mytemplates_composits_layers/?UserTemplatesCompositId=${row.id}`).then((resp: any) => {
       setLayers(resp.data.results)
       setExpandedRow(expandedRow === row?.id ? null : row?.id); // Toggle expand/collapse
       resp.data.results.map((t: any) => {

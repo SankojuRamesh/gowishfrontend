@@ -47,7 +47,7 @@ const DashboardPage = () => {
   };
     return (
         <div className='p-20'>
-          <div className='d-flex justify-content-between'>
+          <div className='d-flex justify-content-between flex-wrap'>
           <Card
           bg={'primary'}
           // key={variant}

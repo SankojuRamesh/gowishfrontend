@@ -99,6 +99,13 @@ body {
   }
 }
 
+@media (max-width: 600px) {
+  .content-center {
+    justify-content: center;
+    align-items: center;
+  }
+}
+
 // Tablet & mobile modes
 @include media-breakpoint-down(lg) {
   // Body
